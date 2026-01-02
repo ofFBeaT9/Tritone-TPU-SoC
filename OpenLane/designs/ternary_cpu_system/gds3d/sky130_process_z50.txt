@@ -1,0 +1,174 @@
+# SKY130 GDS3D Technology File - 50x Z Exaggeration
+# Tritone v4 Balanced Ternary CPU
+#
+# This version uses 50x height exaggeration for easier visual inspection
+# Heights are scaled by 50x from realistic values
+
+# ==== Substrate ====
+LayerStart: 64
+Datatype: 44
+Height: -25
+Thickness: 25
+Red: 200
+Green: 200
+Blue: 100
+Filter: 0
+Metal: 0
+Show: 1
+LayerEnd
+
+# ==== Local Interconnect (li1) ====
+LayerStart: 67
+Datatype: 20
+Height: 0
+Thickness: 5
+Red: 128
+Green: 128
+Blue: 200
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 1 ====
+LayerStart: 68
+Datatype: 20
+Height: 18.5
+Thickness: 18
+Red: 50
+Green: 100
+Blue: 200
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via1 ====
+LayerStart: 68
+Datatype: 44
+Height: 36.5
+Thickness: 13.5
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 2 ====
+LayerStart: 69
+Datatype: 20
+Height: 50
+Thickness: 18
+Red: 100
+Green: 200
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via2 ====
+LayerStart: 69
+Datatype: 44
+Height: 68
+Thickness: 21
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 3 ====
+LayerStart: 70
+Datatype: 20
+Height: 89
+Thickness: 42.25
+Red: 200
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via3 ====
+LayerStart: 70
+Datatype: 44
+Height: 131.25
+Thickness: 19.5
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 4 ====
+LayerStart: 71
+Datatype: 20
+Height: 150.75
+Thickness: 42.25
+Red: 200
+Green: 200
+Blue: 50
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via4 ====
+LayerStart: 71
+Datatype: 44
+Height: 193
+Thickness: 25.25
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 5 ====
+LayerStart: 72
+Datatype: 20
+Height: 218.25
+Thickness: 63
+Red: 200
+Green: 100
+Blue: 200
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Pin Labels ====
+LayerStart: 68
+Datatype: 16
+Height: 18.5
+Thickness: 18
+Red: 255
+Green: 255
+Blue: 0
+Filter: 0
+Metal: 0
+Show: 1
+LayerEnd
+
+# ==== Boundary ====
+LayerStart: 235
+Datatype: 4
+Height: -5
+Thickness: 2.5
+Red: 150
+Green: 150
+Blue: 150
+Filter: 0
+Metal: 0
+Show: 1
+LayerEnd

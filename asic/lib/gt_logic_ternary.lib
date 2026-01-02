@@ -1,0 +1,501 @@
+/* ============================================================================
+ * GT-LOGIC Ternary Standard Cell Library
+ * ============================================================================
+ * Liberty Format (.lib) for EDA Tool Integration
+ * 
+ * Technology: SKY130 Multi-Vth CMOS
+ * Voltage: 1.8V nominal
+ * Temperature: 25°C (typical)
+ * 
+ * Note: Timing values are preliminary estimates.
+ * Run characterization simulations to update with actual values.
+ * ============================================================================
+ */
+
+library(gt_logic_ternary_tt_1p8v_25c) {
+
+  /* Library attributes */
+  technology (cmos);
+  delay_model : table_lookup;
+  
+  /* Units */
+  time_unit : "1ns";
+  voltage_unit : "1V";
+  current_unit : "1mA";
+  pulling_resistance_unit : "1kohm";
+  leakage_power_unit : "1nW";
+  capacitive_load_unit (1, pf);
+
+  /* Nominal operating conditions */
+  nom_process : 1;
+  nom_temperature : 25;
+  nom_voltage : 1.8;
+
+  /* Ternary-specific voltage thresholds */
+  /* These define the three logic regions */
+  slew_lower_threshold_pct_fall : 25;   /* 0.45V / 1.8V */
+  slew_lower_threshold_pct_rise : 25;
+  slew_upper_threshold_pct_fall : 75;   /* 1.35V / 1.8V */
+  slew_upper_threshold_pct_rise : 75;
+  input_threshold_pct_fall : 50;        /* 0.9V / 1.8V */
+  input_threshold_pct_rise : 50;
+  output_threshold_pct_fall : 50;
+  output_threshold_pct_rise : 50;
+
+  /* Default values */
+  default_cell_leakage_power : 0;
+  default_fanout_load : 1;
+  default_inout_pin_cap : 0.004;
+  default_input_pin_cap : 0.004;
+  default_output_pin_cap : 0.0;
+  default_max_transition : 0.5;
+
+  /* Operating conditions */
+  operating_conditions (typical) {
+    process : 1;
+    temperature : 25;
+    voltage : 1.8;
+  }
+  default_operating_conditions : typical;
+
+  /* Wire load models (simplified) */
+  wire_load("small") {
+    resistance : 0;
+    capacitance : 0.0001;
+    area : 0;
+    slope : 0.001;
+    fanout_length(1, 0.01);
+  }
+  default_wire_load : "small";
+
+  /* ==========================================================================
+   * STANDARD TERNARY INVERTER (STI)
+   * ==========================================================================
+   * Function: Y = -A (ternary inversion)
+   * Transistors: 4
+   */
+  cell (STI) {
+    area : 2.0;
+    cell_footprint : "inv_ternary";
+    
+    pin (A) {
+      direction : input;
+      capacitance : 0.004;
+      max_transition : 0.5;
+    }
+    
+    pin (Y) {
+      direction : output;
+      function : "A'";  /* Simplified - actual is ternary */
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        timing_sense : negative_unate;
+        
+        /* Transition 0→1 input (2→1 output) */
+        cell_rise (scalar) { values ("0.045"); }
+        rise_transition (scalar) { values ("0.025"); }
+        
+        /* Transition 1→2 input (1→0 output) */
+        cell_fall (scalar) { values ("0.040"); }
+        fall_transition (scalar) { values ("0.020"); }
+      }
+      
+      /* Internal power */
+      internal_power () {
+        related_pin : "A";
+        rise_power (scalar) { values ("0.008"); }
+        fall_power (scalar) { values ("0.008"); }
+      }
+    }
+    
+    pin (VDD) {
+      direction : input;
+      voltage_name : VDD;
+      always_on : true;
+    }
+
+    pin (VMID) {
+      direction : input;
+      voltage_name : VMID;
+      always_on : true;
+    }
+    
+    pin (VSS) {
+      direction : input;
+      voltage_name : VSS;
+      always_on : true;
+    }
+    
+    leakage_power () {
+      value : 0.5;
+    }
+  }
+
+  /* ==========================================================================
+   * POSITIVE TERNARY INVERTER (PTI)
+   * ==========================================================================
+   * Function: Y = 2 if A<2, else 0
+   * Transistors: 3
+   */
+  cell (PTI) {
+    area : 1.5;
+    cell_footprint : "inv_pos_ternary";
+    
+    pin (A) {
+      direction : input;
+      capacitance : 0.003;
+    }
+    
+    pin (Y) {
+      direction : output;
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        cell_rise (scalar) { values ("0.050"); }
+        rise_transition (scalar) { values ("0.030"); }
+        cell_fall (scalar) { values ("0.035"); }
+        fall_transition (scalar) { values ("0.020"); }
+      }
+    }
+    
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+    
+    leakage_power () { value : 0.4; }
+  }
+
+  /* ==========================================================================
+   * NEGATIVE TERNARY INVERTER (NTI)
+   * ==========================================================================
+   * Function: Y = 2 if A=0, else 0
+   * Transistors: 3
+   */
+  cell (NTI) {
+    area : 1.5;
+    cell_footprint : "inv_neg_ternary";
+    
+    pin (A) {
+      direction : input;
+      capacitance : 0.003;
+    }
+    
+    pin (Y) {
+      direction : output;
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        cell_rise (scalar) { values ("0.035"); }
+        rise_transition (scalar) { values ("0.020"); }
+        cell_fall (scalar) { values ("0.050"); }
+        fall_transition (scalar) { values ("0.030"); }
+      }
+    }
+    
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+    
+    leakage_power () { value : 0.4; }
+  }
+
+  /* ==========================================================================
+   * TERNARY MIN GATE (TMIN)
+   * ==========================================================================
+   * Function: Y = MIN(A, B)
+   * Transistors: 10
+   */
+  cell (TMIN) {
+    area : 5.0;
+    cell_footprint : "and_ternary";
+    
+    pin (A) {
+      direction : input;
+      capacitance : 0.005;
+    }
+    
+    pin (B) {
+      direction : input;
+      capacitance : 0.005;
+    }
+    
+    pin (Y) {
+      direction : output;
+      function : "A * B";  /* Simplified representation */
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        timing_sense : positive_unate;
+        cell_rise (scalar) { values ("0.080"); }
+        cell_fall (scalar) { values ("0.075"); }
+        rise_transition (scalar) { values ("0.035"); }
+        fall_transition (scalar) { values ("0.030"); }
+      }
+      
+      timing () {
+        related_pin : "B";
+        timing_sense : positive_unate;
+        cell_rise (scalar) { values ("0.085"); }
+        cell_fall (scalar) { values ("0.080"); }
+        rise_transition (scalar) { values ("0.035"); }
+        fall_transition (scalar) { values ("0.030"); }
+      }
+    }
+    
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+    
+    leakage_power () { value : 1.0; }
+  }
+
+  /* ==========================================================================
+   * TERNARY MAX GATE (TMAX)
+   * ==========================================================================
+   * Function: Y = MAX(A, B)
+   * Transistors: 10
+   */
+  cell (TMAX) {
+    area : 5.0;
+    cell_footprint : "or_ternary";
+    
+    pin (A) {
+      direction : input;
+      capacitance : 0.005;
+    }
+    
+    pin (B) {
+      direction : input;
+      capacitance : 0.005;
+    }
+    
+    pin (Y) {
+      direction : output;
+      function : "A + B";  /* Simplified representation */
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        timing_sense : positive_unate;
+        cell_rise (scalar) { values ("0.075"); }
+        cell_fall (scalar) { values ("0.080"); }
+        rise_transition (scalar) { values ("0.030"); }
+        fall_transition (scalar) { values ("0.035"); }
+      }
+      
+      timing () {
+        related_pin : "B";
+        timing_sense : positive_unate;
+        cell_rise (scalar) { values ("0.080"); }
+        cell_fall (scalar) { values ("0.085"); }
+        rise_transition (scalar) { values ("0.030"); }
+        fall_transition (scalar) { values ("0.035"); }
+      }
+    }
+    
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+    
+    leakage_power () { value : 1.0; }
+  }
+
+  /* ==========================================================================
+   * 3-TO-1 TERNARY MULTIPLEXER (TMUX3)
+   * ==========================================================================
+   * Function: Y = D0 if S=0, D1 if S=1, D2 if S=2
+   * Transistors: 24
+   */
+  cell (TMUX3) {
+    area : 12.0;
+    cell_footprint : "mux3_ternary";
+    
+    pin (D0) { direction : input; capacitance : 0.004; }
+    pin (D1) { direction : input; capacitance : 0.004; }
+    pin (D2) { direction : input; capacitance : 0.004; }
+    pin (S) { direction : input; capacitance : 0.006; }
+    
+    pin (Y) {
+      direction : output;
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "D0";
+        cell_rise (scalar) { values ("0.100"); }
+        cell_fall (scalar) { values ("0.095"); }
+      }
+      timing () {
+        related_pin : "D1";
+        cell_rise (scalar) { values ("0.105"); }
+        cell_fall (scalar) { values ("0.100"); }
+      }
+      timing () {
+        related_pin : "D2";
+        cell_rise (scalar) { values ("0.100"); }
+        cell_fall (scalar) { values ("0.095"); }
+      }
+      timing () {
+        related_pin : "S";
+        cell_rise (scalar) { values ("0.120"); }
+        cell_fall (scalar) { values ("0.115"); }
+      }
+    }
+    
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+    
+    leakage_power () { value : 2.5; }
+  }
+
+  /* ==========================================================================
+   * BALANCED TERNARY FULL ADDER (BTFA)
+   * ==========================================================================
+   * Function: {COUT, SUM} = A + B + CIN
+   * Transistors: 42 (target)
+   */
+  cell (BTFA) {
+    area : 21.0;
+    cell_footprint : "fa_ternary";
+    
+    pin (A) { direction : input; capacitance : 0.006; }
+    pin (B) { direction : input; capacitance : 0.006; }
+    pin (CIN) { direction : input; capacitance : 0.006; }
+    
+    pin (SUM) {
+      direction : output;
+      /* function : "(A + B + CIN) mod 3";  -- Ternary, not valid Liberty syntax */
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        cell_rise (scalar) { values ("0.150"); }
+        cell_fall (scalar) { values ("0.145"); }
+        rise_transition (scalar) { values ("0.050"); }
+        fall_transition (scalar) { values ("0.045"); }
+      }
+      timing () {
+        related_pin : "B";
+        cell_rise (scalar) { values ("0.155"); }
+        cell_fall (scalar) { values ("0.150"); }
+      }
+      timing () {
+        related_pin : "CIN";
+        cell_rise (scalar) { values ("0.140"); }
+        cell_fall (scalar) { values ("0.135"); }
+      }
+    }
+    
+    pin (COUT) {
+      direction : output;
+      /* function : "floor((A + B + CIN) / 3)";  -- Ternary, not valid Liberty syntax */
+      max_capacitance : 0.1;
+      
+      timing () {
+        related_pin : "A";
+        cell_rise (scalar) { values ("0.120"); }
+        cell_fall (scalar) { values ("0.115"); }
+      }
+      timing () {
+        related_pin : "B";
+        cell_rise (scalar) { values ("0.125"); }
+        cell_fall (scalar) { values ("0.120"); }
+      }
+      timing () {
+        related_pin : "CIN";
+        cell_rise (scalar) { values ("0.110"); }
+        cell_fall (scalar) { values ("0.105"); }
+      }
+    }
+    
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+    
+    leakage_power () { value : 5.0; }
+  }
+
+  /* ==========================================================================
+   * TERNARY D FLIP-FLOP (TDFF)
+   * ==========================================================================
+   * Function: Q follows D on rising edge of CLK
+   * Topology: Master-slave using cross-coupled STI
+   * Transistors: 36
+   */
+  cell (TDFF) {
+    area : 18.0;
+    cell_footprint : "dff_ternary";
+
+    ff (IQ, IQN) {
+      clocked_on : "CLK";
+      next_state : "D";
+    }
+
+    pin (D) {
+      direction : input;
+      capacitance : 0.006;
+    }
+
+    pin (CLK) {
+      direction : input;
+      capacitance : 0.008;
+      clock : true;
+      min_pulse_width_high : 0.05;
+      min_pulse_width_low : 0.05;
+    }
+
+    pin (Q) {
+      direction : output;
+      function : "IQ";
+      max_capacitance : 0.1;
+
+      timing () {
+        related_pin : "CLK";
+        timing_type : rising_edge;
+        cell_rise (scalar) { values ("0.100"); }
+        cell_fall (scalar) { values ("0.095"); }
+        rise_transition (scalar) { values ("0.035"); }
+        fall_transition (scalar) { values ("0.030"); }
+      }
+
+      timing () {
+        related_pin : "D";
+        timing_type : setup_rising;
+        rise_constraint (scalar) { values ("0.040"); }
+        fall_constraint (scalar) { values ("0.040"); }
+      }
+
+      timing () {
+        related_pin : "D";
+        timing_type : hold_rising;
+        rise_constraint (scalar) { values ("0.010"); }
+        fall_constraint (scalar) { values ("0.010"); }
+      }
+    }
+
+    pin (QN) {
+      direction : output;
+      function : "IQN";
+      max_capacitance : 0.1;
+
+      timing () {
+        related_pin : "CLK";
+        timing_type : rising_edge;
+        cell_rise (scalar) { values ("0.105"); }
+        cell_fall (scalar) { values ("0.100"); }
+      }
+    }
+
+    pin (VDD) { direction : input; voltage_name : VDD; always_on : true; }
+    pin (VMID) { direction : input; voltage_name : VMID; always_on : true; }
+    pin (VSS) { direction : input; voltage_name : VSS; always_on : true; }
+
+    leakage_power () { value : 3.0; }
+  }
+
+}

@@ -1,0 +1,134 @@
+* ============================================================================
+* TERNARY D FLIP-FLOP (TDFF) - Master-Slave Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TDFF - Edge-Triggered Ternary D Flip-Flop
+*
+* Function: Positive-edge-triggered flip-flop for balanced ternary values
+*   At rising edge of CLK: Q captures D value
+*   Between edges: Q holds previous captured value
+*   D, Q ∈ {0, VDD/2, VDD} representing {-1, 0, +1}
+*
+* Implementation: Master-Slave latch cascade
+*   - Master latch: Transparent when CLK=LOW
+*   - Slave latch: Transparent when CLK=HIGH
+*   - Data captured on rising edge of CLK
+*
+* Transistor Count: 36 (2 x 16 latch + 4 clock inverter)
+* ============================================================================
+
+.include "tlatch.spice"
+
+.subckt TDFF D CLK Q QB VDD VSS
+
+* Parameters
+.param Wn=500n Wp=1u Ln=150n Lp=150n
+
+* ============================================================================
+* CLOCK INVERSION
+* ============================================================================
+* Generate complementary clocks for transmission gates
+* Using standard binary inverter (not STI) for sharp transitions
+
+XCLK_MP clkb CLK VDD VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+XCLK_MN clkb CLK VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+* ============================================================================
+* MASTER LATCH (Transparent when CLK=LOW)
+* ============================================================================
+* Passes input D to internal node when clock is low
+* Input TG: controlled by CLKB (active when CLK=LOW)
+
+* Master transmission gate (active low)
+XTG_M_N dm D clkb VSS sky130_fd_pr__nfet_01v8 W='Wn*2' L=Ln
+XTG_M_P dm D CLK VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+
+* Master cross-coupled STI storage
+XST_M1_MP1 dm_bar dm VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XST_M1_MP2 dm_bar dm VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XST_M1_MN1 dm_bar dm VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XST_M1_MN2 dm_bar dm VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+XST_M2_MP1 dm dm_bar VDD VDD sky130_fd_pr__pfet_01v8_hvt W='Wp/2' L=Lp
+XST_M2_MP2 dm dm_bar VDD VDD sky130_fd_pr__pfet_01v8 W='Wp/2' L=Lp
+XST_M2_MN1 dm dm_bar VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn/2' L=Ln
+XST_M2_MN2 dm dm_bar VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/4' L=Ln
+
+* ============================================================================
+* SLAVE LATCH (Transparent when CLK=HIGH)
+* ============================================================================
+* Captures master output on rising edge, holds during low phase
+* Input TG: controlled by CLK (active when CLK=HIGH)
+
+* Slave transmission gate (active high)
+XTG_S_N ds dm_bar CLK VSS sky130_fd_pr__nfet_01v8 W='Wn*2' L=Ln
+XTG_S_P ds dm_bar clkb VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+
+* Slave cross-coupled STI storage
+XST_S1_MP1 ds_bar ds VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XST_S1_MP2 ds_bar ds VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XST_S1_MN1 ds_bar ds VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XST_S1_MN2 ds_bar ds VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+XST_S2_MP1 ds ds_bar VDD VDD sky130_fd_pr__pfet_01v8_hvt W='Wp/2' L=Lp
+XST_S2_MP2 ds ds_bar VDD VDD sky130_fd_pr__pfet_01v8 W='Wp/2' L=Lp
+XST_S2_MN1 ds ds_bar VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn/2' L=Ln
+XST_S2_MN2 ds ds_bar VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/4' L=Ln
+
+* ============================================================================
+* OUTPUT BUFFERS
+* ============================================================================
+* Strong output drive for Q and QB
+
+* Q output buffer (non-inverting via ds -> buffer)
+XQBUF1_MP1 qb_int ds VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XQBUF1_MP2 qb_int ds VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQBUF1_MN1 qb_int ds VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XQBUF1_MN2 qb_int ds VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+XQBUF2_MP1 Q qb_int VDD VDD sky130_fd_pr__pfet_01v8_hvt W='Wp*2' L=Lp
+XQBUF2_MP2 Q qb_int VDD VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+XQBUF2_MN1 Q qb_int VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn*2' L=Ln
+XQBUF2_MN2 Q qb_int VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+* QB output (inverted Q)
+XQBBUF_MP1 QB qb_int VDD VDD sky130_fd_pr__pfet_01v8_hvt W='Wp*2' L=Lp
+XQBBUF_MP2 QB qb_int VDD VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+XQBBUF_MN1 QB qb_int VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn*2' L=Ln
+XQBBUF_MN2 QB qb_int VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+.ends TDFF
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. Master-slave organization:
+*    - CLK=LOW: Master transparent, captures D; Slave latched, holds Q
+*    - CLK=HIGH: Master latched, holds captured D; Slave transparent, updates Q
+*    - Rising edge: Slave captures master output, master closes
+*
+* 2. The ternary flip-flop stores three stable states:
+*    - Q=VSS (0V): Logic -1
+*    - Q=VDD/2 (0.9V): Logic 0
+*    - Q=VDD (1.8V): Logic +1
+*
+* 3. The intermediate state (VDD/2) is stable due to:
+*    - STI cross-couple has three equilibrium points
+*    - Multi-Vth transistors create valid voltage divider at midpoint
+*
+* 4. Setup time: Data must be stable before rising edge
+*    Typical: ~200ps (technology dependent)
+*
+* 5. Hold time: Data must remain stable after rising edge
+*    Typical: ~50ps (technology dependent)
+*
+* 6. Clock-to-Q delay: Time from clock edge to output valid
+*    Typical: ~150ps (technology dependent)
+*
+* 7. The QB output is the ternary complement of Q:
+*    Q=+1 -> QB=-1
+*    Q=0  -> QB=0
+*    Q=-1 -> QB=+1
+*
+* 8. For scan/test insertion, add mux at D input for scan path.
+* ============================================================================

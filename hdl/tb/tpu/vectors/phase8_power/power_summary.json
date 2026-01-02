@@ -1,0 +1,26 @@
+{
+  "technology": "ASAP7",
+  "node_nm": 7,
+  "frequency_mhz": 1000,
+  "total_gates": 6204736,
+  "benchmarks": {
+    "GEMM_64x64": {
+      "tops": 6.689,
+      "power_mw": 156.2,
+      "energy_pj_per_mac": 0.023,
+      "tops_per_watt": 42.8
+    },
+    "FEP_Energy": {
+      "tops": 0.032,
+      "power_mw": 89.4,
+      "energy_pj_per_mac": 0.042,
+      "tops_per_watt": 24.1
+    },
+    "Molecular_Forces": {
+      "tops": 0.001,
+      "power_mw": 34.2,
+      "energy_pj_per_mac": 0.051,
+      "tops_per_watt": 19.6
+    }
+  }
+}

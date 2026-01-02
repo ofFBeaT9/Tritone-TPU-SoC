@@ -1,0 +1,355 @@
+m255
+K4
+z2
+!s11f vlog 2024.1 2024.02, Feb  1 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dE:/Tritone-V2/tritone-complete
+vbtfa
+Z1 2E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_pkg.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/btfa.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_adder.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_cla.sv
+Z2 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z3 DXx4 work 11 ternary_pkg 0 22 ;OPnHz=mZB_BK1RG^_?W83
+Z4 !s110 1767335207
+!i10b 1
+!s100 iBYBLImRd3Q=F2YPnL7Fb0
+IQ_:6SE2jhQ<daPP`li>Qz3
+S1
+R0
+w1766016220
+8E:/Tritone-V2/tritone-complete/hdl/rtl/btfa.sv
+FE:/Tritone-V2/tritone-complete/hdl/rtl/btfa.sv
+!i122 0
+L0 10 17
+Z5 VDg1SIo80bB@j0V0VzS_@n1
+Z6 OL;L;2024.1;79
+r1
+!s85 0
+31
+Z7 !s108 1767335207.000000
+Z8 !s107 E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_cla.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_adder.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/btfa.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_pkg.sv|
+Z9 !s90 -work|E:/Tritone-V2/tritone-complete/hdl/build/questa_64x64/work|-sv|+incdir+E:/Tritone-V2/tritone-complete/hdl/rtl|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_pkg.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/btfa.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_adder.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_cla.sv|
+!i113 0
+Z10 o-work E:/Tritone-V2/tritone-complete/hdl/build/questa_64x64/work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z11 !s92 -work E:/Tritone-V2/tritone-complete/hdl/build/questa_64x64/work -sv +incdir+E:/Tritone-V2/tritone-complete/hdl/rtl -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z12 tCvgOpt 0
+vternary_adder
+R1
+R2
+R3
+R4
+!i10b 1
+!s100 k]OzQLY;6gE9HT5oeJQM90
+IlQWzaKWkB>h__ce85c]XP2
+S1
+R0
+w1766052975
+8E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_adder.sv
+FE:/Tritone-V2/tritone-complete/hdl/rtl/ternary_adder.sv
+!i122 0
+L0 7 32
+R5
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R11
+R12
+vternary_cla
+R1
+R2
+R3
+!s110 1767335208
+!i10b 1
+!s100 7PQTQ5FWc4VLR;FQj=:dW2
+I?=^71izK>UCE;gj^fWl8i1
+S1
+R0
+w1766957051
+8E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_cla.sv
+FE:/Tritone-V2/tritone-complete/hdl/rtl/ternary_cla.sv
+!i122 0
+L0 22 224
+R5
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R11
+R12
+vternary_mac
+Z13 2E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_mac.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_systolic_array.sv
+R2
+R3
+Z14 !s110 1767335219
+!i10b 1
+!s100 j0bI8no<85eo:J^8J^<NA1
+IJRgQTI2m?NQBR:K7A=DIe0
+S1
+R0
+Z15 w1767011336
+Z16 8E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_mac.sv
+Z17 FE:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_mac.sv
+!i122 1
+L0 21 134
+R5
+R6
+r1
+!s85 0
+31
+Z18 !s108 1767335219.000000
+Z19 !s107 E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_systolic_array.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_mac.sv|
+Z20 !s90 -work|E:/Tritone-V2/tritone-complete/hdl/build/questa_64x64/work|-sv|+incdir+E:/Tritone-V2/tritone-complete/hdl/rtl|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_mac.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe.sv|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_systolic_array.sv|
+!i113 0
+R10
+R11
+R12
+vternary_mac_simple
+R13
+R2
+R14
+!i10b 1
+!s100 Rk3hdHUV<oL?je;PC5A`72
+Ib=ba0faP3=oOV922_VAl22
+S1
+R0
+R15
+R16
+R17
+!i122 1
+L0 162 50
+R5
+R6
+r1
+!s85 0
+31
+R18
+R19
+R20
+!i113 0
+R10
+R11
+R12
+vternary_pe
+R13
+R2
+R3
+R14
+!i10b 1
+!s100 P8LF:o<IfknfT247?C=>F2
+I5^ZdXZHBFPWOj5SVfSI_i1
+S1
+R0
+Z21 w1767012773
+Z22 8E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe.sv
+Z23 FE:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe.sv
+!i122 1
+L0 24 91
+R5
+R6
+r1
+!s85 0
+31
+R18
+R19
+R20
+!i113 0
+R10
+R11
+R12
+vternary_pe_cluster_cell
+Z24 2E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe_cluster.sv
+R2
+Z25 !s110 1767335232
+!i10b 1
+!s100 9]iUL60KZiVa:mmk]JG=A1
+I?7hYNR3m1kP27ab]A]dA>3
+S1
+R0
+Z26 w1767306000
+Z27 8E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe_cluster.sv
+Z28 FE:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe_cluster.sv
+!i122 2
+L0 188 48
+R5
+R6
+r1
+!s85 0
+31
+Z29 !s108 1767335232.000000
+!s107 E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe_cluster.sv|
+Z30 !s90 -work|E:/Tritone-V2/tritone-complete/hdl/build/questa_64x64/work|-sv|+incdir+E:/Tritone-V2/tritone-complete/hdl/rtl|E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe_cluster.sv|
+!i113 0
+R10
+R11
+R12
+vternary_pe_cluster_int
+R24
+R2
+R25
+!i10b 1
+!s100 U=VQzWW3WhS:MOOj1UIU:3
+IQ;Kc?3JV:S2U4?bzAWcSR2
+S1
+R0
+R26
+R27
+R28
+!i122 2
+L0 25 156
+R5
+R6
+r1
+!s85 0
+31
+R29
+Z31 !s107 E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_pe_cluster.sv|
+R30
+!i113 0
+R10
+R11
+R12
+vternary_pe_int
+R13
+R2
+R14
+!i10b 1
+!s100 :3L@Oe@b9iki_<FM_6B=;0
+IDgTMeS1D<0A1kP1SOHO4U0
+S1
+R0
+R21
+R22
+R23
+!i122 1
+L0 123 64
+R5
+R6
+r1
+!s85 0
+31
+R18
+R19
+R20
+!i113 0
+R10
+R11
+R12
+Xternary_pkg
+R1
+R2
+R4
+!i10b 1
+!s100 8[0D0kCYzO@iGDaR>eZQ>3
+I;OPnHz=mZB_BK1RG^_?W83
+S1
+R0
+w1766409696
+8E:/Tritone-V2/tritone-complete/hdl/rtl/ternary_pkg.sv
+FE:/Tritone-V2/tritone-complete/hdl/rtl/ternary_pkg.sv
+!i122 0
+L0 5 0
+V;OPnHz=mZB_BK1RG^_?W83
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R11
+R12
+vternary_systolic_array
+R13
+R2
+R3
+R14
+!i10b 1
+!s100 9:e<zHbChH:9U^kc@iYGV2
+IMYiF5;OMf>PbM_UoQ]VVT1
+S1
+R0
+Z32 w1767012796
+Z33 8E:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_systolic_array.sv
+Z34 FE:/Tritone-V2/tritone-complete/hdl/rtl/tpu/ternary_systolic_array.sv
+!i122 1
+L0 27 118
+R5
+R6
+r1
+!s85 0
+31
+R18
+R19
+R20
+!i113 0
+R10
+R11
+R12
+vternary_systolic_array_64x64
+R24
+R2
+R25
+!i10b 1
+!s100 3E[mH35`<EhF8^a>LNa0h1
+II<>>e;1iSRo[LaM_A@BG32
+S1
+R0
+R26
+R27
+R28
+!i122 2
+L0 243 157
+R5
+R6
+r1
+!s85 0
+31
+R29
+R31
+R30
+!i113 0
+R10
+R11
+R12
+vternary_systolic_array_int
+R13
+R2
+R14
+!i10b 1
+!s100 >AVK0QJV^f4^hk:d`^X9N1
+IWc:hjGXZ9>3bdF?e?`QNg1
+S1
+R0
+R32
+R33
+R34
+!i122 1
+L0 152 86
+R5
+R6
+r1
+!s85 0
+31
+R18
+R19
+R20
+!i113 0
+R10
+R11
+R12

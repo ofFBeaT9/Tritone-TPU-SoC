@@ -1,0 +1,48 @@
+* ============================================================================
+* TERNARY NAND GATE - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TNAND - Ternary NAND Gate
+*
+* Function: Y = STI(MIN(A, B)) = NOT(AND(A, B))
+*
+* Truth Table:
+*     A\B | 0   1   2
+*     ----|----------
+*      0  | 2   2   2
+*      1  | 2   1   1
+*      2  | 2   1   0
+*
+* Implementation: TMIN followed by STI (hierarchical)
+* Transistor Count: ~16
+* ============================================================================
+
+.subckt TNAND A B Y VDD VSS
+
+* ============================================================================
+* STAGE 1: Compute MIN(A, B)
+* ============================================================================
+XTMIN A B min_out VDD VSS TMIN
+
+* ============================================================================
+* STAGE 2: Invert with STI
+* ============================================================================
+XSTI min_out Y VDD VSS STI
+
+.ends TNAND
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. TNAND = STI(TMIN(A,B)) - hierarchical composition
+*
+* 2. Truth table derived from:
+*    - MIN(0,x) = 0 → STI(0) = 2
+*    - MIN(1,1) = 1 → STI(1) = 1
+*    - MIN(2,2) = 2 → STI(2) = 0
+*
+* 3. Direct implementation possible by merging TMIN and STI transistors
+*    but hierarchical approach is cleaner and easier to verify
+*
+* 4. Can be used in ternary logic synthesis as universal gate
+* ============================================================================

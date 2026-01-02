@@ -1,0 +1,178 @@
+* ============================================================================
+* PVT CORNER ANALYSIS - Standard Ternary Inverter (STI)
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* Purpose: Validate ternary intermediate level stability across PVT corners
+*
+* PVT Corners Simulated:
+*   Process: TT (Typical), SS (Slow), FF (Fast), SF, FS
+*   Voltage: VDD nominal +/-10% (1.62V, 1.8V, 1.98V)
+*   Temperature: -40C, 27C (room), 85C, 125C
+*
+* Key Metrics:
+*   - Intermediate voltage level (target: VDD/2)
+*   - Transition thresholds (VIL, VIM_L, VIM_H, VIH)
+*   - Noise margins (NML, NMM, NMH)
+* ============================================================================
+
+.title STI PVT Corner Sweep
+
+* Include models
+.include "../models/sky130_models.spice"
+.include "../cells/sti.spice"
+
+* ============================================================================
+* TESTBENCH SETUP
+* ============================================================================
+
+* Nominal power supply
+.param VDD_nom = 1.8
+
+* Temperature will be swept
+.temp 27
+
+* Power supplies
+VDD vdd 0 DC VDD_nom
+VSS vss 0 DC 0
+
+* Input: DC sweep for transfer curve
+VIN in 0 DC 0
+
+* Load capacitance (typical interconnect + gate load)
+CL out 0 10f
+
+* DUT: Standard Ternary Inverter
+XDUT in out vdd vss STI
+
+* ============================================================================
+* DC SWEEP - Transfer Characteristic
+* ============================================================================
+
+.control
+
+* Output file for results
+set wr_singlescale
+set wr_vecnames
+
+echo "=============================================="
+echo "STI PVT Corner Analysis"
+echo "=============================================="
+
+* ============================================================
+* CORNER: TT (Typical-Typical) @ 1.8V, 27C
+* ============================================================
+echo ""
+echo "--- Corner: TT, VDD=1.8V, T=27C ---"
+alter VDD dc=1.8
+alter @.temp=27
+
+dc VIN 0 1.8 0.01
+meas dc v_mid FIND v(out) WHEN v(in)=0.9
+meas dc v_low FIND v(out) WHEN v(in)=0.3
+meas dc v_high FIND v(out) WHEN v(in)=1.5
+echo "TT 1.8V 27C: Vout(Vin=0.9V) =" $&v_mid
+echo "TT 1.8V 27C: Vout(Vin=0.3V) =" $&v_low
+echo "TT 1.8V 27C: Vout(Vin=1.5V) =" $&v_high
+wrdata pvt_tt_nom.dat v(out)
+
+* ============================================================
+* VOLTAGE CORNERS @ TT Process
+* ============================================================
+
+* VDD = 1.62V (-10%)
+echo ""
+echo "--- Corner: TT, VDD=1.62V, T=27C ---"
+alter VDD dc=1.62
+dc VIN 0 1.62 0.01
+meas dc v_mid_low FIND v(out) WHEN v(in)=0.81
+echo "TT 1.62V 27C: Vout(Vin=0.81V) =" $&v_mid_low
+wrdata pvt_tt_low.dat v(out)
+
+* VDD = 1.98V (+10%)
+echo ""
+echo "--- Corner: TT, VDD=1.98V, T=27C ---"
+alter VDD dc=1.98
+dc VIN 0 1.98 0.01
+meas dc v_mid_high FIND v(out) WHEN v(in)=0.99
+echo "TT 1.98V 27C: Vout(Vin=0.99V) =" $&v_mid_high
+wrdata pvt_tt_high.dat v(out)
+
+* Reset to nominal
+alter VDD dc=1.8
+
+* ============================================================
+* TEMPERATURE CORNERS @ TT Process
+* ============================================================
+
+* T = -40C (Cold)
+echo ""
+echo "--- Corner: TT, VDD=1.8V, T=-40C ---"
+alter @.temp=-40
+dc VIN 0 1.8 0.01
+meas dc v_mid_cold FIND v(out) WHEN v(in)=0.9
+echo "TT 1.8V -40C: Vout(Vin=0.9V) =" $&v_mid_cold
+wrdata pvt_tt_cold.dat v(out)
+
+* T = 85C (Hot)
+echo ""
+echo "--- Corner: TT, VDD=1.8V, T=85C ---"
+alter @.temp=85
+dc VIN 0 1.8 0.01
+meas dc v_mid_hot FIND v(out) WHEN v(in)=0.9
+echo "TT 1.8V 85C: Vout(Vin=0.9V) =" $&v_mid_hot
+wrdata pvt_tt_hot.dat v(out)
+
+* T = 125C (Very Hot - Industrial)
+echo ""
+echo "--- Corner: TT, VDD=1.8V, T=125C ---"
+alter @.temp=125
+dc VIN 0 1.8 0.01
+meas dc v_mid_vhot FIND v(out) WHEN v(in)=0.9
+echo "TT 1.8V 125C: Vout(Vin=0.9V) =" $&v_mid_vhot
+wrdata pvt_tt_vhot.dat v(out)
+
+* ============================================================
+* SUMMARY
+* ============================================================
+echo ""
+echo "=============================================="
+echo "PVT SUMMARY"
+echo "=============================================="
+echo "Target intermediate level: VDD/2 = 0.9V"
+echo ""
+echo "Nominal (TT, 1.8V, 27C):"
+echo "  Vout @ Vin=0.9V = " $&v_mid
+echo ""
+echo "Voltage variation (+/-10%):"
+echo "  VDD=1.62V: Vout @ Vin=VDD/2 = " $&v_mid_low
+echo "  VDD=1.98V: Vout @ Vin=VDD/2 = " $&v_mid_high
+echo ""
+echo "Temperature variation (-40C to 125C):"
+echo "  T=-40C: Vout @ Vin=0.9V = " $&v_mid_cold
+echo "  T=27C:  Vout @ Vin=0.9V = " $&v_mid
+echo "  T=85C:  Vout @ Vin=0.9V = " $&v_mid_hot
+echo "  T=125C: Vout @ Vin=0.9V = " $&v_mid_vhot
+
+quit
+
+.endc
+
+.end
+
+* ============================================================================
+* EXPECTED RESULTS:
+* ============================================================================
+* 1. Intermediate output voltage should track VDD/2 across voltage variation
+*    - Target: 0.9V +/- 50mV at nominal VDD
+*    - Acceptable: 0.9V +/- 100mV worst-case
+*
+* 2. Temperature should have minimal impact on intermediate level
+*    - Mobility degradation at high T partially compensates threshold shifts
+*
+* 3. Process corners (not simulated here with Level 1 models) require
+*    statistical modeling or corner files from foundry.
+*
+* To generate full corner analysis:
+*   ngspice -b pvt_sweep_sti.spice > pvt_results.log
+* ============================================================================

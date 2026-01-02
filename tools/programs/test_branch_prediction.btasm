@@ -1,0 +1,122 @@
+# Test Program: Branch Prediction Patterns
+# Tests: Static backward-taken branch predictor behavior
+# Coverage: Loops (backward branches), conditionals (forward branches)
+#
+# Prediction Strategy:
+#   - Backward branches (negative offset) -> Predict TAKEN (good for loops)
+#   - Forward branches (positive offset)  -> Predict NOT-TAKEN (good for if-else)
+#
+# This test validates both prediction scenarios and measures loop behavior.
+
+# ============================================================
+# Test 1: Simple Backward Branch Loop (should predict TAKEN)
+# ============================================================
+# Loop 5 times - backward branch should be predicted taken
+    LDI R1, 0           # R1 = counter
+    LDI R2, 5           # R2 = limit
+loop1:
+    ADD R1, R1, 1       # R1++
+    BLT R1, R2, loop1   # Backward branch: should predict TAKEN
+    # After loop: R1 = 5
+    MOV R3, R1          # R3 = 5 (save result)
+
+# ============================================================
+# Test 2: Nested Loops (backward branches)
+# ============================================================
+# Outer loop 3 times, inner loop 2 times = 6 total iterations
+    LDI R1, 0           # R1 = outer counter
+    LDI R2, 3           # R2 = outer limit
+    LDI R4, 0           # R4 = total count
+outer_loop:
+    LDI R5, 0           # R5 = inner counter (reset each outer iteration)
+    LDI R6, 2           # R6 = inner limit
+inner_loop:
+    ADD R4, R4, 1       # R4++ (total count)
+    ADD R5, R5, 1       # R5++
+    BLT R5, R6, inner_loop  # Backward: predict TAKEN
+    ADD R1, R1, 1       # R1++
+    BLT R1, R2, outer_loop  # Backward: predict TAKEN
+    # After loops: R4 = 6 (3 outer * 2 inner)
+
+# ============================================================
+# Test 3: Forward Branch Conditionals (should predict NOT-TAKEN)
+# ============================================================
+# Test "if-else" pattern where forward branches skip code
+    LDI R1, 5
+    LDI R2, 10
+
+    # Test 3a: Condition false (R1 == R2) - forward branch NOT taken
+    BEQ R1, R2, skip1   # Forward branch: predict NOT-TAKEN (correct)
+    LDI R7, 1           # Should execute (R7 = 1)
+skip1:
+
+    # Test 3b: Condition true - forward branch taken (misprediction case)
+    LDI R1, 5
+    LDI R2, 5
+    BEQ R1, R2, skip2   # Forward branch: predict NOT-TAKEN (but will be taken)
+    LDI R7, -1          # Should NOT execute
+skip2:
+    LDI R8, 1           # R8 = 1 (confirms we got here correctly)
+
+# ============================================================
+# Test 4: Alternating Branch Pattern
+# ============================================================
+# Mix of forward and backward branches
+    LDI R1, 0
+    LDI R2, 3
+alt_loop:
+    ADD R1, R1, 1
+
+    # Check if R1 is 2 (skip special handling for R1=2)
+    LDI R5, 2
+    BEQ R1, R5, skip_special  # Forward: predict NOT-TAKEN
+    ADD R4, R4, 1             # Count non-special iterations
+skip_special:
+
+    BLT R1, R2, alt_loop     # Backward: predict TAKEN
+    # After: R4 = 6 + 2 = 8 (from Test 2 + iterations 1 and 3)
+
+# ============================================================
+# Test 5: Single-iteration Loop Edge Case
+# ============================================================
+# Loop that only executes once (backward branch taken 0 times after)
+    LDI R1, 0
+    LDI R2, 1
+single_loop:
+    ADD R1, R1, 1
+    BLT R1, R2, single_loop  # Backward: predict TAKEN, but not taken (R1=1, limit=1)
+    # R1 = 1
+
+# ============================================================
+# Validation
+# ============================================================
+# Expected results:
+# R3 = 5  (from Test 1)
+# R4 = 8  (from Tests 2 + 4)
+# R7 = 1  (from Test 3a)
+# R8 = 1  (from Test 3b)
+#
+# Branch prediction behavior:
+# - Backward branches in loops: Predicted TAKEN, correct most iterations
+# - Forward branches in conditionals: Predicted NOT-TAKEN
+# - Misprediction recovery tested in Test 3b and single-iteration cases
+
+    LDI R1, 5
+    BEQ R3, R1, verify1_pass
+    HALT                # Fail: R3 != 5
+verify1_pass:
+    LDI R1, 8
+    BEQ R4, R1, verify2_pass
+    HALT                # Fail: R4 != 8
+verify2_pass:
+    LDI R1, 1
+    BEQ R7, R1, verify3_pass
+    HALT                # Fail: R7 != 1
+verify3_pass:
+    BEQ R8, R1, verify4_pass
+    HALT                # Fail: R8 != 1
+verify4_pass:
+    # All tests passed
+    LDI R1, 42          # Success indicator
+
+    HALT

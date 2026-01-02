@@ -1,0 +1,71 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * ============================================================================
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 181
+
+  Measurements for DC Analysis
+
+vout_at_0           =  1.800000e+00
+vout_at_mid         =  9.000000e-01
+vout_at_high        =  2.700000e-08
+switching_threshold =   6.00000e-01
+
+
+Warning: command 'plot' is not available during batch simulation, ignored!
+    You may use Gnuplot instead.
+
+
+============================================================
+STI MONTE CARLO PROCESS VARIATION ANALYSIS
+============================================================
+
+=== Nominal Results ===
+Vout at Vin=0V:   should be ~1.8V
+Vout at Vin=0.9V: should be ~0.9V
+Vout at Vin=1.8V: should be ~0V
+
+
+=== Process Variation Analysis ===
+
+For full Monte Carlo, run with ngspice -b with .param variations
+This requires updating model parameters in a loop
+
+Key metrics to track:
+  - Vout at Vin=0.9V: Target 0.9V ± 50mV
+  - Switching threshold: Target 0.9V ± 100mV
+  - Gain at mid-point: Higher is better
+
+Gain at Vin=0.9V (nominal):  gain_at_mid
+
+=== Noise Margins ===
+VOL (Vout at Vin=1.8V):  vol
+VOH (Vout at Vin=0V):  voh
+VOM (Vout at Vin=0.9V):  vom
+
+Ternary Noise Margins:
+  NM_low:   nm_low  V
+  NM_high:  nm_high  V
+  NM_mid (lower boundary):  nm_mid_lo  V
+  NM_mid (upper boundary):  nm_mid_hi  V
+
+=== Verification Criteria ===
+  ✓ Vout at Vin=0.9V within [0.85V, 0.95V]: PASS if VOM in range
+  ✓ All noise margins > 100mV: PASS if NM > 0.1V
+  ✓ Gain at mid-point > 1: PASS if gain > 1
+
+Nominal curve saved to ../results/sti_monte_carlo.csv
+
+For production Monte Carlo analysis:
+  1. Use .param statements with GAUSS() function
+  2. Run 1000+ iterations
+  3. Analyze distribution of Vout at Vin=0.9V
+  4. Calculate yield for ±50mV specification
+
+ngspice-45.2 done

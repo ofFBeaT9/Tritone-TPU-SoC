@@ -1,0 +1,28 @@
+# Tritone Demo: Simple Counter
+#
+# This program counts from 1 to 5 and stores results in memory.
+# Used to verify basic CPU functionality.
+#
+# Expected registers after execution:
+#   R1 = 5 (final count)
+#   R2 = 5 (loop limit)
+#
+# Expected memory:
+#   Mem[0] = 1
+#   Mem[1] = 2
+#   Mem[2] = 3
+#   Mem[3] = 4
+#   Mem[4] = 5
+
+    # Initialize
+    LDI  R1, 0        # R1 = counter (starts at 0)
+    LDI  R2, 5        # R2 = limit
+    LDI  R3, 0        # R3 = memory address
+
+loop:
+    ADDI R1, R1, 1    # counter++
+    ST   R3, R1       # Mem[R3] = counter
+    ADDI R3, R3, 1    # address++
+    BNE  R1, R2, loop # if counter != limit, loop
+
+    HALT              # Done

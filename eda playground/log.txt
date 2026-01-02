@@ -1,0 +1,133 @@
+[2025-12-19 16:32:03 UTC] yosys run.ys -q  
+Warning: Resizing cell port ternary_cpu.branch_adder.cout from 1 bits to 2 bits.
+Warning: Resizing cell port ternary_cpu.pc_incrementer.cout from 1 bits to 2 bits.
+
+10. Printing statistics.
+
+=== $paramod$4a12332018d758461ddf52371bdc2df23dae4fbf\ternary_regfile ===
+
+   Number of wires:                 11
+   Number of wire bits:            121
+   Number of public wires:          11
+   Number of public wire bits:     121
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  0
+
+=== $paramod\ternary_adder\WIDTH=s32'00000000000000000000000000001000 ===
+
+   Number of wires:                  5
+   Number of wire bits:             28
+   Number of public wires:           5
+   Number of public wire bits:      28
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  0
+
+=== $paramod\ternary_alu\WIDTH=s32'00000000000000000000000000011011 ===
+
+   Number of wires:                  7
+   Number of wire bits:             88
+   Number of public wires:           7
+   Number of public wire bits:      88
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  0
+
+=== btisa_decoder ===
+
+   Number of wires:                 13
+   Number of wire bits:             28
+   Number of public wires:          13
+   Number of public wire bits:      28
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  0
+
+=== ternary_cpu ===
+
+   Number of wires:                533
+   Number of wire bits:           1114
+   Number of public wires:          85
+   Number of public wire bits:     575
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                821
+     $paramod$4a12332018d758461ddf52371bdc2df23dae4fbf\ternary_regfile      1
+     $paramod\ternary_adder\WIDTH=s32'00000000000000000000000000001000      2
+     $paramod\ternary_alu\WIDTH=s32'00000000000000000000000000011011      1
+     BUFG                            1
+     FDCE                          164
+     IBUF                           42
+     INV                           246
+     LUT1                           54
+     LUT2                           13
+     LUT3                           27
+     LUT5                           64
+     LUT6                           36
+     MUXF7                          54
+     MUXF8                          27
+     OBUF                           86
+     btisa_decoder                   1
+     ternary_forward_unit            1
+     ternary_hazard_unit             1
+
+=== ternary_forward_unit ===
+
+   Number of wires:                  8
+   Number of wire bits:             18
+   Number of public wires:           8
+   Number of public wire bits:      18
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  0
+
+=== ternary_hazard_unit ===
+
+   Number of wires:                 12
+   Number of wire bits:             20
+   Number of public wires:          12
+   Number of public wire bits:      20
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  0
+
+=== design hierarchy ===
+
+   ternary_cpu                       1
+     $paramod$4a12332018d758461ddf52371bdc2df23dae4fbf\ternary_regfile      1
+     $paramod\ternary_adder\WIDTH=s32'00000000000000000000000000001000      2
+     $paramod\ternary_alu\WIDTH=s32'00000000000000000000000000011011      1
+     btisa_decoder                   1
+     ternary_forward_unit            1
+     ternary_hazard_unit             1
+
+   Number of wires:                594
+   Number of wire bits:           1445
+   Number of public wires:         146
+   Number of public wire bits:     906
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                814
+     BUFG                            1
+     FDCE                          164
+     IBUF                           42
+     INV                           246
+     LUT1                           54
+     LUT2                           13
+     LUT3                           27
+     LUT5                           64
+     LUT6                           36
+     MUXF7                          54
+     MUXF8                          27
+     OBUF                           86
+
+Done

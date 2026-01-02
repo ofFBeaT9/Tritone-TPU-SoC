@@ -1,0 +1,12 @@
+*.rpt
+*.log
+*.csv
+*.html
+*.xlsx
+*/*.rpt
+*/*.log
+*/*.csv
+*/*.html
+*/*.xlsx
+*/*.yml
+!benchmark_results/**/*

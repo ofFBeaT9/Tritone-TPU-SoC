@@ -1,0 +1,195 @@
+* ============================================================================
+* TERNARY 6T SRAM BITCELL
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TSRAM6T - Ternary Static Random Access Memory (6 Transistor)
+*
+* Function: Stores one balanced ternary digit (trit) using voltage levels
+*   Logic -1: VSS (0V)
+*   Logic 0:  VMID (VDD/2 = 0.9V)
+*   Logic +1: VDD (1.8V)
+*
+* Topology: Modified 6T SRAM cell with tri-stable cross-coupled inverters
+*   - Uses STI (Standard Ternary Inverter) instead of binary inverters
+*   - Pass transistors sized for proper read/write margins
+*   - Requires sense amplifier with 3-level discrimination
+*
+* Key Challenges:
+*   1. Mid-level (VMID) stability during read disturb
+*   2. Write margin for transitioning between all three states
+*   3. Sense amplifier complexity for 3-level detection
+*
+* Area: ~1.5x binary 6T due to larger inverters
+* Target Technology: SKY130 Multi-Vth CMOS
+* ============================================================================
+
+.subckt TSRAM6T BL BLB WL VDD VMID VSS
+
+* ============================================================================
+* PARAMETERS
+* ============================================================================
+* Pass transistor sizing for proper read/write margins
+* Larger than binary SRAM to handle intermediate level
+.param Wpass=0.50u
+.param Lpass=0.15u
+
+* Pull-up PMOS sizing (balanced for tri-stable operation)
+.param Wpu=0.42u
+.param Lpu=0.15u
+
+* Pull-down NMOS sizing
+.param Wpd=0.55u
+.param Lpd=0.15u
+
+* ============================================================================
+* CROSS-COUPLED TERNARY INVERTERS
+* ============================================================================
+* These form the tri-stable storage element
+* Three equilibrium points: (Q=0, QB=VDD), (Q=VMID, QB=VMID), (Q=VDD, QB=0)
+
+* Inverter 1 (drives Q from QB)
+* Upper PMOS: VMID to VDD (pulls toward +1)
+MP1 Q QB VDD VDD sky130_fd_pr__pfet_01v8 w=Wpu l=Lpu
+* Lower NMOS: VSS to VMID (pulls toward -1)
+MN1 Q QB VSS VSS sky130_fd_pr__nfet_01v8 w=Wpd l=Lpd
+
+* Inverter 2 (drives QB from Q)
+MP2 QB Q VDD VDD sky130_fd_pr__pfet_01v8 w=Wpu l=Lpu
+MN2 QB Q VSS VSS sky130_fd_pr__nfet_01v8 w=Wpd l=Lpd
+
+* ============================================================================
+* ACCESS TRANSISTORS
+* ============================================================================
+* Pass transistors connect bitlines when wordline is high
+
+* Left access: BL to Q
+MA1 BL WL Q VSS sky130_fd_pr__nfet_01v8 w=Wpass l=Lpass
+
+* Right access: BLB to QB
+MA2 BLB WL QB VSS sky130_fd_pr__nfet_01v8 w=Wpass l=Lpass
+
+.ends TSRAM6T
+
+* ============================================================================
+* TERNARY SENSE AMPLIFIER
+* ============================================================================
+* Three-level sense amplifier for ternary SRAM read
+* Uses two differential stages to discriminate -1, 0, +1
+*
+* Approach: Compare BL against two thresholds
+*   VTH_LOW = VDD/4 = 0.45V (boundary between -1 and 0)
+*   VTH_HIGH = 3*VDD/4 = 1.35V (boundary between 0 and +1)
+* ============================================================================
+
+.subckt TERNARY_SA BL BLB VREF_LOW VREF_HIGH DOUT_LOW DOUT_HIGH VDD VSS
+
+* ============================================================================
+* PARAMETERS
+* ============================================================================
+.param Wn_sa=0.42u
+.param Ln_sa=0.15u
+.param Wp_sa=0.84u
+.param Lp_sa=0.15u
+
+* ============================================================================
+* LOW THRESHOLD COMPARATOR (BL vs VREF_LOW)
+* ============================================================================
+* Output DOUT_LOW=1 if BL > VREF_LOW (i.e., not -1)
+
+* Differential pair
+MN1L diff_low_n BL tail_low VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+MN2L diff_low_p VREF_LOW tail_low VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+
+* Tail current
+MTAIL_L tail_low SE VSS VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+
+* Cross-coupled PMOS load
+MP1L diff_low_n diff_low_p VDD VDD sky130_fd_pr__pfet_01v8 w=Wp_sa l=Lp_sa
+MP2L diff_low_p diff_low_n VDD VDD sky130_fd_pr__pfet_01v8 w=Wp_sa l=Lp_sa
+
+* Output buffer
+MPO_L DOUT_LOW diff_low_n VDD VDD sky130_fd_pr__pfet_01v8 w=Wp_sa l=Lp_sa
+MNO_L DOUT_LOW diff_low_n VSS VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+
+* ============================================================================
+* HIGH THRESHOLD COMPARATOR (BL vs VREF_HIGH)
+* ============================================================================
+* Output DOUT_HIGH=1 if BL > VREF_HIGH (i.e., is +1)
+
+* Differential pair
+MN1H diff_high_n BL tail_high VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+MN2H diff_high_p VREF_HIGH tail_high VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+
+* Tail current
+MTAIL_H tail_high SE VSS VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+
+* Cross-coupled PMOS load
+MP1H diff_high_n diff_high_p VDD VDD sky130_fd_pr__pfet_01v8 w=Wp_sa l=Lp_sa
+MP2H diff_high_p diff_high_n VDD VDD sky130_fd_pr__pfet_01v8 w=Wp_sa l=Lp_sa
+
+* Output buffer
+MPO_H DOUT_HIGH diff_high_n VDD VDD sky130_fd_pr__pfet_01v8 w=Wp_sa l=Lp_sa
+MNO_H DOUT_HIGH diff_high_n VSS VSS sky130_fd_pr__nfet_01v8 w=Wn_sa l=Ln_sa
+
+* Sense enable signal (shared)
+.global SE
+
+.ends TERNARY_SA
+
+* ============================================================================
+* OUTPUT DECODING
+* ============================================================================
+* DOUT_LOW  DOUT_HIGH  Value
+*    0         0        -1 (below low threshold)
+*    1         0         0 (between thresholds)
+*    1         1        +1 (above high threshold)
+*
+* Binary encoding: {DOUT_HIGH, DOUT_LOW} maps to trit value
+* ============================================================================
+
+* ============================================================================
+* DESIGN NOTES AND LIMITATIONS
+* ============================================================================
+*
+* 1. TRI-STABILITY CHALLENGE:
+*    Standard 6T SRAM is bi-stable. Making it tri-stable requires careful
+*    sizing to ensure the intermediate (VMID) state is truly stable.
+*
+*    For proper tri-stability, the inverters should have:
+*    - Transfer curve with 3 stable intersections
+*    - Sufficient gain at each equilibrium point
+*
+*    This simple 6T topology may NOT provide true tri-stability with
+*    standard CMOS. A true ternary cell requires:
+*    - Multi-threshold devices (as in TCMOS)
+*    - Or explicit VMID reference connection
+*
+* 2. READ DISTURB:
+*    The intermediate state (Q=QB=VMID) is particularly vulnerable to
+*    read disturb because both nodes are at the same voltage. Any
+*    imbalance during read can flip the cell.
+*
+* 3. RECOMMENDED APPROACH:
+*    For reliable ternary storage, prefer the 8T variant (TSRAM8T) or
+*    use binary 2-bit encoding (more area, but proven reliability).
+*
+* 4. SENSE AMPLIFIER TIMING:
+*    The dual-threshold sense amplifier requires careful timing:
+*    - Enable after bitline develops sufficient swing
+*    - Two comparators must stabilize before sampling
+*    - Latency is ~2x binary SA
+*
+* 5. WRITE OPERATION:
+*    To write a trit value:
+*    -1: BL=VSS, BLB=VDD, WL=VDD
+*     0: BL=VMID, BLB=VMID, WL=VDD  (challenging, requires driver)
+*    +1: BL=VDD, BLB=VSS, WL=VDD
+*
+*    Writing the mid-level requires a VMID driver on the bitlines.
+*
+* 6. AREA COMPARISON:
+*    Binary 2-bit encoding: 2 × 6T = 12T (proven, reliable)
+*    Native ternary 6T: 6T (1.5x density, less reliable)
+*    Native ternary 8T: 8T (1.5x density, more reliable)
+*
+* ============================================================================

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  ngspice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tritone-spice:latest
+    container_name: tritone-ngspice
+    volumes:
+      - ..:/tritone:rw
+    working_dir: /tritone
+    environment:
+      - PDK_ROOT=/tritone/pdk
+    tty: true
+    stdin_open: true
+
+  # Run TT corner simulation
+  sim-tt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tritone-spice:latest
+    volumes:
+      - ..:/tritone:rw
+    working_dir: /tritone/spice
+    command: >
+      bash -c "mkdir -p results &&
+               ngspice -b testbenches/tb_sti_multivth_bsim4.spice 2>&1 |
+               tee results/sim_tt.log"
+
+  # Run all corners
+  sim-all-corners:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tritone-spice:latest
+    volumes:
+      - ..:/tritone:rw
+    working_dir: /tritone/spice
+    command: >
+      bash -c "mkdir -p results &&
+               ngspice -b testbenches/tb_sti_multicorner_bsim4.spice 2>&1 |
+               tee results/sim_multicorner.log"
+
+  # Interactive shell for debugging
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tritone-spice:latest
+    volumes:
+      - ..:/tritone:rw
+    working_dir: /tritone
+    command: /bin/bash
+    tty: true
+    stdin_open: true

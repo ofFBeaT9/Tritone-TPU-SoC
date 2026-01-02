@@ -1,0 +1,55 @@
+# Test Program: Data Movement Instructions
+# Tests: LDI, MOV, LDT (load from table), STT (store to table)
+# Coverage: Immediate loads, register moves, memory operations
+
+# Test LDI (Load Immediate)
+LDI R1, -1     # Load -1 into R1
+LDI R2, 0      # Load 0 into R2
+LDI R3, 1      # Load 1 into R3
+LDI R4, 13     # Load larger positive value
+LDI R5, -13    # Load larger negative value
+
+# Test MOV (Move between registers)
+MOV R6, R1     # Copy R1 to R6 (should be -1)
+MOV R7, R3     # Copy R3 to R7 (should be 1)
+MOV R8, R4     # Copy R4 to R8 (should be 13)
+
+# Verify MOV worked correctly
+SUB R0, R6, R1  # Should be zero if R6 = R1
+SUB R0, R7, R3  # Should be zero if R7 = R3
+SUB R0, R8, R4  # Should be zero if R8 = R4
+
+# Test STT (Store to Table/Memory)
+LDI R1, 100    # Address for first store
+LDI R2, 42     # Data value 1
+STT R2, R1     # Store 42 to address 100
+
+LDI R1, 101    # Address for second store
+LDI R3, -27    # Data value 2
+STT R3, R1     # Store -27 to address 101
+
+LDI R1, 102    # Address for third store
+LDI R4, 13     # Data value 3
+STT R4, R1     # Store 13 to address 102
+
+# Test LDT (Load from Table/Memory)
+LDI R1, 100    # Load from first address
+LDT R5, R1     # Should load 42 into R5
+
+LDI R1, 101    # Load from second address
+LDT R6, R1     # Should load -27 into R6
+
+LDI R1, 102    # Load from third address
+LDT R7, R1     # Should load 13 into R7
+
+# Verify memory round-trip
+LDI R8, 42     # Expected value 1
+SUB R0, R5, R8  # Check if R5 = 42
+
+LDI R8, -27    # Expected value 2
+SUB R0, R6, R8  # Check if R6 = -27
+
+LDI R8, 13     # Expected value 3
+SUB R0, R7, R8  # Check if R7 = 13
+
+HALT

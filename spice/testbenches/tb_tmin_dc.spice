@@ -1,0 +1,26 @@
+* Truth-table DC sweep for TMIN
+
+.include '../models/sky130_models.spice'
+.include '../cells/sti.spice'
+.include '../cells/tmin.spice'
+
+.param VDD_NOM=1.8
+
+VDD vdd 0 DC VDD_NOM
+VSS vss 0 DC 0
+
+VA a 0 DC 0
+VB b 0 DC 0
+
+XTMIN a b y vdd vss TMIN
+
+.dc VA 0 1.8 0.9 VB 0 1.8 0.9
+
+.control
+  run
+  set filetype=ascii
+  wrdata ../results/tmin_dc.csv V(a) V(b) V(y)
+  quit
+.endc
+
+.end

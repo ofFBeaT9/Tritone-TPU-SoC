@@ -1,0 +1,120 @@
+* ============================================================================
+* TESTBENCH: Ternary D Flip-Flop (TDFF) Characterization
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* Tests:
+*   1. Functional verification for all three input states
+*   2. Setup/hold time measurement
+*   3. Clock-to-Q delay measurement
+*   4. State retention during clock low
+*
+* Voltage levels:
+*   VSS = 0V (Logic -1)
+*   VMID = 0.9V (Logic 0)
+*   VDD = 1.8V (Logic +1)
+* ============================================================================
+
+.title TDFF Characterization Testbench
+
+* ============================================================================
+* INCLUDE MODELS AND CELLS
+* ============================================================================
+.include "../models/sky130_models.spice"
+.include "../cells/tdff.spice"
+
+* ============================================================================
+* POWER SUPPLIES
+* ============================================================================
+VDD vdd 0 DC 1.8
+VSS vss 0 DC 0
+
+* ============================================================================
+* DEVICE UNDER TEST
+* ============================================================================
+XDUT d clk q qb vdd vss TDFF
+
+* ============================================================================
+* CLOCK GENERATION
+* ============================================================================
+* 100 MHz clock (10ns period, 5ns high/low)
+VCLK clk 0 PULSE(0 1.8 0 0.1n 0.1n 5n 10n)
+
+* ============================================================================
+* INPUT STIMULUS - Test all three ternary values
+* ============================================================================
+* PWL source to sweep through -1, 0, +1 states
+* Format: time1 value1 time2 value2 ...
+
+VD d 0 PWL(
++ 0n    0.9     ; Start at Logic 0
++ 5n    0.9     ; Hold through first clock edge (capture 0)
++ 25n   0.9     ; Continue holding 0
++ 30n   1.8     ; Change to Logic +1
++ 35n   1.8     ; Hold through clock edge (capture +1)
++ 55n   1.8     ; Continue holding +1
++ 60n   0.0     ; Change to Logic -1
++ 65n   0.0     ; Hold through clock edge (capture -1)
++ 85n   0.0     ; Continue holding -1
++ 90n   0.9     ; Return to Logic 0
++ 95n   0.9     ; Hold through clock edge (capture 0)
++ 120n  0.9     ; End
++ )
+
+* ============================================================================
+* LOAD CAPACITANCE
+* ============================================================================
+CL_Q q 0 10f
+CL_QB qb 0 10f
+
+* ============================================================================
+* SIMULATION CONTROL
+* ============================================================================
+.tran 0.1n 120n
+
+* ============================================================================
+* MEASUREMENTS
+* ============================================================================
+
+* Clock-to-Q delay measurements (rising edge to output valid)
+* For each state transition
+
+* Rising edge 1 (t=10ns): Capture Logic 0
+.measure tran tclk_q_0 TRIG v(clk) VAL=0.9 RISE=1
++                       TARG v(q) VAL=0.9 CROSS=1
+
+* Rising edge 2 (t=40ns): Capture Logic +1
+.measure tran tclk_q_p1 TRIG v(clk) VAL=0.9 RISE=4
++                        TARG v(q) VAL=1.35 RISE=1
+
+* Rising edge 3 (t=70ns): Capture Logic -1
+.measure tran tclk_q_n1 TRIG v(clk) VAL=0.9 RISE=7
++                        TARG v(q) VAL=0.45 FALL=1
+
+* Output voltage levels at steady state
+.measure tran vq_0 AVG v(q) FROM=15n TO=20n
+.measure tran vq_p1 AVG v(q) FROM=45n TO=50n
+.measure tran vq_n1 AVG v(q) FROM=75n TO=80n
+
+* Power measurements
+.measure tran avg_power AVG power FROM=0n TO=120n
+
+.end
+
+* ============================================================================
+* EXPECTED RESULTS:
+* ============================================================================
+* 1. At t=10ns (first rising edge): Q should capture 0 (0.9V)
+* 2. At t=40ns: Q should capture +1 (1.8V)
+* 3. At t=70ns: Q should capture -1 (0V)
+* 4. At t=100ns: Q should capture 0 (0.9V)
+*
+* Clock-to-Q delay: ~150-300ps typical for this technology
+* Setup time: ~100-200ps
+* Hold time: ~20-50ps
+*
+* Output voltage levels:
+* - Logic -1: < 0.3V
+* - Logic 0: 0.7V - 1.1V
+* - Logic +1: > 1.5V
+* ============================================================================

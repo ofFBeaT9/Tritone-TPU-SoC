@@ -1,0 +1,121 @@
+* ============================================================================
+* BALANCED TERNARY HALF ADDER (BTHA) - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: BTHA - Balanced Ternary Half Adder
+*
+* Function: Adds two balanced ternary digits
+*   Inputs: A, B ∈ {-1, 0, +1}
+*   Outputs: SUM, CARRY ∈ {-1, 0, +1}
+*
+* Truth Table (Balanced Ternary):
+*    A    B  | SUM  CARRY
+*   --------|------------
+*   -1   -1 |  +1   -1     (-1)+(-1) = -2 = (+1) + (-1)*3
+*   -1    0 |  -1    0     (-1)+(0)  = -1
+*   -1   +1 |   0    0     (-1)+(+1) =  0
+*    0   -1 |  -1    0     (0)+(-1)  = -1
+*    0    0 |   0    0     (0)+(0)   =  0
+*    0   +1 |  +1    0     (0)+(+1)  = +1
+*   +1   -1 |   0    0     (+1)+(-1) =  0
+*   +1    0 |  +1    0     (+1)+(0)  = +1
+*   +1   +1 |  -1   +1     (+1)+(+1) = +2 = (-1) + (+1)*3
+*
+* Voltage Encoding:
+*   -1 → 0V, 0 → 0.9V, +1 → 1.8V
+*
+* Implementation: TSUM for SUM + Consensus logic for CARRY
+* Transistor Count: ~50
+* ============================================================================
+
+.subckt BTHA A B SUM CARRY VDD VSS
+
+* ============================================================================
+* SUM OUTPUT: Use modulo-3 addition
+* ============================================================================
+* SUM = (A + B) mod 3 in balanced representation
+XTSUM A B SUM VDD VSS TSUM
+
+* ============================================================================
+* CARRY OUTPUT: Consensus/overflow detection
+* ============================================================================
+* Carry = +1 if both inputs are +1 (both = 1.8V)
+* Carry = -1 if both inputs are -1 (both = 0V)
+* Carry = 0 otherwise
+
+* Detect A = +1 (HIGH) using PTI
+XPTI_A A A_is_pos_inv VDD VSS PTI
+XSTI_Apos A_is_pos_inv A_is_pos VDD VSS STI
+
+* Detect B = +1 (HIGH) using PTI
+XPTI_B B B_is_pos_inv VDD VSS PTI
+XSTI_Bpos B_is_pos_inv B_is_pos VDD VSS STI
+
+* Both positive: A_is_pos AND B_is_pos
+XTMIN_pos A_is_pos B_is_pos both_pos VDD VSS TMIN
+
+* Detect A = -1 (LOW) using NTI
+XNTI_A A A_is_neg VDD VSS NTI
+
+* Detect B = -1 (LOW) using NTI
+XNTI_B B B_is_neg VDD VSS NTI
+
+* Both negative: A_is_neg AND B_is_neg
+XTMIN_neg A_is_neg B_is_neg both_neg VDD VSS TMIN
+
+* ============================================================================
+* CARRY OUTPUT ENCODING
+* ============================================================================
+* Carry output must be:
+*   - 1.8V (+1) when both_pos = HIGH
+*   - 0V (-1) when both_neg = HIGH
+*   - 0.9V (0) otherwise
+*
+* Implementation: both_pos drives toward VDD, both_neg drives toward VSS
+* Default (neither) is VDD/2 via resistive divider
+
+* Voltage reference for mid-level (0.9V)
+R_mid1 VDD carry_mid 20k
+R_mid2 carry_mid VSS 20k
+
+* Use both_pos and both_neg to override the mid-level
+* When both_pos = HIGH (1.8V), pull CARRY toward VDD
+* When both_neg = HIGH (1.8V), pull CARRY toward VSS
+
+* PMOS pulls to VDD when both_pos is HIGH (gate should be LOW)
+XSTI_pos_inv both_pos both_pos_inv VDD VSS STI
+MP_carry carry_pre both_pos_inv VDD VDD pfet_01v8 W=1u L=150n
+
+* NMOS pulls to VSS when both_neg is HIGH (gate should be HIGH)
+MN_carry carry_pre both_neg VSS VSS nfet_01v8 W=500n L=150n
+
+* Weak connection to mid reference
+R_carry carry_mid carry_pre 50k
+
+* Output buffer for clean levels
+XSTI_carry1 carry_pre carry_buf VDD VSS STI
+XSTI_carry2 carry_buf CARRY VDD VSS STI
+
+.ends BTHA
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. Balanced ternary addition has elegant properties:
+*    - Symmetric around zero
+*    - No separate borrow signal needed (carry handles both directions)
+*    - Carry is either -1, 0, or +1
+*
+* 2. The key insight is detecting "overflow" conditions:
+*    - Two +1 inputs produce carry=+1 and sum=-1
+*    - Two -1 inputs produce carry=-1 and sum=+1
+*    - All other combinations have carry=0
+*
+* 3. Implementation uses threshold detectors (PTI, NTI) to determine
+*    input values, then computes consensus for carry
+*
+* 4. Resistive voltage divider provides stable VDD/2 reference for
+*    the "no carry" default state
+*
+* 5. The SUM output reuses TSUM which implements modulo-3 addition
+* ============================================================================

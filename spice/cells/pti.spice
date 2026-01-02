@@ -1,0 +1,70 @@
+* ============================================================================
+* POSITIVE TERNARY INVERTER (PTI) - Multi-Vth CMOS Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: PTI - Positive Ternary Inverter
+* 
+* Function: Threshold-shifted inverter (upward bias)
+*   Input 0 (0V)   → Output 2 (1.8V)
+*   Input 1 (0.9V) → Output 2 (1.8V)
+*   Input 2 (1.8V) → Output 0 (0V)
+*
+* Truth Table (simplified):
+*   A | Y
+*   --|--
+*   0 | 2
+*   1 | 2
+*   2 | 0
+*
+* Balanced Ternary Interpretation:
+*   Y = +1 if A < +1, else Y = -1
+*
+* Implementation: Asymmetric Multi-Vth CMOS
+*   - Strong pull-up network (multiple PMOS, larger widths)
+*   - Weak pull-down network (single LVT NMOS)
+*   - Threshold shifted upward - only responds to high input
+*
+* Transistor Count: 3
+* Area: ~2 unit cells
+* ============================================================================
+
+.subckt PTI in out VDD VSS
+* Parameters - asymmetric sizing for upward threshold shift
+.param Wn=500n Wp=2u Ln=150n Lp=150n
+
+* ============================================================================
+* PULL-UP NETWORK (PMOS) - STRONG - Biases output toward VDD
+* ============================================================================
+* Double-width SVT PMOS for strong pull-up
+XMP1 out in VDD VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+
+* HVT PMOS stays on even longer, maintains high output
+XMP2 out in VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+
+* ============================================================================
+* PULL-DOWN NETWORK (NMOS) - WEAK - Only wins at high input
+* ============================================================================
+* Single LVT NMOS - can only overcome PMOS when input is fully high
+XMN1 out in VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+
+.ends PTI
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. PTI acts as a "level detector" that outputs HIGH for inputs 0 and 1,
+*    and LOW only when input is 2 (fully HIGH)
+*
+* 2. The asymmetric sizing creates an unbalanced voltage divider:
+*    - At Vin = 0.9V: Strong PMOS current >> Weak NMOS current → Vout ≈ VDD
+*    - At Vin = 1.8V: NMOS finally overcomes PMOS → Vout ≈ VSS
+*
+* 3. The switching threshold is approximately at Vin = 1.35V (75% VDD)
+*
+* 4. PTI is essential for ternary logic operations:
+*    - Used in consensus/any circuits
+*    - Component of ternary multiplexers
+*    - Input decoder for ternary arithmetic
+*
+* 5. Combined with NTI and STI, enables full ternary logic synthesis
+* ============================================================================

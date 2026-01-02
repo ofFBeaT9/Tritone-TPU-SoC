@@ -1,0 +1,62 @@
+* ============================================================================
+* STANDARD TERNARY INVERTER (STI) - Multi-Vth CMOS Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* 
+* Function: Full ternary inversion (0->2, 1->1, 2->0)
+* Topology: Multi-threshold CMOS with asymmetric pull-up/pull-down
+*
+* This implementation uses the classic multi-Vth approach:
+*   - LVT and SVT NMOS in pull-down network
+*   - SVT and HVT PMOS in pull-up network
+*   - Threshold staggering creates stable intermediate output at VDD/2
+*
+* Operation:
+*   VIN = 0V (LOW):   All PMOS ON, All NMOS OFF -> VOUT = VDD
+*   VIN = 0.9V (MID): Partial conduction creates voltage divider -> VOUT ≈ VDD/2
+*   VIN = 1.8V (HIGH): All PMOS OFF, All NMOS ON -> VOUT = VSS
+*
+* Transistor Count: 4
+* ============================================================================
+
+.subckt STI in out VDD VSS
+
+* ============================================================================
+* PULL-UP NETWORK (PMOS) - Connected to VDD
+* ============================================================================
+* Balanced PMOS for mid-level stability (target: Vout=0.9V at Vin=0.9V)
+MP1 out in VDD VDD pfet_01v8_hvt W=1.5u L=150n
+MP2 out in VDD VDD pfet_01v8 W=1u L=150n
+
+* ============================================================================
+* PULL-DOWN NETWORK (NMOS) - Connected to VSS
+* ============================================================================
+* Balanced NMOS pull-down
+MN1 out in VSS VSS nfet_01v8_lvt W=800n L=150n
+MN2 out in VSS VSS nfet_01v8 W=400n L=150n
+
+.ends STI
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. The key to STI is the ASYMMETRIC threshold voltages:
+*    - LVT NMOS starts conducting at Vin ≈ 0.25V
+*    - HVT PMOS stops conducting at Vin ≈ 1.1V
+*    - This overlap region (0.25V to 1.1V) creates the intermediate state
+*
+* 2. Sizing rationale:
+*    - PMOS 2x wider than NMOS to compensate for lower mobility
+*    - MN2 half-width to reduce pull-down strength at midpoint
+*    - This creates balanced trip points at VDD/3 and 2*VDD/3
+*
+* 3. For 3-rail implementation (using actual VMID supply), see sti_3rail.spice
+*
+* 4. DC transfer curve should show:
+*    - Output ≈ 1.8V for input 0V to 0.4V
+*    - Output ≈ 0.9V for input 0.7V to 1.1V  
+*    - Output ≈ 0V for input 1.4V to 1.8V
+*
+* 5. Noise margins depend on threshold voltage matching
+*    Monte Carlo analysis recommended for yield estimation
+* ============================================================================

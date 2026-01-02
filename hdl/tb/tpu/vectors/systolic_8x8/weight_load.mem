@@ -1,0 +1,10 @@
+// Weight loading sequence for 8x8 array
+// One row per cycle, weights stationary after load
+9555
+6555
+5955
+5655
+5595
+5565
+5559
+5556

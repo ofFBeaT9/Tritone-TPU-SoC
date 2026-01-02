@@ -1,0 +1,126 @@
+* ============================================================================
+* TERNARY INVERTERS COMPARISON TESTBENCH
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Compares DC Transfer Curves: STI, PTI, NTI
+*
+* This testbench overlays all three inverter types to visualize:
+*   - STI: Full inversion, symmetric around VDD/2
+*   - PTI: Threshold shifted up, outputs HIGH for inputs 0,1
+*   - NTI: Threshold shifted down, outputs HIGH for input 0 only
+* ============================================================================
+
+* Include models and cell definitions
+.include '../models/sky130_models.spice'
+.include '../cells/sti.spice'
+.include '../cells/pti.spice'
+.include '../cells/nti.spice'
+
+* ============================================================================
+* POWER SUPPLIES (2-rail: VDD and VSS only)
+* ============================================================================
+VDD vdd 0 DC 1.8
+VSS vss 0 DC 0
+
+* ============================================================================
+* DC SWEEP INPUT
+* ============================================================================
+VIN in 0 DC 0
+
+* ============================================================================
+* DEVICES UNDER TEST (4-terminal: in out VDD VSS)
+* ============================================================================
+XSTI in out_sti vdd vss STI
+XPTI in out_pti vdd vss PTI
+XNTI in out_nti vdd vss NTI
+
+* Load capacitances (matched for fair comparison)
+CL_STI out_sti 0 20f
+CL_PTI out_pti 0 20f
+CL_NTI out_nti 0 20f
+
+* ============================================================================
+* DC ANALYSIS
+* ============================================================================
+.dc VIN 0 1.8 0.01
+
+* ============================================================================
+* MEASUREMENTS
+* ============================================================================
+
+* STI measurements
+.meas DC sti_vout_0 FIND V(out_sti) AT=0
+.meas DC sti_vout_mid FIND V(out_sti) AT=0.9
+.meas DC sti_vout_high FIND V(out_sti) AT=1.8
+.meas DC sti_vth WHEN V(out_sti)=0.9 CROSS=1
+
+* PTI measurements  
+.meas DC pti_vout_0 FIND V(out_pti) AT=0
+.meas DC pti_vout_mid FIND V(out_pti) AT=0.9
+.meas DC pti_vout_high FIND V(out_pti) AT=1.8
+.meas DC pti_vth WHEN V(out_pti)=0.9 CROSS=1
+
+* NTI measurements
+.meas DC nti_vout_0 FIND V(out_nti) AT=0
+.meas DC nti_vout_mid FIND V(out_nti) AT=0.9
+.meas DC nti_vout_high FIND V(out_nti) AT=1.8
+.meas DC nti_vth WHEN V(out_nti)=0.9 CROSS=1
+
+* ============================================================================
+* SIMULATION CONTROL
+* ============================================================================
+.control
+    run
+    
+    set filetype=ascii
+    set wr_vecnames
+    
+    echo ""
+    echo "========================================================"
+    echo "TERNARY INVERTERS COMPARISON - DC Analysis Results"
+    echo "========================================================"
+    echo ""
+    echo "Expected Behavior:"
+    echo ""
+    echo "  STI (Standard): 0→1.8V, 0.9V→0.9V, 1.8V→0V"
+    echo "  PTI (Positive): 0→1.8V, 0.9V→1.8V, 1.8V→0V"
+    echo "  NTI (Negative): 0→1.8V, 0.9V→0V,   1.8V→0V"
+    echo ""
+    echo "========================================================"
+    echo ""
+    
+    * Create comparison plot
+    plot V(out_sti) V(out_pti) V(out_nti) vs V(in) 
++        title 'Ternary Inverters: STI vs PTI vs NTI'
++        xlabel 'Input Voltage (V)' 
++        ylabel 'Output Voltage (V)'
+    
+    * Add reference lines for ternary levels
+    echo ""
+    echo "Reference Voltage Levels:"
+    echo "  Logic 0 = 0V (VSS)"
+    echo "  Logic 1 = 0.9V (VDD/2)"
+    echo "  Logic 2 = 1.8V (VDD)"
+    echo ""
+    
+    * Print truth table verification
+    echo "Truth Table Verification:"
+    echo ""
+    echo "Input | STI Out | PTI Out | NTI Out"
+    echo "------|---------|---------|--------"
+    
+    * Save comparison data
+    wrdata ../results/inverters_comparison.csv V(out_sti) V(out_pti) V(out_nti)
+    
+    echo ""
+    echo "Results saved to ../results/inverters_comparison.csv"
+    echo ""
+    echo "VERIFICATION CRITERIA:"
+    echo "  ✓ STI: Vth should be ~0.9V (middle)"
+    echo "  ✓ PTI: Vth should be ~1.35V (upper)"
+    echo "  ✓ NTI: Vth should be ~0.45V (lower)"
+    echo ""
+    quit
+.endc
+
+.end

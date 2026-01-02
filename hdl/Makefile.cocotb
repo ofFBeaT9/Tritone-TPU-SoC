@@ -1,0 +1,10 @@
+TARGET = run
+
+SIM = iverilog
+TOPLEVEL = top_module
+MODULE = tests.test_hello_world
+
+include $(shell cocotb-config --makefiles)/Makefile.inc
+
+$(TARGET):
+	$(MAKE) -C $(shell cocotb-config --simulator) $(TARGET) MODULE=$(MODULE) TOPLEVEL=$(TOPLEVEL) SIM=$(SIM)

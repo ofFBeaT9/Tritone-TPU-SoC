@@ -1,0 +1,82 @@
+* ============================================================================
+* TERNARY MIN GATE (T-AND Equivalent) - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TMIN - Ternary Minimum Gate
+*
+* Function: Y = MIN(A, B)
+*   Returns the minimum of two ternary inputs
+*   Equivalent to AND operation in ternary domain
+*
+* Truth Table:
+*     A\B | 0   1   2
+*     ----|----------
+*      0  | 0   0   0
+*      1  | 0   1   1
+*      2  | 0   1   2
+*
+* Balanced Ternary: MIN(-1,0,+1)
+*     A\B | -1   0  +1
+*     ----|----------
+*     -1  | -1  -1  -1
+*      0  | -1   0   0
+*     +1  | -1   0  +1
+*
+* Implementation: Series NMOS + Parallel PMOS with STI restoration
+* Transistor Count: ~12 (including buffers)
+* ============================================================================
+
+.subckt TMIN A B Y VDD VSS
+.param Wn=500n Wp=1u L=150n
+
+* ============================================================================
+* MIN LOGIC CORE
+* ============================================================================
+* The MIN function naturally maps to:
+*   - Series NMOS: Both inputs must be high to pull down
+*   - Parallel PMOS: Either input low pulls up
+*
+* This creates a "wired-AND" behavior where the lower voltage dominates
+
+* Parallel PMOS pull-up (controlled by A and B)
+* If either input is LOW, corresponding PMOS pulls output HIGH
+XMP1 n1 A VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=L
+XMP2 n1 B VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=L
+
+* Series NMOS pull-down (both must conduct)
+* Output only goes LOW when BOTH inputs are HIGH
+XMN1 n1 A n2 VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=L
+XMN2 n2 B VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=L
+
+* Additional pull-down paths for intermediate states
+* These help establish correct mid-level when one input is mid
+XMN3 n1 A VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=L
+XMN4 n1 B VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=L
+
+* ============================================================================
+* OUTPUT BUFFER (Double STI for level restoration)
+* ============================================================================
+* First STI inverts and cleans up levels
+XSTI1 n1 n3 VDD VSS STI
+
+* Second STI restores original polarity with clean ternary levels
+XSTI2 n3 Y VDD VSS STI
+
+.ends TMIN
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. MIN gate is fundamental for ternary logic - equivalent to AND
+*
+* 2. Key insight: In voltage representation, MIN(A,B) is the lower voltage
+*    - If A=0V and B=anything, output should be 0V
+*    - If both at 1.8V, output is 1.8V
+*    - Intermediate cases handled by resistive division
+*
+* 3. Double STI buffer ensures clean ternary levels at output
+*
+* 4. The series NMOS creates AND-like behavior (both must be high)
+*    The parallel PMOS creates OR-like pull-up (either low pulls up)
+*    Combined, this gives MIN function
+* ============================================================================

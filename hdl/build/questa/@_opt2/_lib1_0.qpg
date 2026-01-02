@@ -1,0 +1,723 @@
+m255
+K4
+z2
+!s12c _opt2
+Z0 !s99 nomlopt
+!s12c _opt1
+R0
+Z1 !s12c _opt
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+!s11f vlog 2024.1 2024.02, Feb  1 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z2 dE:/Tritone-V2/tritone-complete/hdl
+T_opt
+!s110 1767305697
+V[N2YdGjF7gTRZadPjR8]n0
+04 17 4 work tb_tritone_soc_v2 fast 0
+=1-40c2baf9e31b-6956f1e0-3e1-a52c
+R0
+Z3 !s12f OEM100
+Z4 !s12b OEM100
+Z5 !s124 OEM100
+Z6 o-quiet -auto_acc_if_foreign -work build/questa
+Z7 tCvgOpt 0
+n@_opt
+Z8 OL;O;2024.1;79
+R2
+T_opt1
+!s110 1767335491
+V?<[ZGm^9K9MRUI7nn59Rd1
+04 12 4 work tb_tpu_64x64 fast 0
+=1-40c2baf9e31b-69576643-1ae-af6c
+R0
+R3
+R4
+R5
+R6
+R7
+n@_opt1
+R8
+R2
+T_opt2
+!s110 1767336178
+V@noADSdCi2^_YU7PI?TgF1
+04 17 4 work tb_phase5_compute fast 0
+=1-40c2baf9e31b-695768f1-224-a8b8
+R0
+R3
+R4
+R5
+R6
+R7
+n@_opt2
+R8
+vbtfa
+Z9 2rtl/ternary_pkg.sv|rtl/btfa.sv|rtl/ternary_adder.sv|rtl/ternary_cla.sv|rtl/ternary_adder_8trit_cla.sv|rtl/ternary_alu.sv|rtl/ternary_regfile.sv|rtl/ternary_memory.sv|rtl/btisa_decoder.sv|rtl/ternary_forward_unit.sv|rtl/ternary_hazard_unit.sv|rtl/ternary_branch_predictor.sv|rtl/ternary_cpu.sv|rtl/tpu/ternary_mac.sv|rtl/tpu/ternary_pe.sv|rtl/tpu/ternary_systolic_array.sv|rtl/tpu/tpu_weight_buffer_banked.sv|rtl/tpu/tpu_activation_buffer_banked.sv|rtl/tpu/tpu_bank_arbiter.sv|rtl/tpu/tpu_dma_engine.sv|rtl/tpu/tpu_memory_controller_banked_v2.sv|rtl/tpu/ternary_systolic_controller_v2.sv|rtl/tpu/tpu_top_v2.sv|rtl/soc/tritone_soc_v2.sv|tb/soc/tb_tritone_soc_v2.sv
+Z10 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z11 DXx4 work 11 ternary_pkg 0 22 T^;]m`4S@0zn0?Tf0X<]h0
+Z12 !s110 1767305007
+!i10b 1
+!s100 iBYBLImRd3Q=F2YPnL7Fb0
+I[`@aDAJGFmNajDPWa^gbV0
+S1
+R2
+w1766016220
+8rtl/btfa.sv
+Frtl/btfa.sv
+!i122 0
+L0 10 17
+Z13 VDg1SIo80bB@j0V0VzS_@n1
+Z14 OL;L;2024.1;79
+r1
+!s85 0
+31
+!i113 0
+Z15 o-work build/questa -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R7
+vbtisa_decoder
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 m>TGW=GPYejg__^`nBI042
+IG:N>6C1Tghk`beIia5;h83
+S1
+R2
+w1766955964
+8rtl/btisa_decoder.sv
+Frtl/btisa_decoder.sv
+!i122 0
+L0 10 177
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vtb_phase5_compute
+Z16 2rtl/tpu/ternary_mac_v2.sv|rtl/tpu/tpu_weight_packer.sv|rtl/tpu/tpu_accum_cast.sv|rtl/tpu/tpu_reduce_unit.sv|tb/tpu/tb_phase5_compute.sv
+R10
+Z17 !s110 1767336161
+!i10b 1
+!s100 L81NmY2kdgo5l4P4c4KHA1
+IVJM99H`VL`BQPZLRWEgfm2
+S1
+R2
+w1767336031
+8tb/tpu/tb_phase5_compute.sv
+Ftb/tpu/tb_phase5_compute.sv
+!i122 13
+L0 13 525
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vtb_tpu_64x64
+2tb/tpu/tb_tpu_64x64.sv
+R10
+!s110 1767335442
+!i10b 1
+!s100 _m[T_C2Rj<ETeKdKF3:<U3
+IV2`ozP[Q]B_XE6<<DilJ?0
+S1
+R2
+w1767335435
+8tb/tpu/tb_tpu_64x64.sv
+Ftb/tpu/tb_tpu_64x64.sv
+!i122 9
+L0 15 542
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vtb_tritone_soc_v2
+2tb/soc/tb_tritone_soc_v2.sv
+R10
+R11
+!s110 1767305601
+!i10b 1
+!s100 _f@RI^;WImHdVeQK[k=dn0
+I]2J1MKfhODc3kWmO4EE8B2
+S1
+R2
+w1767305587
+8tb/soc/tb_tritone_soc_v2.sv
+Ftb/soc/tb_tritone_soc_v2.sv
+!i122 4
+L0 20 398
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_adder
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 k]OzQLY;6gE9HT5oeJQM90
+I7f;hMaZkmA^V:HkgZ@z>i2
+S1
+R2
+w1766052975
+8rtl/ternary_adder.sv
+Frtl/ternary_adder.sv
+!i122 0
+L0 7 32
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_adder_8trit_cla
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 XZHT;=N?SFR53o5VN;nIl0
+IeLl8l@9IZW7Vz1Yh8cVB<3
+S1
+R2
+w1766784798
+8rtl/ternary_adder_8trit_cla.sv
+Frtl/ternary_adder_8trit_cla.sv
+!i122 0
+L0 22 40
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_alu
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 eIfOd^d0FJAl<Nj8Q@Gmj0
+I@6m1V;Q`m4o_6OoA[FTQb2
+S1
+R2
+w1766956834
+8rtl/ternary_alu.sv
+Frtl/ternary_alu.sv
+!i122 0
+L0 14 171
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_branch_predictor
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 >]8@??je@=8NUKD6:;Mn^0
+I:Q>XTzCckUl?VXi]ihR690
+S1
+R2
+w1766675551
+8rtl/ternary_branch_predictor.sv
+Frtl/ternary_branch_predictor.sv
+!i122 0
+L0 16 42
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_cla
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 7PQTQ5FWc4VLR;FQj=:dW2
+IG7DeA?lc3i<VfeVEnR8hi2
+S1
+R2
+w1766957051
+8rtl/ternary_cla.sv
+Frtl/ternary_cla.sv
+!i122 0
+L0 22 224
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_cpu
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 7dZ4SYEIgA2zIWJYo:YCI1
+I[FCZ^<MG>GfSmooil5`dT0
+S1
+R2
+w1766956220
+8rtl/ternary_cpu.sv
+Frtl/ternary_cpu.sv
+!i122 0
+L0 11 950
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_forward_unit
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 V>V[_fU<jJHm?4PR;lbC12
+IzfBfPe@>fD7>R7>nFc0Xe1
+S1
+R2
+Z18 w1766056250
+8rtl/ternary_forward_unit.sv
+Frtl/ternary_forward_unit.sv
+!i122 0
+L0 14 54
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_hazard_unit
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 K4mTlnV6;M_hQio0iJb^L3
+I`2^:nGnLGc2ecA@_ZbJ=Z1
+S1
+R2
+R18
+8rtl/ternary_hazard_unit.sv
+Frtl/ternary_hazard_unit.sv
+!i122 0
+L0 11 65
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_mac
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 j0bI8no<85eo:J^8J^<NA1
+I=@@kb>;m`7eLEecZK@R[>1
+S1
+R2
+Z19 w1767011336
+Z20 8rtl/tpu/ternary_mac.sv
+Z21 Frtl/tpu/ternary_mac.sv
+!i122 0
+L0 21 134
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_mac_simple
+R9
+R10
+R12
+!i10b 1
+!s100 Rk3hdHUV<oL?je;PC5A`72
+I]Xz8l]@c^Rbbg`Ga17klT3
+S1
+R2
+R19
+R20
+R21
+!i122 0
+L0 162 50
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_mac_v2
+R16
+R10
+R17
+!i10b 1
+!s100 CAL1KNanXK]7ej5`[fOa[0
+IU65VRz`dTA;Y;<Wh>1ZRg0
+S1
+R2
+Z22 w1767335733
+Z23 8rtl/tpu/ternary_mac_v2.sv
+Z24 Frtl/tpu/ternary_mac_v2.sv
+!i122 13
+L0 15 151
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_mac_v2_int
+R16
+R10
+R17
+!i10b 1
+!s100 kBmDzPF9VZhT[LfBSCHWX0
+Io1V9[`L:@Tm?L<UZdfORQ2
+S1
+R2
+R22
+R23
+R24
+!i122 13
+L0 174 83
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_memory
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 55cGi=FTo;j1INH_Ld`Hh1
+I1dIRY?@Sa_>Z3YIO^PBkY3
+S1
+R2
+w1766409723
+8rtl/ternary_memory.sv
+Frtl/ternary_memory.sv
+!i122 0
+L0 9 170
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_pe
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 P8LF:o<IfknfT247?C=>F2
+IYdTd:WOzL7X6R=a=zQEQ?0
+S1
+R2
+Z25 w1767012773
+Z26 8rtl/tpu/ternary_pe.sv
+Z27 Frtl/tpu/ternary_pe.sv
+!i122 0
+L0 24 91
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_pe_cluster_cell
+Z28 2rtl/tpu/ternary_pe_cluster.sv
+R10
+Z29 !s110 1767335481
+!i10b 1
+!s100 9]iUL60KZiVa:mmk]JG=A1
+I5dTCh;ab7=WP5WnH^R<Wk1
+S1
+R2
+Z30 w1767306000
+Z31 8rtl/tpu/ternary_pe_cluster.sv
+Z32 Frtl/tpu/ternary_pe_cluster.sv
+!i122 10
+L0 188 48
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_pe_cluster_int
+R28
+R10
+R29
+!i10b 1
+!s100 U=VQzWW3WhS:MOOj1UIU:3
+I`:?LzUFMSOV<RBSLZV1o60
+S1
+R2
+R30
+R31
+R32
+!i122 10
+L0 25 156
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_pe_int
+R9
+R10
+R12
+!i10b 1
+!s100 :3L@Oe@b9iki_<FM_6B=;0
+ISP]=i865YIWWTB9_M8`3z1
+S1
+R2
+R25
+R26
+R27
+!i122 0
+L0 123 64
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+Xternary_pkg
+R9
+R10
+R12
+!i10b 1
+!s100 8[0D0kCYzO@iGDaR>eZQ>3
+IT^;]m`4S@0zn0?Tf0X<]h0
+S1
+R2
+w1766409696
+8rtl/ternary_pkg.sv
+Frtl/ternary_pkg.sv
+!i122 0
+L0 5 0
+VT^;]m`4S@0zn0?Tf0X<]h0
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_regfile
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 ID7Egn4:PRXjRKbbKDD6K3
+IcWRW_XkBT2gEO0Q;WDFHh1
+S1
+R2
+w1766409785
+8rtl/ternary_regfile.sv
+Frtl/ternary_regfile.sv
+!i122 0
+L0 12 184
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_systolic_array
+R9
+R10
+R11
+R12
+!i10b 1
+!s100 9:e<zHbChH:9U^kc@iYGV2
+ISmRzfLH4AfHg`P3JB[S^P3
+S1
+R2
+Z33 w1767012796
+Z34 8rtl/tpu/ternary_systolic_array.sv
+Z35 Frtl/tpu/ternary_systolic_array.sv
+!i122 0
+L0 27 118
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_systolic_array_64x64
+R28
+R10
+R29
+!i10b 1
+!s100 3E[mH35`<EhF8^a>LNa0h1
+Iji3`=>RD>I>X:;Qd3KV1N2
+S1
+R2
+R30
+R31
+R32
+!i122 10
+L0 243 157
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_systolic_array_int
+R9
+R10
+R12
+!i10b 1
+!s100 >AVK0QJV^f4^hk:d`^X9N1
+IZbAQZ6j;eFC`W6zOkfkWi2
+S1
+R2
+R33
+R34
+R35
+!i122 0
+L0 152 86
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vternary_systolic_controller_v2
+Z36 2rtl/tpu/tpu_dma_engine.sv|rtl/tpu/tpu_command_queue.sv|rtl/tpu/ternary_systolic_controller_v2.sv
+R10
+Z37 !s110 1767335367
+!i10b 1
+!s100 YPioHFlcH>RQo9d@PLcAb0
+I60DR6ZW=G[[PZz?WXNHlF1
+S1
+R2
+w1767271103
+8rtl/tpu/ternary_systolic_controller_v2.sv
+Frtl/tpu/ternary_systolic_controller_v2.sv
+!i122 7
+L0 18 271
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vtpu_accum_cast
+R16
+R10
+R17
+!i10b 1
+!s100 hMB_PX3JVd0FMiIodTNCY0
+IBgf0og^UC:O5`ohg4fj1A1
+S1
+R2
+Z38 w1767335858
+Z39 8rtl/tpu/tpu_accum_cast.sv
+Z40 Frtl/tpu/tpu_accum_cast.sv
+!i122 13
+L0 19 146
+R13
+R14
+r1
+!s85 0
+31
+!i113 0
+R15
+R7
+vtpu_accum_cast_array
+R16
+R10
+R17
+!i10b 1

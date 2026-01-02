@@ -1,0 +1,79 @@
+Reading pref.tcl
+
+# 2024.1
+
+# vsim -c -do "run -all; quit -f" build/questa.tb_phase5_compute 
+# Start time: 22:43:56 on Jan 01,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+# Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.
+# ** Warning: rtl/tpu/tpu_weight_packer.sv(25): (vopt-13314) Defaulting port 'weights_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# //  Questa Sim-64
+# //  Version 2024.1 win64 Feb  1 2024
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.tb_phase5_compute(fast)
+# run -all
+# 
+# ================================================================
+#   Phase 5: Compute Enhancements Testbench
+# ================================================================
+# 
+# --- Test 1: Guard Trits + Saturation (MAC) ---
+#   1a: Basic MAC: PASS (result=1000)
+#   1b: Negative weight: PASS (result=0)
+#   1c: Zero skip: PASS
+#   1d: Positive saturation: PASS
+#   PASS
+# 
+# --- Test 2: Weight Packing/Unpacking ---
+#   2a: All zeros packs to 121: PASS
+#   2b: All +1 packs to 242: PASS
+#   2c: All -1 packs to 0: PASS
+#   2d: Roundtrip verification: PASS
+#   PASS
+# 
+# --- Test 3: Accumulator Cast (128â??32 bit) ---
+#   3a: Small value passthrough: PASS
+#   3b: Negative value: PASS
+#   3c: Positive saturation: PASS
+#   3d: Right shift by 4: PASS
+#   PASS
+# 
+# --- Test 4: Reduction Unit ---
+#   4a: Sum 1..10 = 55: PASS
+#   4b: Max of {-100,50,200,-50,100} = 200: PASS
+#   4c: Min of {-100,50,200,-50,100} = -100: PASS
+#   PASS
+# 
+# --- Test 5: Performance Counters ---
+#   Last reduction: 12 cycles, 5 elements
+#   Element count: PASS
+#   PASS
+# 
+# ================================================================
+#   Phase 5 Test Summary
+# ================================================================
+#   Total Tests: 5
+#   Errors: 0
+# 
+#   *** ALL TESTS PASSED ***
+#   Phase 5 Compute Enhancements: VERIFIED
+# ================================================================
+# 
+# ** Note: $finish    : tb/tpu/tb_phase5_compute.sv(528)
+#    Time: 283 ns  Iteration: 0  Instance: /tb_phase5_compute
+# End time: 22:43:57 on Jan 01,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 1

@@ -1,0 +1,37 @@
+# Test Program: Logical Instructions
+# Tests: MIN, MAX, INV (ternary operations)
+# Coverage: All combinations of -1, 0, +1 operands
+
+# Load test values
+LDI R1, -1        # Load -1
+LDI R2, 0         # Load 0
+LDI R3, 1         # Load 1
+
+# Test MIN (ternary minimum)
+MIN R4, R1, R2    # min(-1, 0) = -1
+MIN R5, R2, R3    # min(0, 1) = 0
+MIN R6, R1, R3    # min(-1, 1) = -1
+MIN R7, R3, R3    # min(1, 1) = 1
+
+# Test MAX (ternary maximum)
+MAX R4, R1, R2    # max(-1, 0) = 0
+MAX R5, R2, R3    # max(0, 1) = 1
+MAX R6, R1, R3    # max(-1, 1) = 1
+MAX R7, R1, R1    # max(-1, -1) = -1
+
+# Test INV (ternary inversion/negation)
+INV R4, R1        # inv(-1) = 1
+INV R5, R2        # inv(0) = 0
+INV R6, R3        # inv(1) = -1
+
+# Test combined operations
+MIN R7, R4, R6    # min(1, -1) = -1
+MAX R8, R5, R7    # max(0, -1) = 0
+
+# Verify results
+LDI R1, 1
+SUB R0, R4, R1    # R4 should be 1 from INV(-1)
+LDI R1, -1
+SUB R0, R6, R1    # R6 should be -1 from INV(1)
+
+HALT

@@ -1,0 +1,78 @@
+* ============================================================================
+* SKY130 Multi-Vth Device Models for Ternary Logic
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Models tuned for multi-threshold ternary logic design
+* ============================================================================
+
+.param VDD = 1.8
+.param VMID = 0.9
+.param VSS = 0
+
+* ============================================================================
+* LEVEL 1 MOSFET MODELS - Tuned for Ternary Threshold Spacing
+* ============================================================================
+* These models use carefully selected Vth values to create three stable
+* operating regions for ternary logic.
+
+* Low-Vth NMOS (Vth ~ 0.35V) - Turns on first at low input voltages
+* Adjusted for balanced ternary operation
+.model nfet_01v8_lvt nmos level=1 vto=0.35 kp=100u lambda=0.04 tox=9n
+
+* Standard-Vth NMOS (Vth ~ 0.55V) - Normal switching threshold
+* Used for general logic and intermediate switching points
+.model nfet_01v8 nmos level=1 vto=0.55 kp=90u lambda=0.04 tox=9n
+
+* Standard-Vth PMOS (Vth ~ -0.55V) - Normal switching threshold
+* Used for general logic pull-up networks
+.model pfet_01v8 pmos level=1 vto=-0.55 kp=45u lambda=0.05 tox=9n
+
+* High-Vth PMOS (Vth ~ -0.75V) - Stays on until input is very high
+* Used in PTI for late switching and strong pull-up networks
+.model pfet_01v8_hvt pmos level=1 vto=-0.75 kp=40u lambda=0.05 tox=9n
+
+* ============================================================================
+* SUBCIRCUIT WRAPPERS - For compatibility with SKY130 PDK naming
+* ============================================================================
+* These wrappers allow cells to use PDK-style instantiation syntax
+* while using the Level 1 models above for faster simulation.
+
+.subckt sky130_fd_pr__nfet_01v8_lvt d g s b W=1u L=150n
+M1 d g s b nfet_01v8_lvt W='W' L='L'
+.ends sky130_fd_pr__nfet_01v8_lvt
+
+.subckt sky130_fd_pr__nfet_01v8 d g s b W=1u L=150n
+M1 d g s b nfet_01v8 W='W' L='L'
+.ends sky130_fd_pr__nfet_01v8
+
+.subckt sky130_fd_pr__pfet_01v8 d g s b W=1u L=150n
+M1 d g s b pfet_01v8 W='W' L='L'
+.ends sky130_fd_pr__pfet_01v8
+
+.subckt sky130_fd_pr__pfet_01v8_hvt d g s b W=1u L=150n
+M1 d g s b pfet_01v8_hvt W='W' L='L'
+.ends sky130_fd_pr__pfet_01v8_hvt
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. Threshold voltages are spaced to divide VDD (1.8V) into three regions:
+*    - Region 0: 0V to ~0.6V (input LOW)
+*    - Region 1: ~0.6V to ~1.2V (input MID)
+*    - Region 2: ~1.2V to 1.8V (input HIGH)
+*
+* 2. LVT NMOS (Vth=0.25V) turns on when Vin > 0.25V
+*    - Starts conducting in Region 0→1 transition
+*
+* 3. SVT NMOS (Vth=0.45V) turns on when Vin > 0.45V
+*    - Fully conducting in Region 1
+*
+* 4. SVT PMOS (Vth=-0.45V) turns off when Vin > VDD-0.45V = 1.35V
+*    - Turns off in Region 1→2 transition
+*
+* 5. HVT PMOS (Vth=-0.7V) turns off when Vin > VDD-0.7V = 1.1V
+*    - Stays on longer, used for PTI bias
+*
+* 6. For SKY130 PDK simulation, replace this file with:
+*    .lib "$PDK_ROOT/libraries/sky130_fd_pr/latest/models/sky130.lib.spice" tt
+* ============================================================================

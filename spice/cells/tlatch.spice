@@ -1,0 +1,101 @@
+* ============================================================================
+* TERNARY D-LATCH (TLATCH) - Multi-Vth CMOS Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TLATCH - Level-Sensitive Ternary Latch
+*
+* Function: Transparent latch for balanced ternary values
+*   When CLK=HIGH (1.8V): Output Q follows input D (transparent)
+*   When CLK=LOW (0V): Output Q holds previous value (latched)
+*   D, Q ∈ {0, VDD/2, VDD} representing {-1, 0, +1}
+*
+* Implementation: Master section of master-slave flip-flop
+*   - Transmission gate for input (ternary-capable)
+*   - Cross-coupled STI pair for storage
+*   - Buffer stage for output drive
+*
+* Transistor Count: 16 (4 TG + 8 STI + 4 buffer)
+* ============================================================================
+
+.subckt TLATCH D CLK CLKB Q VDD VSS
+
+* Parameters - sized for ternary operation with VDD/2 stability
+.param Wn=500n Wp=1u Ln=150n Lp=150n
+
+* ============================================================================
+* INPUT TRANSMISSION GATE
+* ============================================================================
+* Uses CMOS transmission gate for rail-to-rail ternary signal passing
+* Both NMOS and PMOS sized to handle all three voltage levels
+
+* Transmission gate passes D when CLK=HIGH
+XMTG_N d1 D CLK VSS sky130_fd_pr__nfet_01v8 W='Wn*2' L=Ln
+XMTG_P d1 D CLKB VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+
+* ============================================================================
+* CROSS-COUPLED TERNARY INVERTER PAIR (Storage Element)
+* ============================================================================
+* Two STI cells cross-coupled for bistable/tristable storage
+* The intermediate state (VDD/2) is maintained by the STI characteristics
+
+* First STI: d1 -> d1_bar
+XST1_MP1 d1_bar d1 VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XST1_MP2 d1_bar d1 VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XST1_MN1 d1_bar d1 VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XST1_MN2 d1_bar d1 VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+* Second STI: d1_bar -> d1 (feedback, weaker for write-ability)
+* Sized smaller to allow incoming data to override
+XST2_MP1 d1 d1_bar VDD VDD sky130_fd_pr__pfet_01v8_hvt W='Wp/2' L=Lp
+XST2_MP2 d1 d1_bar VDD VDD sky130_fd_pr__pfet_01v8 W='Wp/2' L=Lp
+XST2_MN1 d1 d1_bar VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn/2' L=Ln
+XST2_MN2 d1 d1_bar VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/4' L=Ln
+
+* ============================================================================
+* OUTPUT BUFFER (Non-Inverting)
+* ============================================================================
+* Two-stage STI buffer to provide strong output drive
+* Inverts twice to maintain polarity
+
+* Buffer Stage 1: Invert d1
+XBUF1_MP1 qb d1 VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XBUF1_MP2 qb d1 VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XBUF1_MN1 qb d1 VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XBUF1_MN2 qb d1 VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+* Buffer Stage 2: Invert qb -> Q (restores polarity)
+XBUF2_MP1 Q qb VDD VDD sky130_fd_pr__pfet_01v8_hvt W='Wp*2' L=Lp
+XBUF2_MP2 Q qb VDD VDD sky130_fd_pr__pfet_01v8 W='Wp*2' L=Lp
+XBUF2_MN1 Q qb VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn*2' L=Ln
+XBUF2_MN2 Q qb VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+.ends TLATCH
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. The ternary latch stores 3 stable states:
+*    - Q=0V (VSS): Both STIs in appropriate state
+*    - Q=0.9V (VDD/2): Metastable in binary, STABLE in ternary due to STI
+*    - Q=1.8V (VDD): Both STIs in opposite state
+*
+* 2. The STI cross-couple is key: unlike binary inverters which have
+*    two stable states, ternary STI pairs have three due to the
+*    intermediate voltage level being a valid logic state.
+*
+* 3. Transmission gate must handle VDD/2 cleanly:
+*    - NMOS passes VDD/2 with slight degradation (Vgs < Vth at some point)
+*    - PMOS compensates - both needed for clean mid-rail transfer
+*
+* 4. Asymmetric sizing of feedback STI (ST2):
+*    - Allows input data to overcome feedback during write
+*    - Feedback is strong enough to hold during latch mode
+*    - Ratio typically 2:1 to 4:1 (forward:feedback)
+*
+* 5. Output buffer sized 2x for external load driving capability.
+*
+* 6. CLKB (inverted clock) must be generated externally or add internal
+*    inverter. External generation preferred for clock distribution.
+*
+* 7. For edge-triggered D flip-flop, cascade two TLATCHes as master-slave.
+* ============================================================================

@@ -1,0 +1,78 @@
+OpenROAD 24Q3-11673-g154f14ab7e 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone/baseline/3_3_place_gp.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Perform buffer insertion and gate resizing...
+repair_design -verbose
+Iteration |   Area    | Resized | Buffers | Nets repaired | Remaining
+---------------------------------------------------------------------
+        0 |     +0.0% |       0 |       0 |             0 |       467
+       10 |     +0.0% |       0 |       0 |             0 |       457
+       20 |     +0.0% |       0 |       0 |             0 |       447
+       30 |     +0.0% |       0 |       0 |             0 |       437
+       40 |     +0.0% |       0 |       0 |             0 |       427
+       50 |     +0.0% |       0 |       0 |             0 |       417
+       60 |     +0.0% |       0 |       0 |             0 |       407
+       70 |     +0.0% |       0 |       0 |             0 |       397
+       80 |     +0.0% |       0 |       0 |             0 |       387
+       90 |     +0.0% |       0 |       0 |             0 |       377
+      100 |     +0.0% |       0 |       0 |             0 |       367
+      110 |     +0.0% |       0 |       0 |             0 |       357
+      120 |     +0.0% |       0 |       0 |             0 |       347
+      130 |     +0.0% |       0 |       0 |             0 |       337
+      140 |     +0.0% |       0 |       0 |             0 |       327
+      150 |     +0.0% |       0 |       0 |             0 |       317
+      160 |     +0.0% |       0 |       0 |             0 |       307
+      170 |     +0.0% |       0 |       0 |             0 |       297
+      180 |     +0.0% |       0 |       0 |             0 |       287
+      190 |     +0.0% |       0 |       0 |             0 |       277
+      200 |     +0.0% |       0 |       0 |             0 |       267
+      210 |     +0.0% |       0 |       0 |             0 |       257
+      220 |     +0.0% |       0 |       0 |             0 |       247
+      230 |     +0.0% |       0 |       0 |             0 |       237
+      240 |     +0.0% |       0 |       0 |             0 |       227
+      250 |     +0.0% |       0 |       0 |             0 |       217
+      260 |     +0.0% |       0 |       0 |             0 |       207
+      270 |     +0.0% |       0 |       0 |             0 |       197
+      280 |     +0.0% |       0 |       0 |             0 |       187
+      290 |     +0.0% |       0 |       0 |             0 |       177
+      300 |     +0.0% |       0 |       0 |             0 |       167
+      310 |     +0.0% |       0 |       0 |             0 |       157
+      320 |     +0.0% |       0 |       0 |             0 |       147
+      330 |     +0.0% |       0 |       0 |             0 |       137
+      340 |     +0.0% |       0 |       0 |             0 |       127
+      350 |     +0.0% |       0 |       0 |             0 |       117
+      360 |     +0.0% |       0 |       0 |             0 |       107
+      370 |     +0.0% |       0 |       0 |             0 |        97
+      380 |     +0.0% |       0 |       0 |             0 |        87
+      390 |     +0.0% |       0 |       0 |             0 |        77
+      400 |     +0.0% |       0 |       0 |             0 |        67
+      410 |     +0.0% |       0 |       0 |             0 |        57
+      420 |     +0.0% |       0 |       0 |             0 |        47
+      430 |     +0.0% |       0 |       0 |             0 |        37
+      440 |     +0.0% |       0 |       0 |             0 |        27
+      450 |     +0.0% |       0 |       0 |             0 |        17
+      460 |     +0.0% |       0 |       0 |             0 |         7
+    final |     +0.0% |       0 |       0 |             0 |         0
+---------------------------------------------------------------------
+Floating nets: 
+Report metrics stage 3, resizer...
+
+==========================================================================
+resizer report_design_area
+--------------------------------------------------------------------------
+Design area 37 um^2 59% utilization.
+Instance count before 439, after 439
+Pin count before 1052, after 1052
+Elapsed time: 0:01.13[h:]min:sec. CPU time: user 1.06 sys 0.12 (104%). Peak memory: 213776KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_4_place_resized                  1            208 edefc7560fd1908f48a0

@@ -1,0 +1,159 @@
+* ============================================================================
+* PVT CORNER ANALYSIS - SKY130 Foundry PDK
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Testbench: Standard Ternary Inverter (STI) PVT Characterization
+*
+* This testbench characterizes the STI cell across Process, Voltage, and
+* Temperature corners using foundry-characterized BSIM4 models.
+* ============================================================================
+
+* ============================================================================
+* SKY130-CALIBRATED MODELS - TYPICAL CORNER
+* ============================================================================
+* Level 1 models calibrated to SKY130 threshold voltages
+.include "E:/Tritone-V2/tritone-complete/spice/models/sky130_ternary_simple.spice"
+
+* ============================================================================
+* INCLUDE STI CELL
+* ============================================================================
+.include "E:/Tritone-V2/tritone-complete/spice/cells/sti_sky130.spice"
+
+* ============================================================================
+* GLOBAL PARAMETERS
+* ============================================================================
+.param VDD_NOM = 1.8
+.param VMID_NOM = 0.9
+.param VSS_NOM = 0
+
+* ============================================================================
+* POWER SUPPLIES
+* ============================================================================
+VVDD vdd 0 DC {VDD_NOM}
+VVSS vss 0 DC {VSS_NOM}
+
+* ============================================================================
+* INPUT STIMULUS
+* ============================================================================
+VIN in 0 DC 0
+
+* ============================================================================
+* DEVICE UNDER TEST
+* ============================================================================
+XDUT in out vdd vss STI_SKY130
+
+* ============================================================================
+* ANALYSIS: DC TRANSFER CHARACTERISTIC
+* ============================================================================
+.control
+echo "============================================"
+echo "SKY130 STI PVT Characterization"
+echo "============================================"
+echo ""
+
+* --- TT Corner (Typical-Typical) @ 27C ---
+echo "=== TT Corner @ 27C, VDD=1.8V ==="
+set temp = 27
+alter VVDD = 1.8
+dc VIN 0 1.8 0.01
+let vmid_in = 0.9
+let vmid_out = v(out) at vmid_in
+meas dc vout_low FIND v(out) AT=0
+meas dc vout_mid FIND v(out) AT=0.9
+meas dc vout_high FIND v(out) AT=1.8
+echo "  Input LOW  (0.0V): Output = $&vout_low V (expect 1.8V)"
+echo "  Input MID  (0.9V): Output = $&vout_mid V (expect 0.9V)"
+echo "  Input HIGH (1.8V): Output = $&vout_high V (expect 0.0V)"
+
+* Calculate mid-level error
+let vmid_error = abs(vout_mid - 0.9)
+echo "  Mid-level error: $&vmid_error V"
+
+* Measure threshold voltages (where output crosses 0.9V)
+meas dc vil_thresh WHEN v(out)=1.35 CROSS=1
+meas dc vih_thresh WHEN v(out)=0.45 CROSS=1
+echo "  VIL threshold (out=1.35V): $&vil_thresh V"
+echo "  VIH threshold (out=0.45V): $&vih_thresh V"
+
+* Plot DC transfer curve
+set curplottitle = "STI DC Transfer - TT Corner 27C"
+plot v(out) vs v(in) title "Vout"
+
+echo ""
+echo "=== Voltage Corners @ 27C ==="
+
+* --- Low Voltage Corner (VDD - 10%) ---
+echo ""
+echo "--- VDD = 1.62V (-10%) ---"
+alter VVDD = 1.62
+dc VIN 0 1.62 0.01
+meas dc vout_mid_lv FIND v(out) AT=0.81
+let vmid_expected_lv = 0.81
+let vmid_error_lv = abs(vout_mid_lv - vmid_expected_lv)
+echo "  Input MID (0.81V): Output = $&vout_mid_lv V (expect 0.81V)"
+echo "  Mid-level error: $&vmid_error_lv V"
+
+* --- High Voltage Corner (VDD + 10%) ---
+echo ""
+echo "--- VDD = 1.98V (+10%) ---"
+alter VVDD = 1.98
+dc VIN 0 1.98 0.01
+meas dc vout_mid_hv FIND v(out) AT=0.99
+let vmid_expected_hv = 0.99
+let vmid_error_hv = abs(vout_mid_hv - vmid_expected_hv)
+echo "  Input MID (0.99V): Output = $&vout_mid_hv V (expect 0.99V)"
+echo "  Mid-level error: $&vmid_error_hv V"
+
+* Reset to nominal
+alter VVDD = 1.8
+
+echo ""
+echo "=== Temperature Corners @ VDD=1.8V ==="
+
+* --- Cold Temperature (-40C) ---
+echo ""
+echo "--- Temperature = -40C ---"
+set temp = -40
+dc VIN 0 1.8 0.01
+meas dc vout_mid_cold FIND v(out) AT=0.9
+let vmid_error_cold = abs(vout_mid_cold - 0.9)
+echo "  Input MID (0.9V): Output = $&vout_mid_cold V (expect 0.9V)"
+echo "  Mid-level error: $&vmid_error_cold V"
+
+* --- Hot Temperature (85C) ---
+echo ""
+echo "--- Temperature = 85C ---"
+set temp = 85
+dc VIN 0 1.8 0.01
+meas dc vout_mid_hot FIND v(out) AT=0.9
+let vmid_error_hot = abs(vout_mid_hot - 0.9)
+echo "  Input MID (0.9V): Output = $&vout_mid_hot V (expect 0.9V)"
+echo "  Mid-level error: $&vmid_error_hot V"
+
+* --- Industrial Temperature (125C) ---
+echo ""
+echo "--- Temperature = 125C ---"
+set temp = 125
+dc VIN 0 1.8 0.01
+meas dc vout_mid_ind FIND v(out) AT=0.9
+let vmid_error_ind = abs(vout_mid_ind - 0.9)
+echo "  Input MID (0.9V): Output = $&vout_mid_ind V (expect 0.9V)"
+echo "  Mid-level error: $&vmid_error_ind V"
+
+echo ""
+echo "============================================"
+echo "PVT Characterization Complete"
+echo "============================================"
+echo ""
+echo "Summary: Mid-Level Accuracy"
+echo "  TT 27C:    error = $&vmid_error V"
+echo "  VDD-10%:   error = $&vmid_error_lv V"
+echo "  VDD+10%:   error = $&vmid_error_hv V"
+echo "  -40C:      error = $&vmid_error_cold V"
+echo "  85C:       error = $&vmid_error_hot V"
+echo "  125C:      error = $&vmid_error_ind V"
+echo ""
+
+.endc
+
+.end

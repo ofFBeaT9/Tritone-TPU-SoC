@@ -1,0 +1,125 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * ============================================================================
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vmid                                       0.9
+vss                                          0
+in_01                                        0
+xdut_01.nlow                               1.8
+xdut_01.nhigh                                0
+xdut_01.nmid                                 0
+out_01                                     1.8
+in_10                                      0.9
+xdut_10.nlow                                 0
+xdut_10.nhigh                                0
+xdut_10.nmid                               1.8
+out_10                                     0.9
+in_12                                      0.9
+xdut_12.nlow                                 0
+xdut_12.nhigh                                0
+xdut_12.nmid                               1.8
+out_12                                     0.9
+in_21                                      1.8
+xdut_21.nlow                                 0
+xdut_21.nhigh                              1.8
+xdut_21.nmid                                 0
+out_21                                 2.7e-08
+in_02                                        0
+xdut_02.nlow                               1.8
+xdut_02.nhigh                                0
+xdut_02.nmid                                 0
+out_02                                     1.8
+in_20                                      1.8
+xdut_20.nlow                                 0
+xdut_20.nhigh                              1.8
+xdut_20.nmid                                 0
+out_20                                 2.7e-08
+b.xdut_20.bmid#branch                        0
+b.xdut_20.bhigh#branch                       0
+b.xdut_20.blow#branch                        0
+b.xdut_02.bmid#branch                        0
+b.xdut_02.bhigh#branch                       0
+b.xdut_02.blow#branch                        0
+b.xdut_21.bmid#branch                        0
+b.xdut_21.bhigh#branch                       0
+b.xdut_21.blow#branch                        0
+b.xdut_12.bmid#branch                        0
+b.xdut_12.bhigh#branch                       0
+b.xdut_12.blow#branch                        0
+b.xdut_10.bmid#branch                        0
+b.xdut_10.bhigh#branch                       0
+b.xdut_10.blow#branch                        0
+b.xdut_01.bmid#branch                        0
+b.xdut_01.bhigh#branch                       0
+b.xdut_01.blow#branch                        0
+vin_20#branch                                0
+vin_02#branch                                0
+vin_21#branch                                0
+vin_12#branch                                0
+vin_10#branch                                0
+vin_01#branch                                0
+vss#branch                            1.08e-08
+vmid_sup#branch                      7.446e-18
+vdd#branch                           -1.08e-08
+
+
+No. of Data Rows : 2017
+
+  Measurements for Transient Analysis
+
+tpd_01              =  1.677176e-11 targ=  1.667718e-10 trig=  1.500000e-10
+tpd_10              =  -1.680000e-11 targ=  1.332000e-10 trig=  1.500000e-10
+tpd_12              =  -1.680000e-11 targ=  1.332000e-10 trig=  1.500000e-10
+tpd_21              =  1.677176e-11 targ=  1.667718e-10 trig=  1.500000e-10
+tpd_02              =  -1.588000e-11 targ=  1.341200e-10 trig=  1.500000e-10
+tpd_20              =  -1.588000e-11 targ=  1.341200e-10 trig=  1.500000e-10
+avg_current         =  -1.080000e-08 from=  2.000000e-10 to=  2.000000e-09
+peak_current        =  9.124413e-03 at=  1.343400e-10
+
+
+============================================================
+STI CELL CHARACTERIZATION RESULTS
+============================================================
+
+Test Conditions:
+  VDD = 1.8V
+  Temperature = 27C
+  Input slew = 100ps
+  Load capacitance = 20fF
+
+============================================================
+PROPAGATION DELAYS (6 Ternary Transitions)
+============================================================
+
+See .meas results in this log output.
+
+===================================================
+Warning: command 'plot' is not available during batch simulation, ignored!
+    You may use Gnuplot instead.
+
+
+Warning: command 'plot' is not available during batch simulation, ignored!
+    You may use Gnuplot instead.
+
+=========
+POWER CONSUMPTION
+============================================================
+
+See .meas results in this log output.
+
+
+Results saved to ../results/sti_char_tran.csv
+
+ngspice-45.2 done

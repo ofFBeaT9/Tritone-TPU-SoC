@@ -1,0 +1,69 @@
+# Test Program: Memory Stress Test
+# Tests: Load-use hazards, memory operations, data dependencies
+# Purpose: Stress test memory subsystem and hazard detection
+
+# Setup: R7 = 1 for incrementing
+LDI R7, 1
+
+# Test 1: Load-use hazard (should cause 1-cycle stall)
+LDI R1, 100     # Address
+LDI R2, 42      # Data
+STT R2, R1, 0   # Store 42 to addr 100
+LDT R3, R1, 0   # Load from addr 100
+ADD R4, R3, R7  # Use R3 immediately (load-use hazard): 42+1=43
+
+# Test 2: Store-load forwarding
+LDI R1, 101     # Address
+LDI R2, 27      # Data
+STT R2, R1, 0   # Store
+LDT R3, R1, 0   # Load same address
+SUB R5, R3, R2  # Should be zero
+
+# Test 3: Multiple memory operations
+LDI R1, 200     # Base address
+LDI R2, 10      # Value 1
+STT R2, R1, 0   # Store at 200
+ADD R1, R1, R7  # Addr = 201
+LDI R2, 20      # Value 2
+STT R2, R1, 0   # Store at 201
+ADD R1, R1, R7  # Addr = 202
+LDI R2, 30      # Value 3
+STT R2, R1, 0   # Store at 202
+
+# Load them back
+LDI R1, 200
+LDT R3, R1, 0   # Load 10
+ADD R1, R1, R7
+LDT R4, R1, 0   # Load 20
+ADD R1, R1, R7
+LDT R5, R1, 0   # Load 30
+
+# Verify sum: 10+20+30 = 60
+ADD R6, R3, R4  # 30
+ADD R6, R6, R5  # 60
+
+# Test 4: Back-to-back loads with dependencies
+LDI R1, 200
+LDT R2, R1, 0   # Load from 200
+ADD R1, R1, R7
+LDT R3, R1, 0   # Load from 201
+ADD R4, R2, R3  # Use both loads (multiple hazards)
+
+# Test 5: Memory pattern write
+LDI R1, 300     # Base
+LDI R2, -1      # Pattern: -1, 0, 1
+STT R2, R1, 0
+ADD R1, R1, R7
+LDI R2, 0
+STT R2, R1, 0
+ADD R1, R1, R7
+LDI R2, 1
+STT R2, R1, 0
+
+# Verify pattern
+LDI R1, 300
+LDT R3, R1, 0
+LDI R8, -1
+SUB R0, R3, R8  # Check if -1 (R0 discarded but tests subtraction)
+
+HALT

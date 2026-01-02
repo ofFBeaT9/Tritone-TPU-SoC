@@ -1,0 +1,204 @@
+* ============================================================================
+* NOISE MARGIN ANALYSIS - Ternary Logic Gates
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* Purpose: Extract noise margins for three-level ternary logic
+*
+* Ternary Noise Margins:
+*   NML (Low):  VIL - VOL  (margin for logic -1 → 0 boundary)
+*   NMM (Mid):  Smaller of (VIM_H - VOM) or (VOM - VIM_L)
+*   NMH (High): VOH - VIH  (margin for logic 0 → +1 boundary)
+*
+* Threshold Definitions:
+*   VIL:   Input low threshold (max input for guaranteed low output)
+*   VIM_L: Lower boundary of intermediate input region
+*   VIM_H: Upper boundary of intermediate input region
+*   VIH:   Input high threshold (min input for guaranteed high output)
+*   VOL:   Output low voltage (nominal 0V)
+*   VOM:   Output mid voltage (nominal VDD/2)
+*   VOH:   Output high voltage (nominal VDD)
+* ============================================================================
+
+.title Ternary Noise Margin Analysis
+
+* Include models and cells
+.include "../models/sky130_models.spice"
+.include "../cells/sti.spice"
+
+* ============================================================================
+* TESTBENCH SETUP
+* ============================================================================
+
+.param VDD = 1.8
+
+* Power supplies
+VDD vdd 0 DC VDD
+VSS vss 0 DC 0
+
+* Cascade two STI gates to analyze propagation
+VIN in 0 DC 0
+
+* Load capacitances
+CL1 mid 0 10f
+CL2 out 0 10f
+
+* First STI stage
+XSTI1 in mid vdd vss STI
+
+* Second STI stage (for cascaded analysis)
+XSTI2 mid out vdd vss STI
+
+* ============================================================================
+* ANALYSIS
+* ============================================================================
+
+.control
+
+echo "=============================================="
+echo "Ternary Noise Margin Analysis"
+echo "=============================================="
+
+* DC sweep for transfer curve
+dc VIN 0 1.8 0.001
+
+* ============================================================
+* THRESHOLD EXTRACTION - First Stage (STI1: in -> mid)
+* ============================================================
+
+* Find output levels at input extremes
+meas dc VOL FIND v(mid) AT=0
+meas dc VOM FIND v(mid) AT=0.9
+meas dc VOH FIND v(mid) AT=1.8
+
+echo ""
+echo "--- Output Voltage Levels (Stage 1) ---"
+echo "VOL (Vin=0V):    " $&VOL " V"
+echo "VOM (Vin=0.9V):  " $&VOM " V"
+echo "VOH (Vin=1.8V):  " $&VOH " V"
+
+* Find input thresholds using derivative (gain = -1 points)
+* For ternary, we need 4 threshold points
+
+* Method: Find where Vout crosses specific levels
+* VIL: input where output falls to VOH - 0.1*(VOH-VOM)
+* VIM_L: input where output enters mid-zone (VOM + 0.1*(VOH-VOM))
+* VIM_H: input where output exits mid-zone (VOM - 0.1*(VOM-VOL))
+* VIH: input where output falls to VOL + 0.1*(VOM-VOL)
+
+let voh_val = v(mid)[0]
+let vom_val = vecmin(abs(v(mid) - 0.9))
+let vol_val = v(mid)[length(v(mid))-1]
+
+* Threshold voltages (approximate for ternary)
+* These are based on the "butterfly curve" method
+let vil_target = voh_val - 0.1 * (voh_val - 0.9)
+let vim_l_target = 0.9 + 0.05 * (voh_val - 0.9)
+let vim_h_target = 0.9 - 0.05 * (0.9 - vol_val)
+let vih_target = vol_val + 0.1 * (0.9 - vol_val)
+
+meas dc VIL WHEN v(mid)=vil_target FALL=1
+meas dc VIM_L WHEN v(mid)=vim_l_target FALL=1
+meas dc VIM_H WHEN v(mid)=vim_h_target FALL=1
+meas dc VIH WHEN v(mid)=vih_target FALL=1
+
+echo ""
+echo "--- Input Threshold Voltages ---"
+echo "VIL (low boundary):     " $&VIL " V"
+echo "VIM_L (mid-low edge):   " $&VIM_L " V"
+echo "VIM_H (mid-high edge):  " $&VIM_H " V"
+echo "VIH (high boundary):    " $&VIH " V"
+
+* ============================================================
+* NOISE MARGIN CALCULATION
+* ============================================================
+
+* For ternary logic, noise margins are:
+* NML = VIL - VOL (how much noise before -1 becomes 0)
+* NMH = VOH - VIH (how much noise before +1 becomes 0)
+* NMM = min(VIM_H - VOM, VOM - VIM_L) (stability of mid-level)
+
+let NML = VIL - 0
+let NMH = 1.8 - VIH
+let NMM_low = VIM_H - 0.9
+let NMM_high = 0.9 - VIM_L
+
+echo ""
+echo "=============================================="
+echo "NOISE MARGINS"
+echo "=============================================="
+echo "NML (Low margin):      " $&NML " V"
+echo "NMH (High margin):     " $&NMH " V"
+echo "NMM_low (Mid->Low):    " $&NMM_low " V"
+echo "NMM_high (Mid->High):  " $&NMM_high " V"
+echo ""
+
+* Target: All margins > 100mV for robust operation
+let margin_ok = 1
+if NML < 0.1
+  echo "WARNING: NML < 100mV - Low margin insufficient"
+  let margin_ok = 0
+end
+if NMH < 0.1
+  echo "WARNING: NMH < 100mV - High margin insufficient"
+  let margin_ok = 0
+end
+if NMM_low < 0.05
+  echo "WARNING: NMM_low < 50mV - Mid-level may be unstable"
+  let margin_ok = 0
+end
+if NMM_high < 0.05
+  echo "WARNING: NMM_high < 50mV - Mid-level may be unstable"
+  let margin_ok = 0
+end
+
+if margin_ok = 1
+  echo "All noise margins within acceptable limits"
+end
+
+* ============================================================
+* SAVE TRANSFER CURVE DATA
+* ============================================================
+
+wrdata nm_transfer_curve.dat v(mid) v(out)
+
+echo ""
+echo "Transfer curve data saved to: nm_transfer_curve.dat"
+echo "=============================================="
+
+* Plot if running interactively
+* plot v(in) v(mid) v(out)
+
+quit
+
+.endc
+
+.end
+
+* ============================================================================
+* INTERPRETATION GUIDE:
+* ============================================================================
+*
+* For binary CMOS: NM = VOH - VIH = VIL - VOL (symmetric)
+*   - Typical: ~0.4V for 1.8V CMOS
+*
+* For ternary CMOS: Three noise margin regions
+*   - NML (0→-1 boundary): Similar to binary low margin
+*   - NMH (0→+1 boundary): Similar to binary high margin
+*   - NMM (stability of middle level): NEW for ternary
+*
+* The middle level is the challenge in ternary:
+*   - Must be stable enough to propagate through gates
+*   - Requires careful threshold voltage matching
+*   - More sensitive to PVT variation than extreme levels
+*
+* Acceptable margins:
+*   - NML, NMH: > 100mV (similar to binary)
+*   - NMM: > 50mV (tighter, but mid-level transitions are rarer)
+*
+* If NMM is too small:
+*   1. Adjust transistor sizing in STI
+*   2. Use multi-Vth optimization
+*   3. Consider voltage scaling
+*   4. Add hysteresis buffer for regeneration
+* ============================================================================

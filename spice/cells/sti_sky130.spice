@@ -1,0 +1,64 @@
+* ============================================================================
+* STANDARD TERNARY INVERTER (STI) - SKY130 Foundry PDK Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* Function: Full ternary inversion (0->2, 1->1, 2->0)
+* Topology: Multi-threshold CMOS with asymmetric pull-up/pull-down
+* PDK: SkyWater SKY130 (130nm)
+*
+* This implementation uses foundry-characterized multi-Vth devices:
+*   - LVT NMOS: Low threshold, turns on early
+*   - Standard NMOS: Normal threshold
+*   - Standard PMOS: Normal threshold
+*   - HVT PMOS: High threshold, stays on longer
+*
+* Operation:
+*   VIN = 0V (LOW):   All PMOS ON, All NMOS OFF -> VOUT = VDD
+*   VIN = 0.9V (MID): Partial conduction creates voltage divider -> VOUT ~ VDD/2
+*   VIN = 1.8V (HIGH): All PMOS OFF, All NMOS ON -> VOUT = VSS
+*
+* Transistor Count: 4
+* ============================================================================
+
+.subckt STI_SKY130 in out VDD VSS
+
+* ============================================================================
+* PULL-UP NETWORK (PMOS) - Connected to VDD
+* ============================================================================
+* HVT PMOS - high threshold, stays on until input is high
+* Standard PMOS - normal switching
+XMP1 out in VDD VDD sky130_fd_pr__pfet_01v8_hvt w=1.5u l=150n
+XMP2 out in VDD VDD sky130_fd_pr__pfet_01v8 w=1u l=150n
+
+* ============================================================================
+* PULL-DOWN NETWORK (NMOS) - Connected to VSS
+* ============================================================================
+* LVT NMOS - low threshold, turns on early at low input voltage
+* Standard NMOS - normal switching
+XMN1 out in VSS VSS sky130_fd_pr__nfet_01v8_lvt w=800n l=150n
+XMN2 out in VSS VSS sky130_fd_pr__nfet_01v8 w=400n l=150n
+
+.ends STI_SKY130
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. SKY130 Multi-Vth Device Characteristics (TT corner, 27C):
+*    - nfet_01v8_lvt: Vth ~ 0.25V (low threshold)
+*    - nfet_01v8: Vth ~ 0.45V (standard)
+*    - pfet_01v8: Vth ~ -0.45V (standard)
+*    - pfet_01v8_hvt: Vth ~ -0.70V (high threshold)
+*
+* 2. The threshold staggering creates the intermediate state:
+*    - LVT NMOS starts conducting at Vin ~ 0.25V
+*    - HVT PMOS stops conducting at Vin ~ 1.1V
+*    - Overlap region creates stable intermediate output
+*
+* 3. Sizing is optimized for balanced trip points at VDD/3 and 2*VDD/3
+*
+* 4. For PVT analysis, use different library corners:
+*    .lib "sky130.lib.spice" tt  (typical)
+*    .lib "sky130.lib.spice" ss  (slow-slow)
+*    .lib "sky130.lib.spice" ff  (fast-fast)
+* ============================================================================

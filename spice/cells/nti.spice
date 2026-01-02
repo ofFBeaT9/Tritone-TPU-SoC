@@ -1,0 +1,77 @@
+* ============================================================================
+* NEGATIVE TERNARY INVERTER (NTI) - Multi-Vth CMOS Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: NTI - Negative Ternary Inverter
+* 
+* Function: Threshold-shifted inverter (downward bias)
+*   Input 0 (0V)   → Output 2 (1.8V)
+*   Input 1 (0.9V) → Output 0 (0V)
+*   Input 2 (1.8V) → Output 0 (0V)
+*
+* Truth Table (simplified):
+*   A | Y
+*   --|--
+*   0 | 2
+*   1 | 0
+*   2 | 0
+*
+* Balanced Ternary Interpretation:
+*   Y = +1 if A = -1, else Y = -1
+*
+* Implementation: Asymmetric Multi-Vth CMOS
+*   - Weak pull-up network (single SVT PMOS)
+*   - Strong pull-down network (multiple NMOS, larger widths)
+*   - Threshold shifted downward - responds to low input only
+*
+* Transistor Count: 3
+* Area: ~2 unit cells
+* ============================================================================
+
+.subckt NTI in out VDD VSS
+* Parameters - asymmetric sizing for downward threshold shift
+.param Wn=1u Wp=500n Ln=150n Lp=150n
+
+* ============================================================================
+* PULL-UP NETWORK (PMOS) - WEAK - Only wins at low input
+* ============================================================================
+* Single SVT PMOS - can only maintain high output when input is fully low
+XMP1 out in VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+
+* ============================================================================
+* PULL-DOWN NETWORK (NMOS) - STRONG - Biases output toward VSS
+* ============================================================================
+* Double-width LVT NMOS - turns on early and pulls hard
+XMN1 out in VSS VSS sky130_fd_pr__nfet_01v8_lvt W='Wn*2' L=Ln
+
+* SVT NMOS adds additional pull-down strength
+XMN2 out in VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+.ends NTI
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. NTI acts as a "zero detector" that outputs HIGH only when input is 0,
+*    and LOW for inputs 1 and 2
+*
+* 2. The asymmetric sizing creates an unbalanced voltage divider:
+*    - At Vin = 0V: PMOS ON, NMOS OFF → Vout = VDD
+*    - At Vin = 0.9V: Strong NMOS current >> Weak PMOS current → Vout ≈ VSS
+*    - At Vin = 1.8V: NMOS fully ON → Vout = VSS
+*
+* 3. The switching threshold is approximately at Vin = 0.45V (25% VDD)
+*
+* 4. NTI is essential for ternary logic operations:
+*    - Used in consensus/any circuits
+*    - Component of ternary multiplexers  
+*    - Input decoder for ternary arithmetic
+*    - Detects "negative" (-1) balanced ternary values
+*
+* 5. NTI is the complement of PTI:
+*    - PTI: outputs HIGH for inputs {0, 1}, LOW for input {2}
+*    - NTI: outputs HIGH for input {0}, LOW for inputs {1, 2}
+*
+* 6. Together PTI, NTI, and STI form the complete inverter set for
+*    synthesizing any ternary Boolean function
+* ============================================================================

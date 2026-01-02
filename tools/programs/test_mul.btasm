@@ -1,0 +1,129 @@
+# test_mul.btasm - Test MUL instruction - UPDATED v0.2
+# Tests: MUL (ternary multiplication) - NOW FULLY IMPLEMENTED
+#
+# IMPLEMENTATION STATUS (v0.2):
+#   The MUL instruction (opcode 0+0) is NOW FULLY IMPLEMENTED!
+#   Uses balanced ternary shift-and-add algorithm:
+#     For each trit in Rs2:
+#       +1: add shifted Rs1
+#       -1: subtract shifted Rs1
+#        0: no operation
+#
+# Syntax: MUL Rd, Rs1, Rs2 -> Rd = Rs1 * Rs2 (ternary multiplication)
+# ALU Op: 111 (binary)
+
+# ============================================================
+# Test 1: Simple positive multiplication
+# ============================================================
+# 2 * 3 = 6
+    ADDI R1, R0, 2      # R1 = 2
+    ADDI R2, R0, 3      # R2 = 3
+    MUL  R3, R1, R2     # R3 = 2 * 3 = 6
+
+# Verify result
+    ADDI R4, R0, 6
+    BEQ  R3, R4, test2
+    HALT                # Error: 2*3 != 6
+
+# ============================================================
+# Test 2: Multiplication with zero
+# ============================================================
+test2:
+# 0 * 3 = 0
+    MUL  R4, R0, R2     # R4 = 0 * 3 = 0
+
+# Verify result
+    BEQ  R4, R0, test3
+    HALT                # Error: 0*3 != 0
+
+# ============================================================
+# Test 3: Multiplication by one
+# ============================================================
+test3:
+# 1 * 1 = 1
+    ADDI R1, R0, 1
+    ADDI R2, R0, 1
+    MUL  R5, R1, R2     # R5 = 1 * 1 = 1
+
+# Verify result
+    BEQ  R5, R1, test4
+    HALT                # Error: 1*1 != 1
+
+# ============================================================
+# Test 4: Negative multiplication
+# ============================================================
+test4:
+# -1 * 3 = -3
+    ADDI R1, R0, -1
+    ADDI R2, R0, 3
+    MUL  R6, R1, R2     # R6 = -1 * 3 = -3
+
+# Verify result
+    ADDI R4, R0, -3
+    BEQ  R6, R4, test5
+    HALT                # Error: -1*3 != -3
+
+# ============================================================
+# Test 5: Larger values
+# ============================================================
+test5:
+# 4 * 3 = 12
+    ADDI R1, R0, 4
+    ADDI R2, R0, 3
+    MUL  R7, R1, R2     # R7 = 4 * 3 = 12
+
+# Verify result (12 = 3^2 + 3 = 9 + 3 in balanced ternary: ++0)
+# Note: Can't easily load 12 with 2-trit immediate, so skip exact check
+# Just verify it's not zero and not same as operands
+
+    BEQ  R7, R0, mul_fail   # Should not be zero
+    BEQ  R7, R1, mul_fail   # Should not equal 4
+    BEQ  R7, R2, mul_fail   # Should not equal 3
+
+# ============================================================
+# Test 6: Negative * Negative = Positive
+# ============================================================
+# -2 * -2 = 4
+    ADDI R1, R0, -2
+    ADDI R2, R0, -2
+    MUL  R8, R1, R2     # R8 = -2 * -2 = 4
+
+# Verify result
+    ADDI R4, R0, 4
+    BEQ  R8, R4, test7
+    HALT                # Error: -2*-2 != 4
+
+# ============================================================
+# Test 7: Commutativity - a*b = b*a
+# ============================================================
+test7:
+    ADDI R1, R0, 3
+    ADDI R2, R0, 2
+    MUL  R3, R1, R2     # R3 = 3 * 2
+    MUL  R4, R2, R1     # R4 = 2 * 3
+
+    BEQ  R3, R4, all_pass
+    HALT                # Error: 3*2 != 2*3
+
+mul_fail:
+    ADDI R1, R0, -1     # Error indicator
+    HALT
+
+# ============================================================
+# All Tests Passed
+# ============================================================
+all_pass:
+    ADDI R1, R0, 1      # Success indicator
+
+    HALT
+
+# ============================================================
+# Expected Register Values (if all tests pass):
+# ============================================================
+# R1 = 1 (success indicator)
+# R3 = 6 (from Test 7: 3*2)
+# R4 = 6 (from Test 7: 2*3)
+# R5 = 1 (from Test 3: 1*1)
+# R6 = -3 (from Test 4: -1*3)
+# R7 = 12 (from Test 5: 4*3)
+# R8 = 4 (from Test 6: -2*-2)

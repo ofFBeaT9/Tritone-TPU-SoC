@@ -1,0 +1,213 @@
+
+==========================================================================
+floorplan final report_tns
+--------------------------------------------------------------------------
+tns max 0.00
+
+==========================================================================
+floorplan final report_wns
+--------------------------------------------------------------------------
+wns max 0.00
+
+==========================================================================
+floorplan final report_worst_slack
+--------------------------------------------------------------------------
+worst slack max 305.35
+
+==========================================================================
+floorplan final report_clock_min_period
+--------------------------------------------------------------------------
+core_clock period_min = 361.65 fmax = 2765.13
+
+==========================================================================
+floorplan final report_checks -path_delay min
+--------------------------------------------------------------------------
+Startpoint: u_cpu.id_ex_valid_a$_DFF_PN0_
+            (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: u_cpu.valid_out_a$_DFF_PN0_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: min
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.00    0.00    0.00   clock core_clock (rise edge)
+                          0.00    0.00   clock network delay (ideal)
+                  0.00    0.00    0.00 ^ u_cpu.id_ex_valid_a$_DFF_PN0_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+     1    0.51   12.01   34.42   34.42 ^ u_cpu.id_ex_valid_a$_DFF_PN0_/QN (DFFASRHQNx1_ASAP7_75t_R)
+                                         _001_ (net)
+                 12.01    0.00   34.42 ^ _261_/A (INVx1_ASAP7_75t_R)
+     1    0.55    6.18    5.69   40.11 v _261_/Y (INVx1_ASAP7_75t_R)
+                                         u_cpu.ex_wb_reg_write_a (net)
+                  6.18    0.00   40.11 v u_cpu.valid_out_a$_DFF_PN0_/D (DFFASRHQNx1_ASAP7_75t_R)
+                                 40.11   data arrival time
+
+                  0.00    0.00    0.00   clock core_clock (rise edge)
+                          0.00    0.00   clock network delay (ideal)
+                         15.00   15.00   clock uncertainty
+                          0.00   15.00   clock reconvergence pessimism
+                                 15.00 ^ u_cpu.valid_out_a$_DFF_PN0_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+                          9.28   24.28   library hold time
+                                 24.28   data required time
+-----------------------------------------------------------------------------
+                                 24.28   data required time
+                                -40.11   data arrival time
+-----------------------------------------------------------------------------
+                                 15.83   slack (MET)
+
+
+
+==========================================================================
+floorplan final report_checks -path_delay max
+--------------------------------------------------------------------------
+Startpoint: u_cpu.imem_addr[3]$_DFF_PN0_
+            (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: u_cpu.imem_addr[13]$_DFF_PN0_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.00    0.00    0.00   clock core_clock (rise edge)
+                          0.00    0.00   clock network delay (ideal)
+                  0.00    0.00    0.00 ^ u_cpu.imem_addr[3]$_DFF_PN0_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+     3    2.67   25.74   44.32   44.32 v u_cpu.imem_addr[3]$_DFF_PN0_/QN (DFFASRHQNx1_ASAP7_75t_R)
+                                         _081_ (net)
+                 25.74    0.00   44.32 v _273_/A (INVx1_ASAP7_75t_R)
+     2    0.91   12.32   10.36   54.68 ^ _273_/Y (INVx1_ASAP7_75t_R)
+                                         pc_out[3] (net)
+                 12.32    0.00   54.68 ^ _447_/B (HAxp5_ASAP7_75t_R)
+     1    2.19   32.45   19.03   73.71 v _447_/CON (HAxp5_ASAP7_75t_R)
+                                         _079_ (net)
+     1    2.00   35.54   19.47   93.18 ^ _447_/SN (HAxp5_ASAP7_75t_R)
+                                         _080_ (net)
+                 35.54    0.00   93.18 ^ _280_/A (NOR2x2_ASAP7_75t_R)
+    10    5.99   26.58   23.48  116.65 v _280_/Y (NOR2x2_ASAP7_75t_R)
+                                         _139_ (net)
+                 26.58    0.00  116.65 v _291_/B (OR3x2_ASAP7_75t_R)
+     2    1.60   13.39   33.96  150.61 v _291_/Y (OR3x2_ASAP7_75t_R)
+                                         _105_ (net)
+                 13.39    0.00  150.61 v _295_/A (OR2x2_ASAP7_75t_R)
+     1    1.06    8.18   20.90  171.51 v _295_/Y (OR2x2_ASAP7_75t_R)
+                                         _117_ (net)
+                  8.18    0.00  171.51 v _464_/A (HAxp5_ASAP7_75t_R)
+     1    1.00   18.44   26.84  198.35 v _464_/SN (HAxp5_ASAP7_75t_R)
+                                         _249_ (net)
+                 18.44    0.00  198.35 v _465_/B (HAxp5_ASAP7_75t_R)
+     2    2.29   34.75   22.41  220.76 ^ _465_/CON (HAxp5_ASAP7_75t_R)
+                                         _051_ (net)
+                 34.75    0.00  220.76 ^ _320_/A (INVx1_ASAP7_75t_R)
+     1    1.61   15.85   12.91  233.67 v _320_/Y (INVx1_ASAP7_75t_R)
+                                         _049_ (net)
+                 15.85    0.00  233.67 v _435_/CI (FAx1_ASAP7_75t_R)
+     3    2.30   37.94   57.48  291.15 v _435_/SN (FAx1_ASAP7_75t_R)
+                                         _050_ (net)
+                 37.94    0.00  291.15 v _355_/A (OR3x1_ASAP7_75t_R)
+     1    0.47    9.35   28.87  320.01 v _355_/Y (OR3x1_ASAP7_75t_R)
+                                         _167_ (net)
+                  9.35    0.00  320.01 v _360_/A2 (AO32x1_ASAP7_75t_R)
+     1    0.62    8.29   20.91  340.92 v _360_/Y (AO32x1_ASAP7_75t_R)
+                                         u_cpu.next_pc[13] (net)
+                  8.29    0.00  340.92 v u_cpu.imem_addr[13]$_DFF_PN0_/D (DFFASRHQNx1_ASAP7_75t_R)
+                                340.92   data arrival time
+
+                  0.00  667.00  667.00   clock core_clock (rise edge)
+                          0.00  667.00   clock network delay (ideal)
+                        -15.00  652.00   clock uncertainty
+                          0.00  652.00   clock reconvergence pessimism
+                                652.00 ^ u_cpu.imem_addr[13]$_DFF_PN0_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+                         -5.72  646.28   library setup time
+                                646.28   data required time
+-----------------------------------------------------------------------------
+                                646.28   data required time
+                               -340.92   data arrival time
+-----------------------------------------------------------------------------
+                                305.35   slack (MET)
+
+
+
+==========================================================================
+floorplan final report_checks -unconstrained
+--------------------------------------------------------------------------
+Startpoint: u_cpu.imem_addr[3]$_DFF_PN0_
+            (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: u_cpu.imem_addr[13]$_DFF_PN0_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.00    0.00    0.00   clock core_clock (rise edge)
+                          0.00    0.00   clock network delay (ideal)
+                  0.00    0.00    0.00 ^ u_cpu.imem_addr[3]$_DFF_PN0_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+     3    2.67   25.74   44.32   44.32 v u_cpu.imem_addr[3]$_DFF_PN0_/QN (DFFASRHQNx1_ASAP7_75t_R)
+                                         _081_ (net)
+                 25.74    0.00   44.32 v _273_/A (INVx1_ASAP7_75t_R)
+     2    0.91   12.32   10.36   54.68 ^ _273_/Y (INVx1_ASAP7_75t_R)
+                                         pc_out[3] (net)
+                 12.32    0.00   54.68 ^ _447_/B (HAxp5_ASAP7_75t_R)
+     1    2.19   32.45   19.03   73.71 v _447_/CON (HAxp5_ASAP7_75t_R)
+                                         _079_ (net)
+     1    2.00   35.54   19.47   93.18 ^ _447_/SN (HAxp5_ASAP7_75t_R)
+                                         _080_ (net)
+                 35.54    0.00   93.18 ^ _280_/A (NOR2x2_ASAP7_75t_R)
+    10    5.99   26.58   23.48  116.65 v _280_/Y (NOR2x2_ASAP7_75t_R)
+                                         _139_ (net)
+                 26.58    0.00  116.65 v _291_/B (OR3x2_ASAP7_75t_R)
+     2    1.60   13.39   33.96  150.61 v _291_/Y (OR3x2_ASAP7_75t_R)
+                                         _105_ (net)
+                 13.39    0.00  150.61 v _295_/A (OR2x2_ASAP7_75t_R)
+     1    1.06    8.18   20.90  171.51 v _295_/Y (OR2x2_ASAP7_75t_R)
+                                         _117_ (net)
+                  8.18    0.00  171.51 v _464_/A (HAxp5_ASAP7_75t_R)
+     1    1.00   18.44   26.84  198.35 v _464_/SN (HAxp5_ASAP7_75t_R)
+                                         _249_ (net)
+                 18.44    0.00  198.35 v _465_/B (HAxp5_ASAP7_75t_R)
+     2    2.29   34.75   22.41  220.76 ^ _465_/CON (HAxp5_ASAP7_75t_R)
+                                         _051_ (net)
+                 34.75    0.00  220.76 ^ _320_/A (INVx1_ASAP7_75t_R)
+     1    1.61   15.85   12.91  233.67 v _320_/Y (INVx1_ASAP7_75t_R)
+                                         _049_ (net)
+                 15.85    0.00  233.67 v _435_/CI (FAx1_ASAP7_75t_R)
+     3    2.30   37.94   57.48  291.15 v _435_/SN (FAx1_ASAP7_75t_R)
+                                         _050_ (net)
+                 37.94    0.00  291.15 v _355_/A (OR3x1_ASAP7_75t_R)
+     1    0.47    9.35   28.87  320.01 v _355_/Y (OR3x1_ASAP7_75t_R)
+                                         _167_ (net)
+                  9.35    0.00  320.01 v _360_/A2 (AO32x1_ASAP7_75t_R)
+     1    0.62    8.29   20.91  340.92 v _360_/Y (AO32x1_ASAP7_75t_R)
+                                         u_cpu.next_pc[13] (net)
+                  8.29    0.00  340.92 v u_cpu.imem_addr[13]$_DFF_PN0_/D (DFFASRHQNx1_ASAP7_75t_R)
+                                340.92   data arrival time
+
+                  0.00  667.00  667.00   clock core_clock (rise edge)
+                          0.00  667.00   clock network delay (ideal)
+                        -15.00  652.00   clock uncertainty
+                          0.00  652.00   clock reconvergence pessimism
+                                652.00 ^ u_cpu.imem_addr[13]$_DFF_PN0_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+                         -5.72  646.28   library setup time
+                                646.28   data required time
+-----------------------------------------------------------------------------
+                                646.28   data required time
+                               -340.92   data arrival time
+-----------------------------------------------------------------------------
+                                305.35   slack (MET)
+
+
+
+==========================================================================
+floorplan final report_power
+--------------------------------------------------------------------------
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             2.36e-05   0.00e+00   1.51e-09   2.36e-05  87.5%
+Combinational          0.00e+00   3.34e-06   3.16e-08   3.37e-06  12.5%
+Clock                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  2.36e-05   3.34e-06   3.31e-08   2.70e-05 100.0%
+                          87.5%      12.4%       0.1%

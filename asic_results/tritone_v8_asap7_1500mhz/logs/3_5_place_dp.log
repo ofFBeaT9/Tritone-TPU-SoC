@@ -1,0 +1,98 @@
+OpenROAD 24Q3-11673-g154f14ab7e 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone/aggressive/3_4_place_resized.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Placement Analysis
+---------------------------------
+total displacement         97.1 u
+average displacement        0.2 u
+max displacement            0.8 u
+original HPWL             480.1 u
+legalized HPWL            574.9 u
+delta HPWL                   20 %
+
+Detailed placement improvement.
+[INFO DPL-0401] Setting random seed to 1.
+[INFO DPL-0402] Setting maximum displacement 5 1 to 1350 270 units.
+[INFO DPL-0320] Collected 167 fixed cells.
+[INFO DPL-0318] Collected 417 single height cells.
+[INFO DPL-0321] Collected 0 wide cells.
+[INFO DPL-0322] Image (2052, 2160) - (10152, 9990)
+[INFO DPL-0310] Assigned 417 cells into segments.  Movement in X-direction is 0.000000, movement in Y-direction is 0.000000.
+[INFO DPL-0313] Found 0 cells in wrong regions.
+[INFO DPL-0315] Found 0 row alignment problems.
+[INFO DPL-0314] Found 0 site alignment problems.
+[INFO DPL-0311] Found 0 overlaps between adjacent cells.
+[INFO DPL-0312] Found 0 edge spacing violations and 0 padding violations.
+[INFO DPL-0303] Running algorithm for independent set matching.
+[INFO DPL-0300] Set matching objective is wirelength.
+[INFO DPL-0301] Pass   1 of matching; objective is 5.753350e+05.
+[INFO DPL-0302] End of matching; objective is 5.744940e+05, improvement is 0.15 percent.
+[INFO DPL-0303] Running algorithm for global swaps.
+[INFO DPL-0306] Pass   1 of global swaps; hpwl is 5.652030e+05.
+[INFO DPL-0306] Pass   2 of global swaps; hpwl is 5.635480e+05.
+[INFO DPL-0307] End of global swaps; objective is 5.635480e+05, improvement is 1.91 percent.
+[INFO DPL-0303] Running algorithm for vertical swaps.
+[INFO DPL-0308] Pass   1 of vertical swaps; hpwl is 5.606480e+05.
+[INFO DPL-0309] End of vertical swaps; objective is 5.606480e+05, improvement is 0.51 percent.
+[INFO DPL-0303] Running algorithm for reordering.
+[INFO DPL-0304] Pass   1 of reordering; objective is 5.568850e+05.
+[INFO DPL-0305] End of reordering; objective is 5.568850e+05, improvement is 0.67 percent.
+[INFO DPL-0303] Running algorithm for random improvement.
+[INFO DPL-0324] Random improver is using random generator.
+[INFO DPL-0325] Random improver is using hpwl objective.
+[INFO DPL-0326] Random improver cost string is (a).
+[INFO DPL-0332] End of pass, Generator random called 8340 times.
+[INFO DPL-0335] Generator random, Cumulative attempts 8340, swaps 1646, moves  2031 since last reset.
+[INFO DPL-0333] End of pass, Objective hpwl, Initial cost 5.568850e+05, Scratch cost 5.486500e+05, Incremental cost 5.486500e+05, Mismatch? N
+[INFO DPL-0338] End of pass, Total cost is 5.486500e+05.
+[INFO DPL-0327] Pass   1 of random improver; improvement in cost is 1.48 percent.
+[INFO DPL-0332] End of pass, Generator random called 8340 times.
+[INFO DPL-0335] Generator random, Cumulative attempts 16680, swaps 3248, moves  4042 since last reset.
+[INFO DPL-0333] End of pass, Objective hpwl, Initial cost 5.486500e+05, Scratch cost 5.429720e+05, Incremental cost 5.429720e+05, Mismatch? N
+[INFO DPL-0338] End of pass, Total cost is 5.429720e+05.
+[INFO DPL-0327] Pass   2 of random improver; improvement in cost is 1.03 percent.
+[INFO DPL-0332] End of pass, Generator random called 8340 times.
+[INFO DPL-0335] Generator random, Cumulative attempts 25020, swaps 4794, moves  6040 since last reset.
+[INFO DPL-0333] End of pass, Objective hpwl, Initial cost 5.429720e+05, Scratch cost 5.414160e+05, Incremental cost 5.414160e+05, Mismatch? N
+[INFO DPL-0338] End of pass, Total cost is 5.414160e+05.
+[INFO DPL-0327] Pass   3 of random improver; improvement in cost is 0.29 percent.
+[INFO DPL-0328] End of random improver; improvement is 2.777773 percent.
+[INFO DPL-0380] Cell flipping.
+[INFO DPL-0382] Changed 0 cell orientations for row compatibility.
+[INFO DPL-0383] Performed 117 cell flips.
+[INFO DPL-0384] End of flipping; objective is 5.250970e+05, improvement is 3.01 percent.
+[INFO DPL-0313] Found 0 cells in wrong regions.
+[INFO DPL-0315] Found 0 row alignment problems.
+[INFO DPL-0314] Found 0 site alignment problems.
+[INFO DPL-0311] Found 0 overlaps between adjacent cells.
+[INFO DPL-0312] Found 0 edge spacing violations and 0 padding violations.
+Detailed Improvement Results
+------------------------------------------
+Original HPWL              574.9 u (     265.2,      309.6)
+Final HPWL                 522.3 u (     234.2,      288.0)
+Delta HPWL                  -9.2 % (     -11.7,       -7.0)
+
+[INFO DPL-0020] Mirrored 55 instances
+[INFO DPL-0021] HPWL before             522.3 u
+[INFO DPL-0022] HPWL after              520.9 u
+[INFO DPL-0023] HPWL delta               -0.3 %
+[INFO FLW-0012] Placement violations .
+Report metrics stage 3, detailed place...
+
+==========================================================================
+detailed place report_design_area
+--------------------------------------------------------------------------
+Design area 41 um^2 64% utilization.
+Elapsed time: 0:01.15[h:]min:sec. CPU time: user 1.00 sys 0.11 (96%). Peak memory: 197916KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_5_place_dp                       1            193 6474f3b7d5e523e376dc

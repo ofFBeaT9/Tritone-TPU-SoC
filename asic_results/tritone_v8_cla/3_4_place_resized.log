@@ -1,0 +1,74 @@
+OpenROAD 24Q3-11661-g86b9236cdd 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+read_liberty /OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_db ./results/sky130hd/ternary_cpu_system/base/3_3_place_gp.odb
+Perform buffer insertion and gate resizing...
+repair_design -verbose -match_cell_footprint
+Iteration |   Area    | Resized | Buffers | Nets repaired | Remaining
+---------------------------------------------------------------------
+        0 |     +0.0% |       0 |       0 |             0 |       476
+       10 |     +0.0% |       0 |       0 |             0 |       466
+       20 |     +0.0% |       0 |       0 |             0 |       456
+       30 |     +0.0% |       0 |       0 |             0 |       446
+       40 |     +0.0% |       0 |       0 |             0 |       436
+       50 |     +0.0% |       0 |       0 |             0 |       426
+       60 |     +0.0% |       0 |       0 |             0 |       416
+       70 |     +0.0% |       0 |       0 |             0 |       406
+       80 |     +0.0% |       0 |       0 |             0 |       396
+       90 |     +0.0% |       0 |       0 |             0 |       386
+      100 |     +0.0% |       0 |       0 |             0 |       376
+      110 |     +0.0% |       0 |       0 |             0 |       366
+      120 |     +0.0% |       0 |       0 |             0 |       356
+      130 |     +0.0% |       0 |       0 |             0 |       346
+      140 |     +0.0% |       0 |       0 |             0 |       336
+      150 |     +0.0% |       0 |       0 |             0 |       326
+      160 |     +0.0% |       0 |       0 |             0 |       316
+      170 |     +0.0% |       0 |       0 |             0 |       306
+      180 |     +0.0% |       0 |       0 |             0 |       296
+      190 |     +0.0% |       0 |       0 |             0 |       286
+      200 |     +0.0% |       0 |       0 |             0 |       276
+      210 |     +0.0% |       0 |       0 |             0 |       266
+      220 |     +0.0% |       0 |       0 |             0 |       256
+      230 |     +0.0% |       0 |       0 |             0 |       246
+      240 |     +0.0% |       0 |       0 |             0 |       236
+      250 |     +0.0% |       0 |       0 |             0 |       226
+      260 |     +0.0% |       0 |       0 |             0 |       216
+      270 |     +0.0% |       0 |       0 |             0 |       206
+      280 |     +0.0% |       0 |       0 |             0 |       196
+      290 |     +0.0% |       0 |       0 |             0 |       186
+      300 |     +0.0% |       0 |       0 |             0 |       176
+      310 |     +0.0% |       0 |       0 |             0 |       166
+      320 |     +0.0% |       0 |       0 |             0 |       156
+      330 |     +0.0% |       0 |       0 |             0 |       146
+      340 |     +0.0% |       0 |       0 |             0 |       136
+      350 |     +0.0% |       0 |       0 |             0 |       126
+      360 |     +0.0% |       0 |       0 |             0 |       116
+      370 |     +0.0% |       0 |       0 |             0 |       106
+      380 |     +0.0% |       0 |       0 |             0 |        96
+      390 |     +0.0% |       0 |       0 |             0 |        86
+      400 |     +0.0% |       0 |       0 |             0 |        76
+      410 |     +0.0% |       0 |       0 |             0 |        66
+      420 |     +0.0% |       0 |       0 |             0 |        56
+      430 |     +0.0% |       0 |       0 |             0 |        46
+      440 |     +0.0% |       0 |       0 |             0 |        36
+      450 |     +0.0% |       0 |       0 |             0 |        26
+      460 |     +0.0% |       0 |       0 |             0 |        16
+      470 |     +0.0% |       0 |       0 |             0 |         6
+    final |     +0.0% |       0 |       0 |             0 |         0
+---------------------------------------------------------------------
+Floating nets: 
+[WARNING RSZ-0020] found 2 floating nets.
+Report metrics stage 3, resizer...
+
+==========================================================================
+resizer report_design_area
+--------------------------------------------------------------------------
+Design area 2549 um^2 49% utilization.
+Instance count before 385, after 385
+Pin count before 988, after 988
+Elapsed time: 0:00.44[h:]min:sec. CPU time: user 0.31 sys 0.20 (116%). Peak memory: 132216KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_4_place_resized                  0            129 9dce7930de6e2b890f65

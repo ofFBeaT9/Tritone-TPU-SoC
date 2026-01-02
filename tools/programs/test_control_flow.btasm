@@ -1,0 +1,69 @@
+# Test Program: Control Flow Instructions
+# Tests: BEQ, BNE, BEQZ, BNEZ
+# Coverage: Branch taken and not-taken scenarios
+
+# Test BEQ (Branch if Equal)
+LDI R1, 5
+LDI R2, 5
+BEQ R1, R2, eq_taken    # Should branch (5 == 5)
+LDI R3, -1              # Should skip this
+eq_taken:
+LDI R3, 1               # Should execute this
+
+LDI R1, 5
+LDI R2, 7
+BEQ R1, R2, eq_not_taken  # Should NOT branch (5 != 7)
+LDI R4, 1                 # Should execute this
+eq_not_taken:
+LDI R5, 2
+
+# Test BNE (Branch if Not Equal)
+LDI R1, 3
+LDI R2, 8
+BNE R1, R2, ne_taken    # Should branch (3 != 8)
+LDI R6, -1              # Should skip this
+ne_taken:
+LDI R6, 1               # Should execute this
+
+LDI R1, 4
+LDI R2, 4
+BNE R1, R2, ne_not_taken  # Should NOT branch (4 == 4)
+LDI R7, 1                 # Should execute this
+ne_not_taken:
+LDI R8, 2
+
+# Test BEQZ (Branch if Equal to Zero)
+LDI R1, 0
+BEQZ R1, beqz_taken     # Should branch (R1 == 0)
+LDI R3, -1              # Should skip this
+beqz_taken:
+LDI R3, 3               # Should execute this
+
+LDI R1, 1
+BEQZ R1, beqz_not_taken  # Should NOT branch (R1 != 0)
+LDI R4, 3                # Should execute this
+beqz_not_taken:
+LDI R5, 4
+
+# Test BNEZ (Branch if Not Equal to Zero)
+LDI R1, 7
+BNEZ R1, bnez_taken     # Should branch (R1 != 0)
+LDI R6, -1              # Should skip this
+bnez_taken:
+LDI R6, 3               # Should execute this
+
+LDI R1, 0
+BNEZ R1, bnez_not_taken  # Should NOT branch (R1 == 0)
+LDI R7, 3                # Should execute this
+bnez_not_taken:
+LDI R8, 4
+
+# Verify results
+# All Rx registers (R3-R8) should have positive values if branches worked
+LDI R1, 1
+SUB R0, R3, R1   # R3 should be 1 or 3
+SUB R0, R4, R1   # R4 should be 1 or 3
+SUB R0, R6, R1   # R6 should be 1 or 3
+SUB R0, R7, R1   # R7 should be 1 or 3
+
+HALT

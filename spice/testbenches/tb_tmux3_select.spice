@@ -1,0 +1,35 @@
+* Basic select-function test for TMUX3
+* Verifies Y tracks D0/D1/D2 as S steps through {0, VMID, VDD}
+
+.include '../models/sky130_models.spice'
+.include '../cells/sti.spice'
+.include '../cells/pti.spice'
+.include '../cells/nti.spice'
+.include '../cells/tmax.spice'
+.include '../cells/tmux3.spice'
+
+.param VDD_NOM=1.8
+.param VMID_NOM=0.9
+
+VDD vdd 0 DC VDD_NOM
+VSS vss 0 DC 0
+
+* Data inputs are fixed to distinct levels for easy checking
+VD0 d0 0 DC 0
+VD1 d1 0 DC VMID_NOM
+VD2 d2 0 DC VDD_NOM
+
+VS s 0 DC 0
+
+XTMUX d0 d1 d2 s y vdd vss TMUX3
+
+.dc VS 0 1.8 0.9
+
+.control
+  run
+  set filetype=ascii
+  wrdata ../results/tmux3_select.csv V(s) V(d0) V(d1) V(d2) V(y)
+  quit
+.endc
+
+.end

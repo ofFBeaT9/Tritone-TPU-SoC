@@ -1,0 +1,253 @@
+* ============================================================================
+* TERNARY 8T SRAM BITCELL
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TSRAM8T - Ternary Static Random Access Memory (8 Transistor)
+*
+* Function: Stores one balanced ternary digit (trit) using voltage levels
+*   Logic -1: VSS (0V)
+*   Logic 0:  VMID (VDD/2 = 0.9V)
+*   Logic +1: VDD (1.8V)
+*
+* Topology: 8T SRAM with decoupled read port for read stability
+*   - Cross-coupled ternary inverters (4T) for storage
+*   - Separate write port (2T) for write access
+*   - Isolated read port (2T) to prevent read disturb
+*
+* Advantages over 6T:
+*   1. Eliminates read disturb (critical for mid-level)
+*   2. Better noise margins at all three levels
+*   3. Allows independent read/write optimization
+*
+* Area: ~1.3x binary 8T due to ternary inverter sizing
+* Target Technology: SKY130 Multi-Vth CMOS
+* ============================================================================
+
+.subckt TSRAM8T BL BLB WL_W WL_R RBL VDD VMID VSS
+
+* ============================================================================
+* PARAMETERS
+* ============================================================================
+* Write port transistors
+.param Ww=0.50u
+.param Lw=0.15u
+
+* Read port transistors (sized for speed)
+.param Wr=0.42u
+.param Lr=0.15u
+
+* Storage inverter transistors
+.param Wp=0.55u
+.param Lp=0.15u
+.param Wn=0.42u
+.param Ln=0.15u
+
+* ============================================================================
+* STORAGE ELEMENT: Cross-Coupled Ternary Inverters
+* ============================================================================
+* Using STI (Standard Ternary Inverter) topology with multi-Vth
+* for proper tri-stable operation
+
+* ----- Inverter 1: Drives Q from QB -----
+* Pull-up stack (VMID to VDD region)
+*   - HVT PMOS: Conducts for QB < VMID (pulls Q toward VDD)
+MP1H Q QB VDD VDD sky130_fd_pr__pfet_g5v0d10v5 w=Wp l=Lp
+*   - Standard PMOS: Helps with mid-level transition
+MP1S Q QB VMID VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+
+* Pull-down stack (VSS to VMID region)
+*   - LVT NMOS: Conducts for QB > VMID (pulls Q toward VSS)
+MN1L Q QB VSS VSS sky130_fd_pr__nfet_01v8_lvt w=Wn l=Ln
+*   - Standard NMOS: Helps with mid-level transition
+MN1S Q QB VMID VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+
+* ----- Inverter 2: Drives QB from Q -----
+MP2H QB Q VDD VDD sky130_fd_pr__pfet_g5v0d10v5 w=Wp l=Lp
+MP2S QB Q VMID VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+MN2L QB Q VSS VSS sky130_fd_pr__nfet_01v8_lvt w=Wn l=Ln
+MN2S QB Q VMID VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+
+* ============================================================================
+* WRITE PORT (Controlled by WL_W)
+* ============================================================================
+* Standard 2T access for write operations
+* Bitlines driven to desired levels: VSS, VMID, or VDD
+
+* Write access transistor to Q
+MW1 BL WL_W Q VSS sky130_fd_pr__nfet_01v8 w=Ww l=Lw
+
+* Write access transistor to QB
+MW2 BLB WL_W QB VSS sky130_fd_pr__nfet_01v8 w=Ww l=Lw
+
+* ============================================================================
+* READ PORT (Controlled by WL_R)
+* ============================================================================
+* Decoupled read path prevents read disturb
+* Uses stacked transistors for voltage-mode readout
+
+* Read buffer NMOS: Conducts based on Q level
+* When Q is high, RBL discharges through MR2
+* When Q is low or mid, RBL stays precharged
+
+* Read access transistor (controlled by WL_R)
+MR1 RBL_int WL_R VSS VSS sky130_fd_pr__nfet_01v8 w=Wr l=Lr
+
+* Read driver (controlled by Q)
+MR2 RBL Q RBL_int VSS sky130_fd_pr__nfet_01v8 w=Wr l=Lr
+
+* Note: For proper ternary read, need 3-level RBL sensing
+* Simple single-ended read gives: Q>Vth => RBL low, Q<Vth => RBL high
+* For true ternary, use differential sensing with reference
+
+.ends TSRAM8T
+
+* ============================================================================
+* TERNARY 8T BITCELL - ALTERNATIVE WITH EXPLICIT VMID
+* ============================================================================
+* This variant connects storage nodes explicitly to VMID for better
+* mid-level stability, at the cost of static current.
+* ============================================================================
+
+.subckt TSRAM8T_VMID BL BLB WL_W WL_R RBL VDD VMID VSS
+
+.param Ww=0.50u
+.param Lw=0.15u
+.param Wr=0.42u
+.param Lr=0.15u
+.param Wp=0.55u
+.param Lp=0.15u
+.param Wn=0.42u
+.param Ln=0.15u
+
+* Resistance to VMID for mid-level stability
+.param Rvmid=100k
+
+* ----- Storage Inverter 1 -----
+MP1 Q QB VDD VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+MN1 Q QB VSS VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+* Weak pull to VMID for mid-level stability
+RVMID1 Q VMID Rvmid
+
+* ----- Storage Inverter 2 -----
+MP2 QB Q VDD VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+MN2 QB Q VSS VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+* Weak pull to VMID for mid-level stability
+RVMID2 QB VMID Rvmid
+
+* ----- Write Port -----
+MW1 BL WL_W Q VSS sky130_fd_pr__nfet_01v8 w=Ww l=Lw
+MW2 BLB WL_W QB VSS sky130_fd_pr__nfet_01v8 w=Ww l=Lw
+
+* ----- Read Port -----
+MR1 RBL_int WL_R VSS VSS sky130_fd_pr__nfet_01v8 w=Wr l=Lr
+MR2 RBL Q RBL_int VSS sky130_fd_pr__nfet_01v8 w=Wr l=Lr
+
+.ends TSRAM8T_VMID
+
+* ============================================================================
+* WRITE DRIVER FOR TERNARY LEVELS
+* ============================================================================
+* Generates BL/BLB voltages for writing -1, 0, or +1
+* ============================================================================
+
+.subckt TERNARY_WRITE_DRIVER D0 D1 WE BL BLB VDD VMID VSS
+
+* ============================================================================
+* TRUTH TABLE
+* ============================================================================
+* D1  D0  Trit  BL      BLB
+*  0   0   -1   VSS     VDD
+*  0   1    0   VMID    VMID
+*  1   0   +1   VDD     VSS
+*  1   1  (inv) X       X
+* ============================================================================
+
+.param Wd=1.0u
+.param Ld=0.15u
+
+* Control signals
+* write_neg = !D1 & !D0 & WE  (write -1)
+* write_mid = !D1 & D0 & WE   (write 0)
+* write_pos = D1 & !D0 & WE   (write +1)
+
+* Simplified driver using transmission gates
+* BL driver for -1: Connect to VSS
+MN_neg_bl BL write_neg VSS VSS sky130_fd_pr__nfet_01v8 w=Wd l=Ld
+* BLB driver for -1: Connect to VDD
+MP_neg_blb BLB write_neg VDD VDD sky130_fd_pr__pfet_01v8 w=Wd l=Ld
+
+* BL driver for +1: Connect to VDD
+MP_pos_bl BL write_pos VDD VDD sky130_fd_pr__pfet_01v8 w=Wd l=Ld
+* BLB driver for +1: Connect to VSS
+MN_pos_blb BLB write_pos VSS VSS sky130_fd_pr__nfet_01v8 w=Wd l=Ld
+
+* Mid-level driver: Connect both to VMID
+* Uses transmission gates for full swing
+* BL to VMID
+MN_mid_bl_n BL write_mid VMID VSS sky130_fd_pr__nfet_01v8 w=Wd l=Ld
+MP_mid_bl_p BL write_mid_n VMID VDD sky130_fd_pr__pfet_01v8 w=Wd l=Ld
+
+* BLB to VMID
+MN_mid_blb_n BLB write_mid VMID VSS sky130_fd_pr__nfet_01v8 w=Wd l=Ld
+MP_mid_blb_p BLB write_mid_n VMID VDD sky130_fd_pr__pfet_01v8 w=Wd l=Ld
+
+* Inverter for transmission gate control
+MP_inv write_mid_n write_mid VDD VDD sky130_fd_pr__pfet_01v8 w=0.42u l=0.15u
+MN_inv write_mid_n write_mid VSS VSS sky130_fd_pr__nfet_01v8 w=0.21u l=0.15u
+
+.ends TERNARY_WRITE_DRIVER
+
+* ============================================================================
+* DESIGN NOTES
+* ============================================================================
+*
+* 1. 8T ADVANTAGES:
+*    - Decoupled read port eliminates read disturb
+*    - Critical for mid-level (Q=QB=VMID) which is fragile
+*    - Allows aggressive write transistor sizing
+*    - Single-ended read (RBL) simplifies sensing
+*
+* 2. TRI-STABILITY REQUIREMENTS:
+*    For true tri-stable operation, the cross-coupled inverters must
+*    have three stable intersection points in their DC transfer curves.
+*
+*    Standard CMOS inverters are bi-stable. Options for tri-stability:
+*    a) Multi-threshold CMOS (MTCMOS) with LVT/HVT combination
+*    b) Explicit VMID resistive pull (TSRAM8T_VMID variant)
+*    c) Current-mode logic with 3-level outputs
+*    d) Double-threshold approach with cascaded inverters
+*
+* 3. READ OPERATION (8T):
+*    - Precharge RBL to VDD
+*    - Assert WL_R
+*    - If Q > Vth_n: RBL discharges (indicates +1 or high 0)
+*    - If Q < Vth_n: RBL stays high (indicates -1 or low 0)
+*    - Need 3-level SA to distinguish all states
+*
+* 4. WRITE OPERATION:
+*    - Drive BL and BLB to target levels via write driver
+*    - Assert WL_W to connect bitlines to storage nodes
+*    - Storage nodes flip to driven values
+*    - Writing mid-level requires VMID on both bitlines
+*
+* 5. AREA COMPARISON:
+*    | Configuration           | Transistors | Area (λ²) | Reliability |
+*    |-------------------------|-------------|-----------|-------------|
+*    | Binary 2-bit (2×6T)     | 12          | ~500      | High        |
+*    | Ternary 6T              | 6           | ~280      | Low (VMID)  |
+*    | Ternary 8T              | 8           | ~380      | Medium      |
+*    | Ternary 8T + VMID       | 8+2R        | ~420      | High        |
+*
+* 6. RECOMMENDED USE:
+*    For Tritone CPU register file and caches:
+*    - Use binary 2-bit encoding for production (proven reliability)
+*    - Use ternary 8T for research/area optimization studies
+*    - TSRAM8T_VMID offers best balance of density and reliability
+*
+* 7. FUTURE WORK:
+*    - SPICE characterization of read/write margins
+*    - Monte Carlo analysis for process variation sensitivity
+*    - Optimal sizing for target technology node
+*    - Layout considerations for VMID distribution
+*
+* ============================================================================

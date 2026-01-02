@@ -1,0 +1,118 @@
+OpenROAD 24Q3-11673-g154f14ab7e 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/asap7/lef/asap7_tech_1x_201209.lef, created 30 layers, 9 vias
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/asap7/lef/asap7sc7p5t_28_R_1x_220121a.lef, created 212 library cells
+link_design tritone_soc
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_ready'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[31]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[30]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[29]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[28]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[27]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[26]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[25]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[24]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[23]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[22]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[21]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[20]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[19]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[18]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[17]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[16]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[15]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[14]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[13]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[12]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[11]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[10]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[9]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[8]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[7]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[6]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[5]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[4]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[3]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[2]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[1]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[0]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_ren'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_sel'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wen'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[31]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[30]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[29]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[28]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[27]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[26]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[25]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[24]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[23]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[22]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[21]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[20]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[19]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[18]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[17]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[16]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[15]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[14]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[13]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[12]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[11]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[10]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[9]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[8]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[7]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[6]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[5]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[4]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[3]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[2]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[1]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[0]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[31]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[30]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[29]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[28]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[27]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[26]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[25]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[24]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[23]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[22]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[21]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[20]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[19]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[18]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[17]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[16]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[15]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[14]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[13]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[12]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[11]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[10]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[9]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[8]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[7]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[6]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[5]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[4]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[3]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[2]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[1]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[0]'.
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Elapsed time: 0:00.98[h:]min:sec. CPU time: user 0.85 sys 0.10 (97%). Peak memory: 196180KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+1_synth                            0            191 7ff092df52a3e176d931

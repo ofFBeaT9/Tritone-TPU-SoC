@@ -1,0 +1,5 @@
+# SHA256 checksums for Tritone 300MHz golden run
+# Generated from: runs/tritone_v6_300mhz/results/final/
+
+63a9da895ec074b193258db2468e4e4c8bd07fdd1c06ba50bb6ad63a63707246  ternary_cpu_system.gds
+b7ac87d31ffc88f17a7a5edb9e0898bee6af987248ffa7b0628ad11a3b335eac  ternary_cpu_system.lef

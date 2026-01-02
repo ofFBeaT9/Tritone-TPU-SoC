@@ -1,0 +1,107 @@
+# test_beq.btasm - Test BEQ instruction with new opcode - UPDATED v0.2
+# Tests: BEQ (Branch if Equal) with opcode -+- (moved from 0-0)
+#
+# OPCODE CHANGE (v0.2):
+#   BEQ was moved from opcode 0-0 to -+- to resolve collision with ADDI
+#   ADDI now has exclusive ownership of opcode 0-0
+#
+# Syntax: BEQ Rs1, Rs2, offset -> if Rs1 == Rs2: PC += offset
+# Branch type: 01 (in decoder)
+
+# ============================================================
+# Test 1: BEQ with equal values - should branch
+# ============================================================
+    ADDI R1, R0, 5      # R1 = 5
+    ADDI R2, R0, 5      # R2 = 5
+
+    BEQ  R1, R2, test2  # Should branch (R1 == R2)
+    HALT                # Error: BEQ didn't branch when values equal
+
+# ============================================================
+# Test 2: BEQ with unequal values - should NOT branch
+# ============================================================
+test2:
+    ADDI R3, R0, 3      # R3 = 3
+    ADDI R4, R0, 7      # R4 = 7
+
+    BEQ  R3, R4, beq_fail  # Should NOT branch (R3 != R4)
+    # Fall through to test3 (correct behavior)
+
+# ============================================================
+# Test 3: BEQ with zero register
+# ============================================================
+test3:
+    BEQ  R0, R0, test4  # Should always branch (R0 == R0)
+    HALT                # Error: BEQ R0, R0 didn't branch
+
+# ============================================================
+# Test 4: BEQ with negative values
+# ============================================================
+test4:
+    ADDI R1, R0, -3     # R1 = -3
+    ADDI R2, R0, -3     # R2 = -3
+
+    BEQ  R1, R2, test5  # Should branch (R1 == R2)
+    HALT                # Error: BEQ with negative values failed
+
+# ============================================================
+# Test 5: BEQ after arithmetic operation
+# ============================================================
+test5:
+    ADDI R1, R0, 2      # R1 = 2
+    ADDI R2, R0, 3      # R2 = 3
+    ADD  R3, R1, R2     # R3 = 2 + 3 = 5
+    ADDI R4, R0, 5      # R4 = 5
+
+    BEQ  R3, R4, test6  # Should branch (5 == 5)
+    HALT                # Error: BEQ after ADD failed
+
+# ============================================================
+# Test 6: BEQ does not conflict with ADDI
+# ============================================================
+# This is the critical test - ensure ADDI and BEQ work correctly
+# with their separate opcodes
+test6:
+    ADDI R1, R0, 0      # R1 = 0 (ADDI with 0-0 opcode)
+    ADDI R2, R0, 0      # R2 = 0
+
+    # ADDI should have set R1 to 0, not branched!
+    BEQ  R1, R2, test7  # Now BEQ should branch
+    HALT                # Error: ADDI/BEQ opcode conflict still exists
+
+# ============================================================
+# Test 7: Multiple BEQ in sequence
+# ============================================================
+test7:
+    ADDI R1, R0, 1
+    ADDI R2, R0, 1
+    ADDI R3, R0, 2
+
+    BEQ  R1, R2, check1  # First BEQ (should branch)
+    HALT
+
+check1:
+    BEQ  R1, R3, beq_fail  # Second BEQ (should NOT branch)
+    # Fall through to all_pass
+
+# ============================================================
+# All Tests Passed
+# ============================================================
+all_pass:
+    ADDI R1, R0, 1      # Success indicator
+    HALT
+
+beq_fail:
+    ADDI R1, R0, -1     # Error indicator
+    HALT
+
+# ============================================================
+# Expected Behavior:
+# ============================================================
+# All tests should pass, demonstrating:
+# 1. BEQ correctly branches when Rs1 == Rs2
+# 2. BEQ correctly does NOT branch when Rs1 != Rs2
+# 3. BEQ works with negative values
+# 4. BEQ works after arithmetic operations
+# 5. BEQ and ADDI no longer conflict (separate opcodes)
+# 6. Final R1 = 1 (success indicator)

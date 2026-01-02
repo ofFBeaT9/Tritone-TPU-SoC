@@ -1,0 +1,48 @@
+* ============================================================================
+* TERNARY NOR GATE - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TNOR - Ternary NOR Gate
+*
+* Function: Y = STI(MAX(A, B)) = NOT(OR(A, B))
+*
+* Truth Table:
+*     A\B | 0   1   2
+*     ----|----------
+*      0  | 2   1   0
+*      1  | 1   1   0
+*      2  | 0   0   0
+*
+* Implementation: TMAX followed by STI (hierarchical)
+* Transistor Count: ~16
+* ============================================================================
+
+.subckt TNOR A B Y VDD VSS
+
+* ============================================================================
+* STAGE 1: Compute MAX(A, B)
+* ============================================================================
+XTMAX A B max_out VDD VSS TMAX
+
+* ============================================================================
+* STAGE 2: Invert with STI
+* ============================================================================
+XSTI max_out Y VDD VSS STI
+
+.ends TNOR
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. TNOR = STI(TMAX(A,B)) - hierarchical composition
+*
+* 2. Truth table derived from:
+*    - MAX(2,x) = 2 → STI(2) = 0
+*    - MAX(1,1) = 1 → STI(1) = 1
+*    - MAX(0,0) = 0 → STI(0) = 2
+*
+* 3. Direct implementation possible by merging TMAX and STI transistors
+*    but hierarchical approach is cleaner and easier to verify
+*
+* 4. Dual of TNAND: TNOR(A,B) = STI(TNAND(STI(A), STI(B)))
+* ============================================================================

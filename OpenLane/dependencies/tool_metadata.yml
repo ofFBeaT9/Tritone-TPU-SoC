@@ -1,0 +1,78 @@
+- name: cvc_rv
+  repo: https://github.com/d-m-bailey/cvc
+  commit: df85a637e83da870129c93c8793cad282bb8ddd1
+  build: |
+    autoreconf -i
+    ./configure --disable-nls --prefix=$PREFIX
+    make clean
+    make -j$(nproc) $READLINE_CXXFLAGS
+    make install
+- name: magic
+  repo: https://github.com/rtimothyedwards/magic
+  commit: 8b3bb1ae771da1673ac148987466ff31c63513cd
+  build: |
+    ./configure --prefix=$PREFIX $MAGIC_CONFIG_OPTS
+    make clean
+    make database/database.h
+    make -j$(nproc)
+    make install
+- name: netgen
+  repo: https://github.com/rtimothyedwards/netgen
+  commit: 87d8759a6980d297edcb9be6f8661867e4726f9a
+  build: |
+    ./configure --prefix=$PREFIX $MAGIC_CONFIG_OPTS
+    make clean
+    make -j$(nproc)
+    make install
+- name: padring
+  repo: https://github.com/donn/padring
+  commit: b2a64abcc8561d758c0bcb3945117dcb13bd9dca
+  build: |
+    bash ./bootstrap.sh
+    cd build
+    ninja clean
+    ninja
+    cp padring $PREFIX/bin
+- name: vlogtoverilog
+  repo: https://github.com/RTimothyEdwards/qflow
+  commit: a550469b63e910ede6e3022e2886bca96462c540
+  build: |
+    # Note that vlogtoverilog is part of the qflow repository.
+    ./configure
+    cd src
+    make clean
+    make -j$(nproc) vlog2Verilog
+    cp vlog2Verilog $PREFIX/bin
+- name: verilator
+  repo: https://github.com/verilator/verilator
+  commit: 947402bc57625106e1387255772fdb5d850a6c65
+  build: |
+    autoconf
+    ./configure --prefix=$PREFIX
+    make
+    make install
+- name: yosys
+  repo: https://github.com/YosysHQ/yosys
+  commit: 14d50a176d59a5eac95a57a01f9e933297251d5b
+  build: |
+    make clean
+    make PREFIX=$PREFIX config-gcc
+    make PREFIX=$PREFIX -j$(nproc)
+    make PREFIX=$PREFIX install
+- name: klayout
+  repo: https://github.com/KLayout/klayout
+  commit: 44a2aa9ca17c2b1c154f9c410ded063de9ed3e12
+  in_install: false
+- name: openroad_app
+  repo: https://github.com/The-OpenROAD-Project/OpenROAD
+  commit: 41a51eaf4ca2171c92ff38afb91eb37bbd3f36da
+  in_install: false
+- name: git
+  repo: https://github.com/git/git
+  commit: e9d7761bb94f20acc98824275e317fa82436c25d
+  in_install: false
+- name: open_pdks
+  repo: https://github.com/RTimothyEdwards/open_pdks
+  commit: 0fe599b2afb6708d281543108caf8310912f54af
+  in_install: false
+  pdk: true

@@ -1,0 +1,71 @@
+﻿// BTISA Machine Code
+// Format: address: ternary_encoding // mnemonic
+
+//   0: 0-00+00-0  // LDI R1, -1
+//   1: 0-00-0000  // LDI R2, 0
+//   2: 0-0+000+0  // LDI R3, 1
+//   3: 0-0++00++  // LDI R4, 13
+//   4: 0-0+-00--  // LDI R5, -13
+//   5: 000-00+00  // MOV R6, R1
+//   6: 000-++000  // MOV R7, R3
+//   7: 000--++00  // MOV R8, R4
+//   8: 00+00-00+  // SUB R0, R6, R1
+//   9: 00+00-++0  // SUB R0, R7, R3
+//  10: 00+00--++  // SUB R0, R8, R4
+//  11: 0-00+00+0  // LDI R1, 100
+//  12: 0-00-000-  // LDI R2, 42
+//  13: -+00-0+00  // STT R2, R1
+//  14: 0-00+00-+  // LDI R1, 101
+//  15: 0-0+00000  // LDI R3, -27
+//  16: -+0+00+00  // STT R3, R1
+//  17: 0-00+000+  // LDI R1, 102
+//  18: 0-0++00++  // LDI R4, 13
+//  19: -+0++0+00  // STT R4, R1
+//  20: 0-00+00+0  // LDI R1, 100
+//  21: -0-+-0+00  // LDT R5, R1
+//  22: 0-00+00-+  // LDI R1, 101
+//  23: -0--00+00  // LDT R6, R1
+//  24: 0-00+000+  // LDI R1, 102
+//  25: -0--+0+00  // LDT R7, R1
+//  26: 0-0--000-  // LDI R8, 42
+//  27: 00+00+---  // SUB R0, R5, R8
+//  28: 0-0--0000  // LDI R8, -27
+//  29: 00+00-0--  // SUB R0, R6, R8
+//  30: 0-0--00++  // LDI R8, 13
+//  31: 00+00-+--  // SUB R0, R7, R8
+//  32: --+000000  // HALT
+
+// SystemVerilog initialization:
+imem[0] = '{ T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[1] = '{ T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[2] = '{ T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[3] = '{ T_POS_ONE, T_POS_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_POS_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[4] = '{ T_NEG_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_POS_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[5] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_ZERO };
+imem[6] = '{ T_ZERO, T_ZERO, T_ZERO, T_POS_ONE, T_POS_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_ZERO };
+imem[7] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_POS_ONE, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_ZERO };
+imem[8] = '{ T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO };
+imem[9] = '{ T_ZERO, T_POS_ONE, T_POS_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO };
+imem[10] = '{ T_POS_ONE, T_POS_ONE, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO };
+imem[11] = '{ T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[12] = '{ T_NEG_ONE, T_ZERO, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[13] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_NEG_ONE };
+imem[14] = '{ T_POS_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[15] = '{ T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[16] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_POS_ONE, T_NEG_ONE };
+imem[17] = '{ T_POS_ONE, T_ZERO, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[18] = '{ T_POS_ONE, T_POS_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_POS_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[19] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_POS_ONE, T_POS_ONE, T_ZERO, T_POS_ONE, T_NEG_ONE };
+imem[20] = '{ T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[21] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_NEG_ONE, T_POS_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE };
+imem[22] = '{ T_POS_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[23] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE };
+imem[24] = '{ T_POS_ONE, T_ZERO, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[25] = '{ T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_POS_ONE, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE };
+imem[26] = '{ T_NEG_ONE, T_ZERO, T_ZERO, T_ZERO, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[27] = '{ T_NEG_ONE, T_NEG_ONE, T_NEG_ONE, T_POS_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO };
+imem[28] = '{ T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[29] = '{ T_NEG_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO };
+imem[30] = '{ T_POS_ONE, T_POS_ONE, T_ZERO, T_ZERO, T_NEG_ONE, T_NEG_ONE, T_ZERO, T_NEG_ONE, T_ZERO };
+imem[31] = '{ T_NEG_ONE, T_NEG_ONE, T_POS_ONE, T_NEG_ONE, T_ZERO, T_ZERO, T_POS_ONE, T_ZERO, T_ZERO };
+imem[32] = '{ T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_ZERO, T_POS_ONE, T_NEG_ONE, T_NEG_ONE };

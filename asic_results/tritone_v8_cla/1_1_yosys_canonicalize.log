@@ -1,0 +1,50 @@
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/sky130hd/ternary_cpu_system/base/clock_period.txt
+Setting clock period to 3.33
+1. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+2. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+3. Executing SLANG frontend.
+../../work/designs/ternary_cpu_system/src/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.addr'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../work/designs/ternary_cpu_system/src/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../work/designs/ternary_cpu_system/src/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.val0'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../work/designs/ternary_cpu_system/src/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../work/designs/ternary_cpu_system/src/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.val1'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../work/designs/ternary_cpu_system/src/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3.1. Executing UNDRIVEN pass. (resolve undriven signals)
+3.2. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.3. Executing TRIBUF pass.
+3.4. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+3.5. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+3.6. Executing PROC_INIT pass (extract init attributes).
+3.7. Executing PROC_ROM pass (convert switches to ROMs).
+3.8. Executing PROC_MUX pass (convert decision trees to multiplexers).
+3.9. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.10. Executing OPT_EXPR pass (perform const folding).
+4. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/sky130hd/cells_clkgate_hd.v
+5. Executing HIERARCHY pass (managing design hierarchy).
+5.1. Analyzing design hierarchy..
+5.2. Analyzing design hierarchy..
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+7. Executing RTLIL backend.
+End of script. Logfile hash: 57cdef1ee1, CPU: user 0.61s system 0.06s, MEM: 67.80 MB peak
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Time spent: 59% 2x read_slang (0 sec), 11% 4x read_liberty (0 sec), ...
+Top level design units:
+    ternary_cpu_system
+
+
+Build succeeded: 0 errors, 3 warnings
+Elapsed time: 0:01.07[h:]min:sec. CPU time: user 0.66 sys 0.06 (68%). Peak memory: 72752KB.

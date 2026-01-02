@@ -1,0 +1,308 @@
+* ============================================================================
+* BINARY-ENCODED TERNARY SRAM - 2-BIT PER TRIT
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TSRAM_BINARY - Ternary SRAM using binary 6T cells
+*
+* RECOMMENDED APPROACH FOR PRODUCTION
+*
+* Encoding: 2 binary bits per trit
+*   T_ZERO    = 2'b00 (Logic 0)
+*   T_POS_ONE = 2'b01 (Logic +1)
+*   T_NEG_ONE = 2'b10 (Logic -1)
+*   T_INVALID = 2'b11 (Error/unused)
+*
+* Advantages:
+*   1. Uses proven, well-characterized 6T SRAM cells
+*   2. Standard sense amplifier design (binary)
+*   3. Full PVT robustness from mature technology
+*   4. Compatible with foundry memory compilers
+*   5. No VMID generation/distribution required
+*
+* Disadvantages:
+*   1. 2x bit overhead vs theoretical ternary density
+*   2. 2x the storage cells needed
+*
+* Area Analysis (27-trit word):
+*   Binary encoding: 27 × 2 = 54 bits = 54 × 6T = 324 transistors
+*   Native ternary:  27 × 8T = 216 transistors (but with reliability issues)
+*   Overhead: 50% more transistors, but 100% reliable
+*
+* Target Technology: SKY130 (any standard CMOS process)
+* ============================================================================
+
+* ============================================================================
+* STANDARD 6T SRAM BITCELL (Binary)
+* ============================================================================
+* Proven, reliable binary storage cell
+* Used as building block for ternary-encoded memory
+
+.subckt SRAM6T BL BLB WL VDD VSS
+
+* Parameters optimized for SKY130
+.param Wpu=0.42u    $ Pull-up PMOS width
+.param Lpu=0.15u
+.param Wpd=0.36u    $ Pull-down NMOS width
+.param Lpd=0.15u
+.param Wpass=0.28u  $ Pass transistor width
+.param Lpass=0.15u
+
+* Cross-coupled inverters (storage element)
+* Inverter 1: drives Q from QB
+MP1 Q QB VDD VDD sky130_fd_pr__pfet_01v8 w=Wpu l=Lpu
+MN1 Q QB VSS VSS sky130_fd_pr__nfet_01v8 w=Wpd l=Lpd
+
+* Inverter 2: drives QB from Q
+MP2 QB Q VDD VDD sky130_fd_pr__pfet_01v8 w=Wpu l=Lpu
+MN2 QB Q VSS VSS sky130_fd_pr__nfet_01v8 w=Wpd l=Lpd
+
+* Access transistors
+MA1 BL WL Q VSS sky130_fd_pr__nfet_01v8 w=Wpass l=Lpass
+MA2 BLB WL QB VSS sky130_fd_pr__nfet_01v8 w=Wpass l=Lpass
+
+.ends SRAM6T
+
+* ============================================================================
+* TERNARY TRIT CELL (Binary-Encoded, 2 × 6T)
+* ============================================================================
+* Stores one trit using two binary 6T cells
+*
+* Encoding:
+*   Cell0 (BL0/BLB0) stores bit[0]
+*   Cell1 (BL1/BLB1) stores bit[1]
+*
+*   bit[1:0] | Trit Value
+*   ---------|------------
+*     00     |    0 (Zero)
+*     01     |   +1 (Positive)
+*     10     |   -1 (Negative)
+*     11     |   X (Invalid)
+
+.subckt TRIT_BINARY BL0 BLB0 BL1 BLB1 WL VDD VSS
+
+* Bit 0 cell
+XCELL0 BL0 BLB0 WL VDD VSS SRAM6T
+
+* Bit 1 cell
+XCELL1 BL1 BLB1 WL VDD VSS SRAM6T
+
+.ends TRIT_BINARY
+
+* ============================================================================
+* TERNARY WORD (27-TRIT, BINARY-ENCODED)
+* ============================================================================
+* Full 27-trit word using 54 binary cells
+*
+* Interface:
+*   BL[53:0]  - Bitlines (even indices: bit0, odd indices: bit1)
+*   BLB[53:0] - Complementary bitlines
+*   WL        - Word line (shared)
+
+.subckt TWORD27_BINARY WL VDD VSS
++  BL0 BLB0 BL1 BLB1 BL2 BLB2 BL3 BLB3 BL4 BLB4
++  BL5 BLB5 BL6 BLB6 BL7 BLB7 BL8 BLB8 BL9 BLB9
++  BL10 BLB10 BL11 BLB11 BL12 BLB12 BL13 BLB13 BL14 BLB14
++  BL15 BLB15 BL16 BLB16 BL17 BLB17 BL18 BLB18 BL19 BLB19
++  BL20 BLB20 BL21 BLB21 BL22 BLB22 BL23 BLB23 BL24 BLB24
++  BL25 BLB25 BL26 BLB26 BL27 BLB27 BL28 BLB28 BL29 BLB29
++  BL30 BLB30 BL31 BLB31 BL32 BLB32 BL33 BLB33 BL34 BLB34
++  BL35 BLB35 BL36 BLB36 BL37 BLB37 BL38 BLB38 BL39 BLB39
++  BL40 BLB40 BL41 BLB41 BL42 BLB42 BL43 BLB43 BL44 BLB44
++  BL45 BLB45 BL46 BLB46 BL47 BLB47 BL48 BLB48 BL49 BLB49
++  BL50 BLB50 BL51 BLB51 BL52 BLB52 BL53 BLB53
+
+* Instantiate 54 binary cells (27 trits × 2 bits)
+* Using direct SRAM6T instances for clarity
+
+XCELL0  BL0  BLB0  WL VDD VSS SRAM6T
+XCELL1  BL1  BLB1  WL VDD VSS SRAM6T
+XCELL2  BL2  BLB2  WL VDD VSS SRAM6T
+XCELL3  BL3  BLB3  WL VDD VSS SRAM6T
+XCELL4  BL4  BLB4  WL VDD VSS SRAM6T
+XCELL5  BL5  BLB5  WL VDD VSS SRAM6T
+XCELL6  BL6  BLB6  WL VDD VSS SRAM6T
+XCELL7  BL7  BLB7  WL VDD VSS SRAM6T
+XCELL8  BL8  BLB8  WL VDD VSS SRAM6T
+XCELL9  BL9  BLB9  WL VDD VSS SRAM6T
+XCELL10 BL10 BLB10 WL VDD VSS SRAM6T
+XCELL11 BL11 BLB11 WL VDD VSS SRAM6T
+XCELL12 BL12 BLB12 WL VDD VSS SRAM6T
+XCELL13 BL13 BLB13 WL VDD VSS SRAM6T
+XCELL14 BL14 BLB14 WL VDD VSS SRAM6T
+XCELL15 BL15 BLB15 WL VDD VSS SRAM6T
+XCELL16 BL16 BLB16 WL VDD VSS SRAM6T
+XCELL17 BL17 BLB17 WL VDD VSS SRAM6T
+XCELL18 BL18 BLB18 WL VDD VSS SRAM6T
+XCELL19 BL19 BLB19 WL VDD VSS SRAM6T
+XCELL20 BL20 BLB20 WL VDD VSS SRAM6T
+XCELL21 BL21 BLB21 WL VDD VSS SRAM6T
+XCELL22 BL22 BLB22 WL VDD VSS SRAM6T
+XCELL23 BL23 BLB23 WL VDD VSS SRAM6T
+XCELL24 BL24 BLB24 WL VDD VSS SRAM6T
+XCELL25 BL25 BLB25 WL VDD VSS SRAM6T
+XCELL26 BL26 BLB26 WL VDD VSS SRAM6T
+XCELL27 BL27 BLB27 WL VDD VSS SRAM6T
+XCELL28 BL28 BLB28 WL VDD VSS SRAM6T
+XCELL29 BL29 BLB29 WL VDD VSS SRAM6T
+XCELL30 BL30 BLB30 WL VDD VSS SRAM6T
+XCELL31 BL31 BLB31 WL VDD VSS SRAM6T
+XCELL32 BL32 BLB32 WL VDD VSS SRAM6T
+XCELL33 BL33 BLB33 WL VDD VSS SRAM6T
+XCELL34 BL34 BLB34 WL VDD VSS SRAM6T
+XCELL35 BL35 BLB35 WL VDD VSS SRAM6T
+XCELL36 BL36 BLB36 WL VDD VSS SRAM6T
+XCELL37 BL37 BLB37 WL VDD VSS SRAM6T
+XCELL38 BL38 BLB38 WL VDD VSS SRAM6T
+XCELL39 BL39 BLB39 WL VDD VSS SRAM6T
+XCELL40 BL40 BLB40 WL VDD VSS SRAM6T
+XCELL41 BL41 BLB41 WL VDD VSS SRAM6T
+XCELL42 BL42 BLB42 WL VDD VSS SRAM6T
+XCELL43 BL43 BLB43 WL VDD VSS SRAM6T
+XCELL44 BL44 BLB44 WL VDD VSS SRAM6T
+XCELL45 BL45 BLB45 WL VDD VSS SRAM6T
+XCELL46 BL46 BLB46 WL VDD VSS SRAM6T
+XCELL47 BL47 BLB47 WL VDD VSS SRAM6T
+XCELL48 BL48 BLB48 WL VDD VSS SRAM6T
+XCELL49 BL49 BLB49 WL VDD VSS SRAM6T
+XCELL50 BL50 BLB50 WL VDD VSS SRAM6T
+XCELL51 BL51 BLB51 WL VDD VSS SRAM6T
+XCELL52 BL52 BLB52 WL VDD VSS SRAM6T
+XCELL53 BL53 BLB53 WL VDD VSS SRAM6T
+
+.ends TWORD27_BINARY
+
+* ============================================================================
+* BINARY SENSE AMPLIFIER
+* ============================================================================
+* Standard differential sense amplifier for binary SRAM
+* Well-characterized, proven design
+
+.subckt BINARY_SA BL BLB SE DOUT VDD VSS
+
+.param Wn=0.42u
+.param Ln=0.15u
+.param Wp=0.84u
+.param Lp=0.15u
+
+* Cross-coupled inverter latch
+MP1 outn outp VDD VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+MP2 outp outn VDD VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+MN1 outn outp tail VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+MN2 outp outn tail VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+
+* Sense enable
+MTAIL tail SE VSS VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+
+* Input coupling (transmission gates when precharging)
+MN_IN_N outn BL VSS VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+MN_IN_P outp BLB VSS VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+
+* Output buffer
+MP_OUT DOUT outn VDD VDD sky130_fd_pr__pfet_01v8 w=Wp l=Lp
+MN_OUT DOUT outn VSS VSS sky130_fd_pr__nfet_01v8 w=Wn l=Ln
+
+.ends BINARY_SA
+
+* ============================================================================
+* TRIT DECODER (Binary to Ternary Logic Level)
+* ============================================================================
+* Converts 2-bit binary read data to ternary representation
+* For interface with ternary logic gates if needed
+*
+* Input:  D[1:0] - 2-bit binary from SRAM
+* Output: Analog ternary level (VSS, VMID, VDD)
+
+.subckt TRIT_DECODER D0 D1 TOUT VDD VMID VSS
+
+* Truth table:
+* D1 D0 | TOUT
+* 0  0  | VMID (ternary 0)
+* 0  1  | VDD  (ternary +1)
+* 1  0  | VSS  (ternary -1)
+* 1  1  | X    (invalid, output VMID)
+
+.param W=0.42u
+.param L=0.15u
+
+* Generate control signals
+* sel_pos = !D1 & D0  (output VDD for +1)
+* sel_neg = D1 & !D0  (output VSS for -1)
+* sel_zero = !(D0 ^ D1) (output VMID for 0 or invalid)
+
+* D0 inverted
+MP_D0B D0B D0 VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+MN_D0B D0B D0 VSS VSS sky130_fd_pr__nfet_01v8 w=W l=L
+
+* D1 inverted
+MP_D1B D1B D1 VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+MN_D1B D1B D1 VSS VSS sky130_fd_pr__nfet_01v8 w=W l=L
+
+* sel_pos = D0 & !D1
+MN_SELP1 sel_pos_n D0 VSS VSS sky130_fd_pr__nfet_01v8 w=W l=L
+MN_SELP2 sel_pos D1B sel_pos_n VSS sky130_fd_pr__nfet_01v8 w=W l=L
+MP_SELP1 sel_pos D0 VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+MP_SELP2 sel_pos D1B VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+
+* sel_neg = D1 & !D0
+MN_SELN1 sel_neg_n D1 VSS VSS sky130_fd_pr__nfet_01v8 w=W l=L
+MN_SELN2 sel_neg D0B sel_neg_n VSS sky130_fd_pr__nfet_01v8 w=W l=L
+MP_SELN1 sel_neg D1 VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+MP_SELN2 sel_neg D0B VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+
+* Tristate drivers to output
+* VDD driver (when sel_pos)
+MP_VDD TOUT sel_pos VDD VDD sky130_fd_pr__pfet_01v8 w=W l=L
+
+* VSS driver (when sel_neg)
+MN_VSS TOUT sel_neg VSS VSS sky130_fd_pr__nfet_01v8 w=W l=L
+
+* VMID driver (transmission gate, when neither sel_pos nor sel_neg)
+* This is complex - simplified using resistive divider for simulation
+RVMID TOUT VMID 10k
+
+.ends TRIT_DECODER
+
+* ============================================================================
+* DESIGN NOTES
+* ============================================================================
+*
+* 1. ENCODING RATIONALE:
+*    The 2-bit encoding is chosen for direct compatibility with binary CMOS:
+*    - 00: Zero (both cells store 0)
+*    - 01: Positive one (cell0=1, cell1=0)
+*    - 10: Negative one (cell0=0, cell1=1)
+*    - 11: Invalid (should never occur in valid operation)
+*
+* 2. MEMORY ORGANIZATION:
+*    For a 27-trit word:
+*    - 54 bitlines (27 trit pairs × 2 bits)
+*    - Standard column muxing (4:1 or 8:1)
+*    - Standard row decoder
+*    - Standard sense amplifiers (54 instances)
+*
+* 3. SYNTHESIS MAPPING:
+*    The RTL uses trit_t which is logic [1:0], directly mapping to
+*    this binary encoding. No additional conversion needed at RTL.
+*
+* 4. AREA COMPARISON:
+*    | Approach            | Cells/Trit | 27-Trit Word | Reliability |
+*    |---------------------|------------|--------------|-------------|
+*    | Binary 6T × 2       | 12T        | 324T         | Excellent   |
+*    | Native 8T           | 8T         | 216T         | Medium      |
+*    | Native 6T           | 6T         | 162T         | Poor        |
+*
+*    Binary encoding uses ~50% more transistors but with proven reliability.
+*
+* 5. FOUNDRY COMPATIBILITY:
+*    This approach works with any foundry memory compiler:
+*    - SKY130 OpenRAM
+*    - Commercial SRAM compilers (ARM, Synopsys, etc.)
+*    - Just request 54-bit wide memory for 27-trit words
+*
+* 6. POWER ANALYSIS:
+*    - Read power: Same as binary SRAM (54-bit access)
+*    - Write power: Same as binary SRAM
+*    - Leakage: 54 cells per word vs 27 native (2x leakage)
+*    - Trade-off: Higher power for guaranteed functionality
+*
+* ============================================================================

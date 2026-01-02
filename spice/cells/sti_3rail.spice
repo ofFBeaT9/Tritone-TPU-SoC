@@ -1,0 +1,51 @@
+* ============================================================================
+* STANDARD TERNARY INVERTER (STI) - 3-Rail Voltage Mode
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* 
+* Function: Full ternary inversion (0->2, 1->1, 2->0)
+* Topology: Three-rail design with region decode + rail selection
+*
+* This is the ROBUST approach from voltage-mode ternary logic (VMTL) literature:
+*   - Uses three supply rails: VSS (0V), VMID (0.9V), VDD (1.8V)
+*   - Decodes input into three regions using threshold detectors
+*   - Selects appropriate output rail based on input region
+*
+* Operation:
+*   VIN ~ 0V     (0 to 0.6V)     -> Region LOW  -> VOUT = VDD (1.8V)
+*   VIN ~ 0.9V   (0.6V to 1.2V)  -> Region MID  -> VOUT = VMID (0.9V)
+*   VIN ~ 1.8V   (1.2V to 1.8V)  -> Region HIGH -> VOUT = VSS (0V)
+*
+* This eliminates the "analog balance" problem - midpoint is a real rail!
+* ============================================================================
+
+.subckt STI_3RAIL VIN VOUT VDD VMID VSS
+
+* Threshold parameters - divide input space into three regions
+* Standard VMTL uses approximately VDD/3 and 2*VDD/3
+.param VTH_LOW = 0.6
+.param VTH_HIGH = 1.2
+
+* Region decoder - behavioral implementation
+* These generate control signals for the rail selection switches
+* NLOW = VDD when VIN < VTH_LOW (input in LOW region)
+* NHIGH = VDD when VIN > VTH_HIGH (input in HIGH region)
+* NMID = VDD when input in middle region
+BLOW  NLOW  VSS  V={V(VIN) < VTH_LOW ? V(VDD) : 0}
+BHIGH NHIGH VSS  V={V(VIN) > VTH_HIGH ? V(VDD) : 0}
+BMID  NMID  VSS  V={V(NLOW) < 0.9 && V(NHIGH) < 0.9 ? V(VDD) : 0}
+
+* Rail selection using voltage-controlled switches
+* These connect VOUT to the appropriate supply rail
+.model SWSEL SW VT=0.9 VH=0.1 RON=10 ROFF=1e9
+
+* LOW input region -> HIGH output (connect to VDD)
+S_HI   VDD  VOUT  NLOW  VSS  SWSEL
+
+* MID input region -> MID output (connect to VMID)
+S_MID  VMID VOUT  NMID  VSS  SWSEL
+
+* HIGH input region -> LOW output (connect to VSS)
+S_LO   VSS  VOUT  NHIGH VSS  SWSEL
+
+.ends STI_3RAIL

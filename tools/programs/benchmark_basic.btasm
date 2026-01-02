@@ -1,0 +1,131 @@
+# Benchmark: Basic Operations
+# Purpose: Measure baseline CPI for simple instruction sequences
+# Metrics: Arithmetic throughput, memory latency, dual-issue efficiency
+#
+# This benchmark runs several micro-tests to measure performance:
+# 1. Pure arithmetic (no hazards) - should achieve IPC=2
+# 2. Arithmetic with dependencies - tests forwarding
+# 3. Memory operations - tests load/store pipeline
+# 4. Mixed workload - realistic operation mix
+#
+# Expected behavior:
+# - Dual-issue CPU should achieve IPC close to 2.0 for independent ops
+# - Data dependencies reduce IPC due to forwarding/stalls
+# - Memory operations may cause pipeline stalls
+
+# ============================================================
+# Test 1: Independent Arithmetic (IPC Target: 2.0)
+# ============================================================
+# 20 independent ADD operations - perfect for dual-issue
+# Expected: 10 cycles for 20 instructions = IPC 2.0
+
+    LDI R1, 1           # Initialize registers
+    LDI R2, 2
+    LDI R3, 3
+    LDI R4, 4
+
+    # Independent operations (no RAW hazards between pairs)
+    ADD R1, R1, 1       # Slot A
+    ADD R2, R2, 1       # Slot B (can issue with above)
+    ADD R3, R3, 1       # Slot A
+    ADD R4, R4, 1       # Slot B
+    ADD R1, R1, 1
+    ADD R2, R2, 1
+    ADD R3, R3, 1
+    ADD R4, R4, 1
+    ADD R1, R1, 1
+    ADD R2, R2, 1
+    ADD R3, R3, 1
+    ADD R4, R4, 1
+    ADD R1, R1, 1
+    ADD R2, R2, 1
+    ADD R3, R3, 1
+    ADD R4, R4, 1
+    ADD R1, R1, 1
+    ADD R2, R2, 1
+    ADD R3, R3, 1
+    ADD R4, R4, 1
+
+    # Result: R1=6, R2=7, R3=8, R4=9
+
+# ============================================================
+# Test 2: Dependent Arithmetic Chain (IPC Target: ~1.0)
+# ============================================================
+# Each instruction depends on previous - tests forwarding
+# Expected: Lower IPC due to data dependencies
+
+    LDI R5, 1
+    ADD R5, R5, 1       # R5 = 2
+    ADD R5, R5, 1       # R5 = 3 (depends on above)
+    ADD R5, R5, 1       # R5 = 4
+    ADD R5, R5, 1       # R5 = 5
+    ADD R5, R5, 1       # R5 = 6
+    ADD R5, R5, 1       # R5 = 7
+    ADD R5, R5, 1       # R5 = 8
+    ADD R5, R5, 1       # R5 = 9
+    ADD R5, R5, 1       # R5 = 10
+    ADD R5, R5, 1       # R5 = 11
+
+    # Result: R5 = 11
+
+# ============================================================
+# Test 3: Memory Operations
+# ============================================================
+# Load/Store sequence - tests memory pipeline
+
+    LDI R6, 0           # Base address
+    LDI R7, 42          # Value to store
+
+    ST R7, R6, 0        # Store 42 at address 0
+    ST R7, R6, 1        # Store 42 at address 1
+    ST R7, R6, 2        # Store 42 at address 2
+
+    LD R8, R6, 0        # Load from address 0
+    LD R1, R6, 1        # Load from address 1
+    LD R2, R6, 2        # Load from address 2
+
+    # Verify: R8 = R1 = R2 = 42
+
+# ============================================================
+# Test 4: Loop Performance (Branch Prediction)
+# ============================================================
+# Simple loop - tests branch prediction accuracy
+
+    LDI R6, 0           # Counter
+    LDI R7, 10          # Limit
+
+loop_bench:
+    ADD R6, R6, 1       # Increment counter
+    BLT R6, R7, loop_bench  # Loop if R6 < 10
+
+    # After loop: R6 = 10
+    # Expected: Backward branch predicted taken (9 correct, 1 mispredict)
+
+# ============================================================
+# Test 5: Mixed Workload
+# ============================================================
+# Realistic mix of operations
+
+    LDI R1, 5
+    LDI R2, 3
+    ADD R3, R1, R2      # R3 = 8
+    SUB R4, R1, R2      # R4 = 2
+    ST R3, R0, 10       # Store 8 at address 10
+    ST R4, R0, 11       # Store 2 at address 11
+    LD R5, R0, 10       # Load 8
+    LD R6, R0, 11       # Load 2
+    ADD R7, R5, R6      # R7 = 10
+    NEG R8, R7          # R8 = -10
+
+# ============================================================
+# Validation
+# ============================================================
+    # Final check: R7 should be 10
+    LDI R1, 10
+    BEQ R7, R1, bench_pass
+    LDI R1, -1          # Error indicator
+    HALT
+
+bench_pass:
+    LDI R1, 1           # Success
+    HALT

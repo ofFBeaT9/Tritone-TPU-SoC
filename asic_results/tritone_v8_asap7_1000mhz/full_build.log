@@ -1,0 +1,31 @@
+rm -f ./results/asap7/tritone/baseline/1_* ./results/asap7/tritone/baseline/mem*.json
+rm -f ./reports/asap7/tritone/baseline/synth_*
+rm -f ./logs/asap7/tritone/baseline/1_*
+rm -f 
+rm -f ./results/asap7/tritone/baseline/clock_period.txt
+rm -f ./results/asap7/tritone/baseline/2_*floorplan*.odb ./results/asap7/tritone/baseline/2_floorplan.sdc ./results/asap7/tritone/baseline/2_*.v ./results/asap7/tritone/baseline/2_*.def
+rm -f ./reports/asap7/tritone/baseline/2_*
+rm -f ./logs/asap7/tritone/baseline/2_*
+rm -f ./results/asap7/tritone/baseline/3_*place*.odb
+rm -f ./results/asap7/tritone/baseline/3_place.sdc
+rm -f ./results/asap7/tritone/baseline/3_*.def ./results/asap7/tritone/baseline/3_*.v
+rm -f ./reports/asap7/tritone/baseline/3_*
+rm -f ./logs/asap7/tritone/baseline/3_*
+rm -rf ./results/asap7/tritone/baseline/4_*cts*.odb ./results/asap7/tritone/baseline/4_cts.sdc ./results/asap7/tritone/baseline/4_*.v ./results/asap7/tritone/baseline/4_*.def
+rm -f  ./reports/asap7/tritone/baseline/4_*
+rm -rf ./logs/asap7/tritone/baseline/4_*
+rm -rf ./results/asap7/tritone/baseline/route.guide ./results/asap7/tritone/baseline/output_guide.mod ./results/asap7/tritone/baseline/updated_clks.sdc
+rm -rf ./results/asap7/tritone/baseline/5_*.odb ./results/asap7/tritone/baseline/5_route.sdc ./results/asap7/tritone/baseline/5_*.def ./results/asap7/tritone/baseline/5_*.v
+rm -f  ./reports/asap7/tritone/baseline/5_*
+rm -f  ./logs/asap7/tritone/baseline/5_*
+rm -rf ./results/asap7/tritone/baseline/6_*.gds ./results/asap7/tritone/baseline/6_*.oas ./results/asap7/tritone/baseline/6_*.odb ./results/asap7/tritone/baseline/6_*.v ./results/asap7/tritone/baseline/6_*.def ./results/asap7/tritone/baseline/6_*.sdc ./results/asap7/tritone/baseline/6_*.spef
+rm -rf ./reports/asap7/tritone/baseline/6_*.rpt
+rm -f  ./logs/asap7/tritone/baseline/6_*
+rm -f ./reports/asap7/tritone/baseline/design-dir.txt
+rm -f ./reports/asap7/tritone/baseline/metadata*.*
+rm -f ./results/asap7/tritone/baseline/ternary_cpu_system.lib ./results/asap7/tritone/baseline/ternary_cpu_system.lef
+rm -rf ./objects/asap7/tritone/baseline
+mkdir -p results/asap7/tritone/baseline/
+make: *** No rule to make target 'results/asap7/tritone/baseline/2_1_floorplan.sdc', needed by 'results/asap7/tritone/baseline/2_floorplan.sdc'.  Stop.
+make: *** Waiting for unfinished jobs....
+echo 1000 > results/asap7/tritone/baseline/clock_period.txt

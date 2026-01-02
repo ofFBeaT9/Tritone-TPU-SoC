@@ -1,0 +1,1854 @@
+mkdir -p results/asap7/tritone_soc/baseline/
+echo 1000 > results/asap7/tritone_soc/baseline/clock_period.txt
+/OpenROAD-flow-scripts/flow/scripts/synth.sh /OpenROAD-flow-scripts/flow/scripts/synth_canonicalize.tcl ./logs/asap7/tritone_soc/baseline/1_1_yosys_canonicalize.log
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/asap7/tritone_soc/baseline/clock_period.txt
+Setting clock period to 1000
+1. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+2. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+3. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+4. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+5. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+6. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+7. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+8. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+9. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+10. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+11. Executing SLANG frontend.
+designs/src/tritone_soc/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.addr'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.val0'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.val1'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11.1. Executing UNDRIVEN pass. (resolve undriven signals)
+11.2. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+11.3. Executing TRIBUF pass.
+11.4. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+11.5. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+11.6. Executing PROC_INIT pass (extract init attributes).
+11.7. Executing PROC_ROM pass (convert switches to ROMs).
+11.8. Executing PROC_MUX pass (convert decision trees to multiplexers).
+11.9. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+11.10. Executing OPT_EXPR pass (perform const folding).
+12. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_clkgate_R.v
+13. Executing HIERARCHY pass (managing design hierarchy).
+13.1. Analyzing design hierarchy..
+13.2. Analyzing design hierarchy..
+14. Executing OPT_CLEAN pass (remove unused cells and wires).
+15. Executing RTLIL backend.
+End of script. Logfile hash: 1e36d129db, CPU: user 4.14s system 0.18s, MEM: 97.00 MB peak
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Time spent: 63% 2x read_slang (2 sec), 19% 12x read_liberty (0 sec), ...
+Top level design units:
+    tritone_soc
+
+
+Build succeeded: 0 errors, 3 warnings
+Elapsed time: 0:04.49[h:]min:sec. CPU time: user 4.26 sys 0.19 (99%). Peak memory: 99328KB.
+/OpenROAD-flow-scripts/flow/scripts/synth.sh /OpenROAD-flow-scripts/flow/scripts/synth.tcl ./logs/asap7/tritone_soc/baseline/1_2_yosys.log
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/asap7/tritone_soc/baseline/clock_period.txt
+Setting clock period to 1000
+1. Executing RTLIL frontend.
+2. Executing HIERARCHY pass (managing design hierarchy).
+2.1. Analyzing design hierarchy..
+2.2. Analyzing design hierarchy..
+3. Executing SYNTH pass.
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+3.1.1. Analyzing design hierarchy..
+3.1.2. Analyzing design hierarchy..
+3.2. Executing PROC pass (convert processes to netlists).
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+3.3. Executing FLATTEN pass (flatten design).
+3.4. Executing OPT_EXPR pass (perform const folding).
+3.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.6. Executing CHECK pass (checking for obvious problems).
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [31] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [30] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [29] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [28] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [27] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [26] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [25] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [24] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [23] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [22] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [21] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [20] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [19] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [18] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [17] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [16] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [15] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [14] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [13] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [12] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_en is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [15] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [14] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [13] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [12] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [0] is used but has no driver.
+3.7. Executing OPT pass (performing simple optimizations).
+3.7.1. Executing OPT_EXPR pass (perform const folding).
+3.7.2. Executing OPT_MERGE pass (detect identical cells).
+3.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.7.5. Executing OPT_MERGE pass (detect identical cells).
+3.7.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.7.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.7.8. Executing OPT_EXPR pass (perform const folding).
+3.7.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.7.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.7.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.7.12. Executing OPT_MERGE pass (detect identical cells).
+3.7.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.7.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.7.15. Executing OPT_EXPR pass (perform const folding).
+3.7.16. Finished fast OPT passes. (There is nothing left to do.)
+3.8. Executing FSM pass (extract and optimize FSM).
+3.8.1. Executing FSM_DETECT pass (finding FSMs in design).
+3.8.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+3.8.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+3.8.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.8.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+3.8.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+3.8.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+3.8.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+3.9. Executing OPT pass (performing simple optimizations).
+3.9.1. Executing OPT_EXPR pass (perform const folding).
+3.9.2. Executing OPT_MERGE pass (detect identical cells).
+3.9.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.5. Executing OPT_MERGE pass (detect identical cells).
+3.9.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.8. Executing OPT_EXPR pass (perform const folding).
+3.9.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.9.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.12. Executing OPT_MERGE pass (detect identical cells).
+3.9.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.15. Executing OPT_EXPR pass (perform const folding).
+3.9.16. Rerunning OPT passes. (Maybe there is more to do..)
+3.9.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.19. Executing OPT_MERGE pass (detect identical cells).
+3.9.20. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.22. Executing OPT_EXPR pass (perform const folding).
+3.9.23. Finished fast OPT passes. (There is nothing left to do.)
+3.10. Executing WREDUCE pass (reducing word size of cells).
+3.11. Executing PEEPOPT pass (run peephole optimizers).
+3.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.13. Executing ALUMACC pass (create $alu and $macc cells).
+3.14. Executing SHARE pass (SAT-based resource sharing).
+3.15. Executing OPT pass (performing simple optimizations).
+3.15.1. Executing OPT_EXPR pass (perform const folding).
+3.15.2. Executing OPT_MERGE pass (detect identical cells).
+3.15.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.5. Executing OPT_MERGE pass (detect identical cells).
+3.15.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.8. Executing OPT_EXPR pass (perform const folding).
+3.15.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.15.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.12. Executing OPT_MERGE pass (detect identical cells).
+3.15.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.15. Executing OPT_EXPR pass (perform const folding).
+3.15.16. Rerunning OPT passes. (Maybe there is more to do..)
+3.15.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.19. Executing OPT_MERGE pass (detect identical cells).
+3.15.20. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.22. Executing OPT_EXPR pass (perform const folding).
+3.15.23. Finished fast OPT passes. (There is nothing left to do.)
+3.16. Executing MEMORY pass.
+3.16.1. Executing OPT_MEM pass (optimize memories).
+3.16.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+3.16.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+3.16.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+3.16.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+3.16.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+3.16.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+3.16.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+3.17. Executing OPT_CLEAN pass (remove unused cells and wires).
+4. Executing SYNTH pass.
+4.1. Executing OPT pass (performing simple optimizations).
+4.1.1. Executing OPT_EXPR pass (perform const folding).
+4.1.2. Executing OPT_MERGE pass (detect identical cells).
+4.1.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.5. Rerunning OPT passes. (Removed registers in this run.)
+4.1.6. Executing OPT_EXPR pass (perform const folding).
+4.1.7. Executing OPT_MERGE pass (detect identical cells).
+4.1.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.10. Rerunning OPT passes. (Removed registers in this run.)
+4.1.11. Executing OPT_EXPR pass (perform const folding).
+4.1.12. Executing OPT_MERGE pass (detect identical cells).
+4.1.13. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.15. Rerunning OPT passes. (Removed registers in this run.)
+4.1.16. Executing OPT_EXPR pass (perform const folding).
+4.1.17. Executing OPT_MERGE pass (detect identical cells).
+4.1.18. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.19. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.20. Rerunning OPT passes. (Removed registers in this run.)
+4.1.21. Executing OPT_EXPR pass (perform const folding).
+4.1.22. Executing OPT_MERGE pass (detect identical cells).
+4.1.23. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.25. Finished fast OPT passes.
+4.2. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+4.3. Executing OPT pass (performing simple optimizations).
+4.3.1. Executing OPT_EXPR pass (perform const folding).
+4.3.2. Executing OPT_MERGE pass (detect identical cells).
+4.3.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.5. Executing OPT_MERGE pass (detect identical cells).
+4.3.6. Executing OPT_SHARE pass.
+4.3.7. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.9. Executing OPT_EXPR pass (perform const folding).
+4.3.10. Rerunning OPT passes. (Maybe there is more to do..)
+4.3.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.13. Executing OPT_MERGE pass (detect identical cells).
+4.3.14. Executing OPT_SHARE pass.
+4.3.15. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.17. Executing OPT_EXPR pass (perform const folding).
+4.3.18. Rerunning OPT passes. (Maybe there is more to do..)
+4.3.19. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.20. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.21. Executing OPT_MERGE pass (detect identical cells).
+4.3.22. Executing OPT_SHARE pass.
+4.3.23. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.25. Executing OPT_EXPR pass (perform const folding).
+4.3.26. Finished fast OPT passes. (There is nothing left to do.)
+4.4. Executing TECHMAP pass (map to technology primitives).
+4.4.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/tools/install/yosys/bin/../share/yosys/techmap.v
+4.4.2. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/common/lcu_kogge_stone.v
+4.4.3. Continuing TECHMAP pass.
+4.5. Executing OPT pass (performing simple optimizations).
+4.5.1. Executing OPT_EXPR pass (perform const folding).
+4.5.2. Executing OPT_MERGE pass (detect identical cells).
+4.5.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.5.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.5.5. Rerunning OPT passes. (Removed registers in this run.)
+4.5.6. Executing OPT_EXPR pass (perform const folding).
+4.5.7. Executing OPT_MERGE pass (detect identical cells).
+4.5.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.5.10. Finished fast OPT passes.
+4.6. Executing ABC pass (technology mapping using ABC).
+4.6.1. Extracting gate netlist of module `\tritone_soc' to `<abc-temp-dir>/input.blif'..
+4.7. Executing OPT pass (performing simple optimizations).
+4.7.1. Executing OPT_EXPR pass (perform const folding).
+4.7.2. Executing OPT_MERGE pass (detect identical cells).
+4.7.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.7.5. Rerunning OPT passes. (Removed registers in this run.)
+4.7.6. Executing OPT_EXPR pass (perform const folding).
+4.7.7. Executing OPT_MERGE pass (detect identical cells).
+4.7.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.7.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.7.10. Finished fast OPT passes.
+4.8. Executing HIERARCHY pass (managing design hierarchy).
+4.8.1. Analyzing design hierarchy..
+4.8.2. Analyzing design hierarchy..
+4.9. Printing statistics.
+4.10. Executing CHECK pass (checking for obvious problems).
+5. Executing OPT pass (performing simple optimizations).
+5.1. Executing OPT_EXPR pass (perform const folding).
+5.2. Executing OPT_MERGE pass (detect identical cells).
+5.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+5.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+5.5. Executing OPT_MERGE pass (detect identical cells).
+5.6. Executing OPT_DFF pass (perform DFF optimizations).
+5.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+5.8. Executing OPT_EXPR pass (perform const folding).
+5.9. Rerunning OPT passes. (Maybe there is more to do..)
+5.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+5.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+5.12. Executing OPT_MERGE pass (detect identical cells).
+5.13. Executing OPT_DFF pass (perform DFF optimizations).
+5.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+5.15. Executing OPT_EXPR pass (perform const folding).
+5.16. Finished fast OPT passes. (There is nothing left to do.)
+6. Executing EXTRACT_FA pass (find and extract full/half adders).
+7. Executing TECHMAP pass (map to technology primitives).
+7.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_adders_R.v
+7.2. Continuing TECHMAP pass.
+8. Executing TECHMAP pass (map to technology primitives).
+8.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/tools/install/yosys/bin/../share/yosys/techmap.v
+8.2. Continuing TECHMAP pass.
+9. Executing OPT pass (performing simple optimizations).
+9.1. Executing OPT_EXPR pass (perform const folding).
+9.2. Executing OPT_MERGE pass (detect identical cells).
+9.3. Executing OPT_DFF pass (perform DFF optimizations).
+9.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+9.5. Finished fast OPT passes.
+10. Executing TECHMAP pass (map to technology primitives).
+10.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_latch_R.v
+10.2. Continuing TECHMAP pass.
+11. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+11.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+12. Executing OPT pass (performing simple optimizations).
+12.1. Executing OPT_EXPR pass (perform const folding).
+12.2. Executing OPT_MERGE pass (detect identical cells).
+12.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+12.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+12.5. Executing OPT_MERGE pass (detect identical cells).
+12.6. Executing OPT_DFF pass (perform DFF optimizations).
+12.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+12.8. Executing OPT_EXPR pass (perform const folding).
+12.9. Rerunning OPT passes. (Maybe there is more to do..)
+12.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+12.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+12.12. Executing OPT_MERGE pass (detect identical cells).
+12.13. Executing OPT_DFF pass (perform DFF optimizations).
+12.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+12.15. Executing OPT_EXPR pass (perform const folding).
+12.16. Finished fast OPT passes. (There is nothing left to do.)
+13. Executing SETUNDEF pass (replace undef values with defined constants).
+abc -script /OpenROAD-flow-scripts/flow/scripts/abc_speed.script -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib -dont_use *x1p*_ASAP7* -dont_use *xp*_ASAP7* -dont_use SDF* -dont_use ICG* -constr ./objects/asap7/tritone_soc/baseline/abc.constr -D 1000
+14. Executing ABC pass (technology mapping using ABC).
+14.1. Extracting gate netlist of module `\tritone_soc' to `<abc-temp-dir>/input.blif'..
+14.1.1. Executed ABC.
+14.1.2. Re-integrating ABC results.
+15. Executing SPLITNETS pass (splitting up multi-bit signals).
+16. Executing OPT_CLEAN pass (remove unused cells and wires).
+17. Executing HILOMAP pass (mapping to constant drivers).
+18. Executing INSBUF pass (insert buffer cells for connected wires).
+19. Executing CHECK pass (checking for obvious problems).
+20. Printing statistics.
+21. Executing CHECK pass (checking for obvious problems).
+22. Executing Verilog backend.
+22.1. Executing BMUXMAP pass.
+22.2. Executing DEMUXMAP pass.
+exec cp /OpenROAD-flow-scripts/flow/designs/asap7/tritone_soc/constraint_1ghz.sdc ./results/asap7/tritone_soc/baseline/1_synth.sdc
+Warnings: 61 unique messages, 61 total
+End of script. Logfile hash: a37b07365c, CPU: user 27.10s system 0.12s, MEM: 162.04 MB peak
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Time spent: 71% 1x share (20 sec), 7% 2x abc (2 sec), ...
+Elapsed time: 0:29.53[h:]min:sec. CPU time: user 29.18 sys 0.24 (99%). Peak memory: 167972KB.
+cp /OpenROAD-flow-scripts/flow/designs/asap7/tritone_soc/constraint_1ghz.sdc ./results/asap7/tritone_soc/baseline/1_2_yosys.sdc
+OpenROAD 24Q3-11673-g154f14ab7e 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+mkdir -p ./objects/asap7/tritone_soc/baseline
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 1_synth synth_odb
+Running synth_odb.tcl, stage 1_synth
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/asap7/lef/asap7_tech_1x_201209.lef, created 30 layers, 9 vias
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/asap7/lef/asap7sc7p5t_28_R_1x_220121a.lef, created 212 library cells
+link_design tritone_soc
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_ready'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[31]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[30]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[29]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[28]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[27]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[26]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[25]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[24]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[23]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[22]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[21]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[20]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[19]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[18]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[17]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[16]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[15]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[14]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[13]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[12]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[11]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[10]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[9]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[8]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[7]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[6]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[5]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[4]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[3]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[2]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[1]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[0]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_ren'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_sel'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wen'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[31]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[30]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[29]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[28]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[27]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[26]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[25]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[24]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[23]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[22]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[21]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[20]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[19]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[18]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[17]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[16]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[15]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[14]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[13]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[12]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[11]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[10]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[9]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[8]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[7]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[6]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[5]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[4]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[3]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[2]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[1]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[0]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[31]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[30]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[29]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[28]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[27]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[26]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[25]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[24]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[23]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[22]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[21]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[20]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[19]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[18]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[17]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[16]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[15]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[14]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[13]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[12]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[11]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[10]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[9]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[8]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[7]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[6]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[5]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[4]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[3]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[2]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[1]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[0]'.
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Elapsed time: 0:00.98[h:]min:sec. CPU time: user 1.01 sys 0.05 (108%). Peak memory: 196168KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+1_synth                            0            191 7ff092df52a3e176d931
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 2_1_floorplan floorplan
+Running floorplan.tcl, stage 2_1_floorplan
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/1_synth.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+
+==========================================================================
+Floorplan check_setup
+--------------------------------------------------------------------------
+number instances in verilog is 1359
+[WARNING IFP-0028] Core area lower left (3.000, 3.000) snapped to (3.024, 3.240).
+[INFO IFP-0001] Added 79 rows of 400 site asap7sc7p5t.
+source /OpenROAD-flow-scripts/flow/platforms/asap7/openRoad/make_tracks.tcl
+source /OpenROAD-flow-scripts/flow/platforms/asap7/fastroute.tcl
+Repair tie lo fanout...
+[INFO RSZ-0042] Inserted 3 tie TIELOx1_ASAP7_75t_R instances.
+Repair tie hi fanout...
+[INFO RSZ-0042] Inserted 263 tie TIEHIx1_ASAP7_75t_R instances.
+repair_timing -setup_margin 0 -hold_margin 0 -repair_tns 100 -setup -skip_last_gasp -sequence unbuffer,sizeup,swap,buffer,vt_swap -verbose
+[WARNING EST-0027] no estimated parasitics. Using wire load models.
+[INFO RSZ-0100] Repair move sequence: UnbufferMove SizeUpMove SwapPinsMove BufferMove 
+[INFO RSZ-0098] No setup violations found
+Default units for flow
+ time 1ps
+ capacitance 1fF
+ resistance 1kohm
+ voltage 1v
+ current 1mA
+ power 1pW
+ distance 1um
+Report metrics stage 2, floorplan final...
+
+==========================================================================
+floorplan final report_design_area
+--------------------------------------------------------------------------
+Design area 223 um^2 48% utilization.
+Elapsed time: 0:01.43[h:]min:sec. CPU time: user 1.38 sys 0.31 (118%). Peak memory: 218764KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+2_1_floorplan                      1            213 04823074f5796416eb38
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 2_2_floorplan_macro macro_place
+Running macro_place.tcl, stage 2_2_floorplan_macro
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/2_1_floorplan.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+No macros found: Skipping macro_placement
+Elapsed time: 0:01.00[h:]min:sec. CPU time: user 1.01 sys 0.18 (119%). Peak memory: 194432KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+2_2_floorplan_macro                1            189 04823074f5796416eb38
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 2_3_floorplan_tapcell tapcell
+Running tapcell.tcl, stage 2_3_floorplan_tapcell
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/2_2_floorplan_macro.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Tap and End Cap cell insertion
+  TAP Cell          : TAPCELL_ASAP7_75t_R
+  ENDCAP Cell       : TAPCELL_ASAP7_75t_R
+  Halo Around Macro : 2 2
+  TAP Cell Distance : 25
+[INFO TAP-0004] Inserted 158 endcaps.
+[INFO TAP-0005] Inserted 0 tapcells.
+Elapsed time: 0:01.02[h:]min:sec. CPU time: user 0.95 sys 0.07 (100%). Peak memory: 192972KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+2_3_floorplan_tapcell              1            188 1062c6e2e677c82f2c1f
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 2_4_floorplan_pdn pdn
+Running pdn.tcl, stage 2_4_floorplan_pdn
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/2_3_floorplan_tapcell.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+[INFO PDN-0001] Inserting grid: top
+Elapsed time: 0:01.09[h:]min:sec. CPU time: user 0.92 sys 0.17 (100%). Peak memory: 196416KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+2_4_floorplan_pdn                  1            191 b44a9418a17bcab1b85e
+cp ./results/asap7/tritone_soc/baseline/2_4_floorplan_pdn.odb ./results/asap7/tritone_soc/baseline/2_floorplan.odb
+cp ./results/asap7/tritone_soc/baseline/2_1_floorplan.sdc ./results/asap7/tritone_soc/baseline/2_floorplan.sdc
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 3_1_place_gp_skip_io global_place_skip_io
+Running global_place_skip_io.tcl, stage 3_1_place_gp_skip_io
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/2_floorplan.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+[INFO GPL-0022] Initialize gpl and calculate uniform density.
+Placement density is 0.605000010728836, computed from PLACE_DENSITY_LB_ADDON  0.10 and lower bound 0.550000011920929
+global_placement -skip_io -density 0.605000010728836 -pad_left 0 -pad_right 0
+[INFO GPL-0005] Execute conjugate gradient initial placement.
+[INFO GPL-0002] DBU: 1000
+[INFO GPL-0003] SiteSize: (  0.054  0.270 ) um
+[INFO GPL-0004] CoreBBox: (  3.024  3.240 ) ( 24.624 24.570 ) um
+[INFO GPL-0032] Initializing region: Top-level
+[INFO GPL-0006] Number of instances:              1781
+[INFO GPL-0007] Movable instances:                1623
+[INFO GPL-0008] Fixed instances:                   158
+[INFO GPL-0009] Dummy instances:                     0
+[INFO GPL-0010] Number of nets:                   1724
+[INFO GPL-0011] Number of pins:                   5579
+[INFO GPL-0012] Die BBox:  (  0.000  0.000 ) ( 27.677 27.677 ) um
+[INFO GPL-0013] Core BBox: (  3.024  3.240 ) ( 24.624 24.570 ) um
+[INFO GPL-0016] Core area:                     460.728 um^2
+[INFO GPL-0014] Region name: top-level.
+[INFO GPL-0015] Region area:                   460.728 um^2
+[INFO GPL-0017] Fixed instances area:            4.607 um^2
+[INFO GPL-0018] Movable instances area:        247.648 um^2
+[INFO GPL-0019] Utilization:                    54.294 %
+[INFO GPL-0020] Standard cells area:           247.648 um^2
+[INFO GPL-0021] Large instances area:            0.000 um^2
+[INFO GPL-0033] Initializing Nesterov region: Top-level
+[INFO GPL-0023] Placement target density:       0.6050
+[INFO GPL-0024] Movable insts average area:      0.153 um^2
+[INFO GPL-0025] Ideal bin area:                  0.252 um^2
+[INFO GPL-0026] Ideal bin count:                  1826
+[INFO GPL-0027] Total bin area:                460.728 um^2
+[INFO GPL-0028] Bin count (X, Y):          32 ,     32
+[INFO GPL-0029] Bin size (W * H):       0.675 *  0.667 um
+[INFO GPL-0030] Number of bins:                   1024
+[INFO GPL-0007] Execute nesterov global placement.
+[INFO GPL-0031] HPWL: Half-Perimeter Wirelength
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+        0 |   0.9612 |  2.551542e+03 |   +0.00% |  3.94e-12 |      
+       10 |   0.9846 |  5.014310e+02 |  -80.35% |  6.42e-12 |      
+       20 |   0.9848 |  4.709820e+02 |   -6.07% |  1.05e-11 |      
+       30 |   0.9848 |  4.638540e+02 |   -1.51% |  1.70e-11 |      
+       40 |   0.9856 |  4.624330e+02 |   -0.31% |  2.77e-11 |      
+       50 |   0.9852 |  4.634170e+02 |   +0.21% |  4.52e-11 |      
+       60 |   0.9843 |  4.680520e+02 |   +1.00% |  7.36e-11 |      
+       70 |   0.9825 |  4.780190e+02 |   +2.13% |  1.20e-10 |      
+       80 |   0.9770 |  4.969470e+02 |   +3.96% |  1.95e-10 |      
+       90 |   0.9735 |  5.351210e+02 |   +7.68% |  3.18e-10 |      
+      100 |   0.9654 |  6.073290e+02 |  +13.49% |  5.18e-10 |      
+      110 |   0.9464 |  7.335290e+02 |  +20.78% |  8.44e-10 |      
+      120 |   0.9186 |  9.072720e+02 |  +23.69% |  1.37e-09 |      
+      130 |   0.8949 |  1.031676e+03 |  +13.71% |  2.24e-09 |      
+      140 |   0.8790 |  1.135050e+03 |  +10.02% |  3.65e-09 |      
+      150 |   0.8477 |  1.278176e+03 |  +12.61% |  5.94e-09 |      
+      160 |   0.8099 |  1.433732e+03 |  +12.17% |  9.68e-09 |      
+      170 |   0.7735 |  1.576010e+03 |   +9.92% |  1.58e-08 |      
+      180 |   0.7349 |  1.723904e+03 |   +9.38% |  2.57e-08 |      
+      190 |   0.6903 |  1.885575e+03 |   +9.38% |  4.18e-08 |      
+      200 |   0.6464 |  2.033471e+03 |   +7.84% |  6.81e-08 |      
+      210 |   0.5952 |  2.186078e+03 |   +7.50% |  1.11e-07 |      
+      220 |   0.5485 |  2.317311e+03 |   +6.00% |  1.81e-07 |      
+      230 |   0.4970 |  2.433080e+03 |   +5.00% |  2.94e-07 |      
+      240 |   0.4428 |  2.540462e+03 |   +4.41% |  4.80e-07 |      
+      250 |   0.3991 |  2.624617e+03 |   +3.31% |  7.81e-07 |      
+      260 |   0.3564 |  2.675677e+03 |   +1.95% |  1.27e-06 |      
+      270 |   0.3145 |  2.709174e+03 |   +1.25% |  1.93e-06 |      
+      280 |   0.2780 |  2.743084e+03 |   +1.25% |  2.85e-06 |      
+      290 |   0.2516 |  2.765568e+03 |   +0.82% |  4.19e-06 |      
+      300 |   0.2232 |  2.777529e+03 |   +0.43% |  6.18e-06 |      
+      310 |   0.1939 |  2.794239e+03 |   +0.60% |  9.10e-06 |      
+      320 |   0.1673 |  2.811983e+03 |   +0.64% |  1.34e-05 |      
+      330 |   0.1412 |  2.824913e+03 |   +0.46% |  1.97e-05 |      
+      340 |   0.1196 |  2.834034e+03 |   +0.32% |  2.91e-05 |      
+      350 |   0.1016 |  2.844706e+03 |   +0.38% |  4.29e-05 |      
+      352 |   0.0993 |  2.846458e+03 |          |  4.81e-05 |      
+---------------------------------------------------------------
+[INFO GPL-1001] Global placement finished at iteration 352
+[INFO GPL-1002] Placed Cell Area              247.6481
+[INFO GPL-1003] Available Free Area           456.1207
+[INFO GPL-1004] Minimum Feasible Density        0.5500 (cell_area / free_area)
+[INFO GPL-1006]   Suggested Target Densities:
+[INFO GPL-1007]     - For 90% usage of free space: 0.6033
+[INFO GPL-1008]     - For 80% usage of free space: 0.6787
+[INFO GPL-1014] Final placement area: 247.65 (+0.00%)
+Took 26 seconds: global_placement -skip_io -density 0.605000010728836 -pad_left 0 -pad_right 0
+Elapsed time: 0:28.81[h:]min:sec. CPU time: user 585.30 sys 2.75 (2040%). Peak memory: 198100KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_1_place_gp_skip_io              28            193 481a67d3e698c1a464e1
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 3_2_place_iop io_placement
+Running io_placement.tcl, stage 3_2_place_iop
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/3_1_place_gp_skip_io.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+place_pins -hor_layers M4 -ver_layers M5
+Found 0 macro blocks.
+Using 2 tracks default min distance between IO pins.
+[INFO PPL-0001] Number of available slots 1092
+[INFO PPL-0002] Number of I/O             106
+[INFO PPL-0003] Number of I/O w/sink      102
+[INFO PPL-0004] Number of I/O w/o sink    4
+[INFO PPL-0005] Slots per section         200
+[INFO PPL-0008] Successfully assigned pins to sections.
+[INFO PPL-0012] I/O nets HPWL: 804.84 um.
+Elapsed time: 0:01.45[h:]min:sec. CPU time: user 1.20 sys 0.15 (92%). Peak memory: 194500KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_2_place_iop                      1            189 8e759a0a14bb6c0dae9d
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 3_3_place_gp global_place
+Running global_place.tcl, stage 3_3_place_gp
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/3_2_place_iop.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+[INFO RSZ-0026] Removed 93 buffers.
+Perform port buffering...
+[INFO RSZ-0027] Inserted 64 BUFx2_ASAP7_75t_R input buffers.
+[INFO RSZ-0028] Inserted 34 BUFx2_ASAP7_75t_R output buffers.
+[INFO GPL-0022] Initialize gpl and calculate uniform density.
+Placement density is 0.605000010728836, computed from PLACE_DENSITY_LB_ADDON  0.10 and lower bound 0.550000011920929
+global_placement -density 0.605000010728836 -pad_left 0 -pad_right 0 -routability_driven -timing_driven
+[INFO GPL-0005] Execute conjugate gradient initial placement.
+[INFO GPL-0002] DBU: 1000
+[INFO GPL-0003] SiteSize: (  0.054  0.270 ) um
+[INFO GPL-0004] CoreBBox: (  3.024  3.240 ) ( 24.624 24.570 ) um
+[INFO GPL-0032] Initializing region: Top-level
+[INFO GPL-0006] Number of instances:              1786
+[INFO GPL-0007] Movable instances:                1628
+[INFO GPL-0008] Fixed instances:                   158
+[INFO GPL-0009] Dummy instances:                     0
+[INFO GPL-0010] Number of nets:                   1729
+[INFO GPL-0011] Number of pins:                   5695
+[INFO GPL-0012] Die BBox:  (  0.000  0.000 ) ( 27.677 27.677 ) um
+[INFO GPL-0013] Core BBox: (  3.024  3.240 ) ( 24.624 24.570 ) um
+[INFO GPL-0016] Core area:                     460.728 um^2
+[INFO GPL-0014] Region name: top-level.
+[INFO GPL-0015] Region area:                   460.728 um^2
+[INFO GPL-0017] Fixed instances area:            4.607 um^2
+[INFO GPL-0018] Movable instances area:        246.993 um^2
+[INFO GPL-0019] Utilization:                    54.151 %
+[INFO GPL-0020] Standard cells area:           246.993 um^2
+[INFO GPL-0021] Large instances area:            0.000 um^2
+[InitialPlace]  Iter: 1 conjugate gradient residual: 0.00000012 HPWL: 4743460
+[InitialPlace]  Iter: 2 conjugate gradient residual: 0.00000009 HPWL: 3398823
+[InitialPlace]  Iter: 3 conjugate gradient residual: 0.00000011 HPWL: 3395396
+[InitialPlace]  Iter: 4 conjugate gradient residual: 0.00000012 HPWL: 3401827
+[InitialPlace]  Iter: 5 conjugate gradient residual: 0.00000012 HPWL: 3413571
+[INFO GPL-0033] Initializing Nesterov region: Top-level
+[INFO GPL-0023] Placement target density:       0.6050
+[INFO GPL-0024] Movable insts average area:      0.152 um^2
+[INFO GPL-0025] Ideal bin area:                  0.251 um^2
+[INFO GPL-0026] Ideal bin count:                  1837
+[INFO GPL-0027] Total bin area:                460.728 um^2
+[INFO GPL-0028] Bin count (X, Y):          32 ,     32
+[INFO GPL-0029] Bin size (W * H):       0.675 *  0.667 um
+[INFO GPL-0030] Number of bins:                   1024
+[INFO GPL-0007] Execute nesterov global placement.
+[INFO GPL-0031] HPWL: Half-Perimeter Wirelength
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+        0 |   0.8377 |  2.247166e+03 |   +0.00% |  4.27e-12 |      
+       10 |   0.8634 |  1.843669e+03 |  -17.96% |  6.95e-12 |      
+       20 |   0.8798 |  1.812728e+03 |   -1.68% |  1.13e-11 |      
+       30 |   0.8804 |  1.814517e+03 |   +0.10% |  1.85e-11 |      
+       40 |   0.8759 |  1.810160e+03 |   -0.24% |  3.01e-11 |      
+       50 |   0.8724 |  1.809475e+03 |   -0.04% |  4.90e-11 |      
+       60 |   0.8737 |  1.809646e+03 |   +0.01% |  7.97e-11 |      
+       70 |   0.8731 |  1.811344e+03 |   +0.09% |  1.30e-10 |      
+       80 |   0.8698 |  1.814053e+03 |   +0.15% |  2.12e-10 |      
+       90 |   0.8677 |  1.819666e+03 |   +0.31% |  3.45e-10 |      
+      100 |   0.8604 |  1.830098e+03 |   +0.57% |  5.61e-10 |      
+      110 |   0.8501 |  1.849430e+03 |   +1.06% |  9.14e-10 |      
+      120 |   0.8346 |  1.884357e+03 |   +1.89% |  1.49e-09 |      
+      130 |   0.8155 |  1.936356e+03 |   +2.76% |  2.43e-09 |      
+      140 |   0.7881 |  2.007157e+03 |   +3.66% |  3.95e-09 |      
+      150 |   0.7601 |  2.091093e+03 |   +4.18% |  6.44e-09 |      
+      160 |   0.7193 |  2.186069e+03 |   +4.54% |  1.05e-08 |      
+      170 |   0.6863 |  2.271295e+03 |   +3.90% |  1.71e-08 |      
+      180 |   0.6507 |  2.337078e+03 |   +2.90% |  2.78e-08 |      
+[INFO GPL-0100] Timing-driven iteration 1/2, virtual: false.
+[INFO GPL-0101]    Iter: 185, overflow: 0.633, keep resizer changes at: 1, HPWL: 2358808
+Iteration |   Area    | Resized | Buffers | Nets repaired | Remaining
+---------------------------------------------------------------------
+        0 |     +0.0% |       0 |       0 |             0 |      1729
+    final |     +2.0% |       1 |      58 |            18 |         0
+---------------------------------------------------------------------
+[INFO RSZ-0034] Found 18 slew violations.
+[INFO RSZ-0035] Found 16 fanout violations.
+[INFO RSZ-0039] Resized 1 instances.
+[INFO RSZ-0038] Inserted 58 buffers in 18 nets.
+   Iter   |    Area   | Removed | Inserted |   Pins
+          |           | Buffers | Buffers  | Remaining
+-------------------------------------------------------
+        0 |     +0.0% |       0 |        0 |      1394
+      130 |     +0.0% |       2 |        2 |      1264
+      260 |     +0.0% |       2 |        3 |      1134
+      390 |     +0.0% |       2 |        3 |      1004
+      520 |     +0.0% |       2 |        3 |       874
+      650 |     +0.0% |       2 |        3 |       744
+      780 |     +0.1% |       4 |        5 |       614
+      910 |     +0.3% |      34 |       36 |       484
+     1040 |     +0.4% |      38 |       42 |       354
+     1170 |     +0.5% |      41 |       46 |       224
+     1300 |     +0.5% |      41 |       47 |        94
+    final |     +0.7% |      58 |       66 |         0
+-------------------------------------------------------
+[INFO GPL-0106] Timing-driven: worst slack -3e-10
+[INFO GPL-0107] Timing-driven: repair_design delta area: 5.912 um^2 (+2.39%)
+[INFO GPL-0108] Timing-driven: repair_design, gpl delta gcells: 66 (+4.05%)
+[INFO GPL-0109] Timing-driven: repair_design, gcells created: 124, deleted: 58
+[INFO GPL-0110] Timing-driven: new target density: 0.6179615
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+      190 |   0.6259 |  2.668351e+03 |  +14.17% |  4.53e-08 |      
+[INFO GPL-0038] Routability snapshot saved at iter = 198
+      197 |   0.5982 |  2.728053e+03 |          |           |      
+      200 |   0.5803 |  2.737380e+03 |   +2.59% |  7.38e-08 |      
+      210 |   0.5432 |  2.746666e+03 |   +0.34% |  1.20e-07 |      
+      220 |   0.5080 |  2.806241e+03 |   +2.17% |  1.96e-07 |      
+      230 |   0.4592 |  2.893054e+03 |   +3.09% |  3.19e-07 |      
+      240 |   0.4195 |  2.931254e+03 |   +1.32% |  5.20e-07 |      
+      250 |   0.3798 |  2.950472e+03 |   +0.66% |  8.46e-07 |      
+      260 |   0.3366 |  2.993002e+03 |   +1.44% |  1.35e-06 |      
+      270 |   0.3082 |  3.014791e+03 |   +0.73% |  1.99e-06 |      
+[INFO GPL-0040] Routability iteration: 1
+[INFO GPL-0041] Total routing overflow: 0.0000
+[INFO GPL-0042] Number of overflowed tiles: 0 (0.00%)
+[INFO GPL-0043] Average top 0.5% routing congestion: 0.6867
+[INFO GPL-0044] Average top 1.0% routing congestion: 0.6422
+[INFO GPL-0045] Average top 2.0% routing congestion: 0.6017
+[INFO GPL-0046] Average top 5.0% routing congestion: 0.5542
+[INFO GPL-0047] Routability iteration weighted routing congestion: 0.6645
+[INFO GPL-0050] Weighted routing congestion is lower than target routing congestion(1.0100), end routability optimization.
+[INFO GPL-0090] Routability finished. Target routing congestion achieved succesfully.
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+      280 |   0.2801 |  3.045041e+03 |   +1.00% |  2.93e-06 |      
+      290 |   0.2490 |  3.057919e+03 |   +0.42% |  4.32e-06 |      
+      300 |   0.2185 |  3.074830e+03 |   +0.55% |  6.36e-06 |      
+      310 |   0.1948 |  3.094167e+03 |   +0.63% |  9.37e-06 |      
+[INFO GPL-0100] Timing-driven iteration 2/2, virtual: false.
+[INFO GPL-0101]    Iter: 311, overflow: 0.195, keep resizer changes at: 1, HPWL: 3094167
+Iteration |   Area    | Resized | Buffers | Nets repaired | Remaining
+---------------------------------------------------------------------
+        0 |     +0.0% |       0 |       0 |             0 |      1795
+    final |     +0.0% |       0 |       0 |             0 |         0
+---------------------------------------------------------------------
+   Iter   |    Area   | Removed | Inserted |   Pins
+          |           | Buffers | Buffers  | Remaining
+-------------------------------------------------------
+        0 |     +0.0% |       0 |        0 |      1394
+      130 |     +0.0% |       2 |        3 |      1264
+      260 |     +0.1% |       3 |        5 |      1134
+      390 |     +0.1% |       3 |        5 |      1004
+      520 |     +0.1% |       3 |        5 |       874
+      650 |     +0.1% |       3 |        5 |       744
+      780 |     +0.1% |       5 |        8 |       614
+      910 |     +0.2% |      36 |       42 |       484
+     1040 |     +0.2% |      42 |       48 |       354
+     1170 |     +0.3% |      46 |       53 |       224
+     1300 |     +0.3% |      47 |       54 |        94
+    final |     +0.3% |      66 |       73 |         0
+-------------------------------------------------------
+[INFO GPL-0106] Timing-driven: worst slack -3e-10
+[INFO GPL-0107] Timing-driven: repair_design delta area: 0.612 um^2 (+0.24%)
+[INFO GPL-0108] Timing-driven: repair_design, gpl delta gcells: 7 (+0.41%)
+[INFO GPL-0109] Timing-driven: repair_design, gcells created: 73, deleted: 66
+[INFO GPL-0110] Timing-driven: new target density: 0.61930406
+Iteration | Overflow |     HPWL (um) |  HPWL(%) |   Penalty | Group
+---------------------------------------------------------------
+      320 |   0.1679 |  3.221497e+03 |   +4.12% |  1.38e-05 |      
+      330 |   0.1410 |  3.183163e+03 |   -1.19% |  2.03e-05 |      
+      340 |   0.1172 |  3.176921e+03 |   -0.20% |  3.00e-05 |      
+      350 |   0.1014 |  3.179571e+03 |   +0.08% |  4.42e-05 |      
+      351 |   0.0996 |  3.181599e+03 |          |  4.77e-05 |      
+---------------------------------------------------------------
+[INFO GPL-1001] Global placement finished at iteration 351
+[INFO GPL-1003] Routability mode iteration count: 75
+[INFO GPL-1005] Routability final weighted congestion: 0.6317
+[INFO GPL-1002] Placed Cell Area              253.5170
+[INFO GPL-1003] Available Free Area           456.1207
+[INFO GPL-1004] Minimum Feasible Density        0.5500 (cell_area / free_area)
+[INFO GPL-1006]   Suggested Target Densities:
+[INFO GPL-1007]     - For 90% usage of free space: 0.6176
+[INFO GPL-1008]     - For 80% usage of free space: 0.6948
+[INFO GPL-1011] Original area (um^2): 246.99
+[INFO GPL-1012] Total routability artificial inflation: 5.91 (+2.39%)
+[INFO GPL-1013] Total timing-driven delta area: 6.52 (+2.64%)
+[INFO GPL-1014] Final placement area: 253.52 (+2.64%)
+Took 37 seconds: global_placement -density 0.605000010728836 -pad_left 0 -pad_right 0 -routability_driven -timing_driven
+Report metrics stage 3, global place...
+
+==========================================================================
+global place report_design_area
+--------------------------------------------------------------------------
+Design area 229 um^2 50% utilization.
+Elapsed time: 0:42.33[h:]min:sec. CPU time: user 720.57 sys 4.19 (1712%). Peak memory: 301604KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_3_place_gp                      42            294 c240ff8eba6566860499
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 3_4_place_resized resize
+Running resize.tcl, stage 3_4_place_resized
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/3_3_place_gp.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Perform buffer insertion and gate resizing...
+repair_design -verbose
+Iteration |   Area    | Resized | Buffers | Nets repaired | Remaining
+---------------------------------------------------------------------
+        0 |     +0.0% |       0 |       0 |             0 |      1802
+       10 |     +0.0% |       0 |       0 |             0 |      1792
+       20 |     +0.0% |       0 |       0 |             0 |      1782
+       30 |     +0.0% |       0 |       0 |             0 |      1772
+       40 |     +0.0% |       0 |       0 |             0 |      1762
+       50 |     +0.0% |       0 |       0 |             0 |      1752
+       60 |     +0.0% |       0 |       0 |             0 |      1742
+       70 |     +0.0% |       0 |       0 |             0 |      1732
+       80 |     +0.0% |       0 |       0 |             0 |      1722
+       90 |     +0.0% |       0 |       0 |             0 |      1712
+      100 |     +0.0% |       0 |       0 |             0 |      1702
+      110 |     +0.0% |       0 |       0 |             0 |      1692
+      120 |     +0.0% |       0 |       0 |             0 |      1682
+      130 |     +0.0% |       0 |       0 |             0 |      1672
+      140 |     +0.0% |       0 |       0 |             0 |      1662
+      150 |     +0.0% |       0 |       0 |             0 |      1652
+      160 |     +0.0% |       0 |       0 |             0 |      1642
+      170 |     +0.0% |       0 |       0 |             0 |      1632
+      180 |     +0.0% |       0 |       0 |             0 |      1622
+      190 |     +0.0% |       0 |       0 |             0 |      1612
+      200 |     +0.0% |       0 |       0 |             0 |      1602
+      210 |     +0.0% |       0 |       0 |             0 |      1592
+      220 |     +0.0% |       0 |       0 |             0 |      1582
+      230 |     +0.0% |       0 |       0 |             0 |      1572
+      240 |     +0.0% |       0 |       0 |             0 |      1562
+      250 |     +0.0% |       0 |       0 |             0 |      1552
+      260 |     +0.0% |       0 |       0 |             0 |      1542
+      270 |     +0.0% |       0 |       0 |             0 |      1532
+      280 |     +0.0% |       0 |       0 |             0 |      1522
+      290 |     +0.0% |       0 |       0 |             0 |      1512
+      300 |     +0.0% |       0 |       0 |             0 |      1502
+      310 |     +0.0% |       0 |       0 |             0 |      1492
+      320 |     +0.0% |       0 |       0 |             0 |      1482
+      330 |     +0.0% |       0 |       0 |             0 |      1472
+      340 |     +0.0% |       0 |       0 |             0 |      1462
+      350 |     +0.0% |       0 |       0 |             0 |      1452
+      360 |     +0.0% |       0 |       0 |             0 |      1442
+      370 |     +0.0% |       0 |       0 |             0 |      1432
+      380 |     +0.0% |       0 |       0 |             0 |      1422
+      390 |     +0.0% |       0 |       0 |             0 |      1412
+      400 |     +0.0% |       0 |       0 |             0 |      1402
+      410 |     +0.0% |       0 |       0 |             0 |      1392
+      420 |     +0.0% |       0 |       0 |             0 |      1382
+      430 |     +0.0% |       0 |       0 |             0 |      1372
+      440 |     +0.0% |       0 |       0 |             0 |      1362
+      450 |     +0.0% |       0 |       0 |             0 |      1352
+      460 |     +0.0% |       0 |       0 |             0 |      1342
+      470 |     +0.0% |       0 |       0 |             0 |      1332
+      480 |     +0.0% |       0 |       0 |             0 |      1322
+      490 |     +0.0% |       0 |       0 |             0 |      1312
+      500 |     +0.0% |       0 |       0 |             0 |      1302
+      510 |     +0.0% |       0 |       0 |             0 |      1292
+      520 |     +0.0% |       0 |       0 |             0 |      1282
+      530 |     +0.0% |       0 |       0 |             0 |      1272
+      540 |     +0.0% |       0 |       0 |             0 |      1262
+      550 |     +0.0% |       0 |       0 |             0 |      1252
+      560 |     +0.0% |       0 |       0 |             0 |      1242
+      570 |     +0.0% |       0 |       0 |             0 |      1232
+      580 |     +0.0% |       0 |       0 |             0 |      1222
+      590 |     +0.0% |       0 |       0 |             0 |      1212
+      600 |     +0.0% |       0 |       0 |             0 |      1202
+      610 |     +0.0% |       0 |       0 |             0 |      1192
+      620 |     +0.0% |       0 |       0 |             0 |      1182
+      630 |     +0.0% |       0 |       0 |             0 |      1172
+      640 |     +0.0% |       0 |       0 |             0 |      1162
+      650 |     +0.0% |       0 |       0 |             0 |      1152
+      660 |     +0.0% |       0 |       0 |             0 |      1142
+      670 |     +0.0% |       0 |       0 |             0 |      1132
+      680 |     +0.0% |       0 |       0 |             0 |      1122
+      690 |     +0.0% |       0 |       0 |             0 |      1112
+      700 |     +0.0% |       0 |       0 |             0 |      1102
+      710 |     +0.0% |       0 |       0 |             0 |      1092
+      720 |     +0.0% |       0 |       0 |             0 |      1082
+      730 |     +0.0% |       0 |       0 |             0 |      1072
+      740 |     +0.0% |       0 |       0 |             0 |      1062
+      750 |     +0.0% |       0 |       0 |             0 |      1052
+      760 |     +0.0% |       0 |       0 |             0 |      1042
+      770 |     +0.0% |       0 |       0 |             0 |      1032
+      780 |     +0.0% |       0 |       0 |             0 |      1022
+      790 |     +0.0% |       0 |       0 |             0 |      1012
+      800 |     +0.0% |       0 |       0 |             0 |      1002
+      810 |     +0.0% |       0 |       0 |             0 |       992
+      820 |     +0.0% |       0 |       0 |             0 |       982
+      830 |     +0.0% |       0 |       0 |             0 |       972
+      840 |     +0.0% |       0 |       0 |             0 |       962
+      850 |     +0.0% |       0 |       0 |             0 |       952
+      860 |     +0.0% |       0 |       0 |             0 |       942
+      870 |     +0.0% |       0 |       0 |             0 |       932
+      880 |     +0.0% |       0 |       0 |             0 |       922
+      890 |     +0.0% |       0 |       0 |             0 |       912
+      900 |     +0.0% |       0 |       0 |             0 |       902
+      910 |     +0.0% |       0 |       0 |             0 |       892
+      920 |     +0.0% |       0 |       0 |             0 |       882
+      930 |     +0.0% |       0 |       0 |             0 |       872
+      940 |     +0.0% |       0 |       0 |             0 |       862
+      950 |     +0.0% |       0 |       0 |             0 |       852
+      960 |     +0.0% |       0 |       0 |             0 |       842
+      970 |     +0.0% |       0 |       0 |             0 |       832
+      980 |     +0.0% |       0 |       0 |             0 |       822
+      990 |     +0.0% |       0 |       0 |             0 |       812
+     1000 |     +0.0% |       0 |       0 |             0 |       802
+     1010 |     +0.0% |       0 |       0 |             0 |       792
+     1020 |     +0.0% |       0 |       0 |             0 |       782
+     1030 |     +0.0% |       0 |       0 |             0 |       772
+     1040 |     +0.0% |       0 |       0 |             0 |       762
+     1050 |     +0.0% |       0 |       0 |             0 |       752
+     1060 |     +0.0% |       0 |       0 |             0 |       742
+     1070 |     +0.0% |       0 |       0 |             0 |       732
+     1080 |     +0.0% |       0 |       0 |             0 |       722
+     1090 |     +0.0% |       0 |       0 |             0 |       712
+     1100 |     +0.0% |       0 |       0 |             0 |       702
+     1110 |     +0.0% |       0 |       0 |             0 |       692
+     1120 |     +0.0% |       0 |       0 |             0 |       682
+     1130 |     +0.0% |       0 |       0 |             0 |       672
+     1140 |     +0.0% |       0 |       0 |             0 |       662
+     1150 |     +0.0% |       0 |       0 |             0 |       652
+     1160 |     +0.0% |       0 |       0 |             0 |       642
+     1170 |     +0.0% |       0 |       0 |             0 |       632
+     1180 |     +0.0% |       0 |       0 |             0 |       622
+     1190 |     +0.0% |       0 |       0 |             0 |       612
+     1200 |     +0.0% |       0 |       0 |             0 |       602
+     1210 |     +0.0% |       0 |       0 |             0 |       592
+     1220 |     +0.0% |       0 |       0 |             0 |       582
+     1230 |     +0.0% |       0 |       0 |             0 |       572
+     1240 |     +0.0% |       0 |       0 |             0 |       562
+     1250 |     +0.0% |       0 |       0 |             0 |       552
+     1260 |     +0.0% |       0 |       0 |             0 |       542
+     1270 |     +0.0% |       0 |       0 |             0 |       532
+     1280 |     +0.0% |       0 |       0 |             0 |       522
+     1290 |     +0.0% |       0 |       0 |             0 |       512
+     1300 |     +0.0% |       0 |       0 |             0 |       502
+     1310 |     +0.0% |       0 |       0 |             0 |       492
+     1320 |     +0.0% |       0 |       0 |             0 |       482
+     1330 |     +0.0% |       0 |       0 |             0 |       472
+     1340 |     +0.0% |       0 |       0 |             0 |       462
+     1350 |     +0.0% |       0 |       0 |             0 |       452
+     1360 |     +0.0% |       0 |       0 |             0 |       442
+     1370 |     +0.0% |       0 |       0 |             0 |       432
+     1380 |     +0.0% |       0 |       0 |             0 |       422
+     1390 |     +0.0% |       0 |       0 |             0 |       412
+     1400 |     +0.0% |       0 |       0 |             0 |       402
+     1410 |     +0.0% |       0 |       0 |             0 |       392
+     1420 |     +0.0% |       0 |       0 |             0 |       382
+     1430 |     +0.0% |       0 |       0 |             0 |       372
+     1440 |     +0.0% |       0 |       0 |             0 |       362
+     1450 |     +0.0% |       0 |       0 |             0 |       352
+     1460 |     +0.0% |       0 |       0 |             0 |       342
+     1470 |     +0.0% |       0 |       0 |             0 |       332
+     1480 |     +0.0% |       0 |       0 |             0 |       322
+     1490 |     +0.0% |       0 |       0 |             0 |       312
+     1500 |     +0.0% |       0 |       0 |             0 |       302
+     1510 |     +0.0% |       0 |       0 |             0 |       292
+     1520 |     +0.0% |       0 |       0 |             0 |       282
+     1530 |     +0.0% |       0 |       0 |             0 |       272
+     1540 |     +0.0% |       0 |       0 |             0 |       262
+     1550 |     +0.0% |       0 |       0 |             0 |       252
+     1560 |     +0.0% |       0 |       0 |             0 |       242
+     1570 |     +0.0% |       0 |       0 |             0 |       232
+     1580 |     +0.0% |       0 |       0 |             0 |       222
+     1590 |     +0.0% |       0 |       0 |             0 |       212
+     1600 |     +0.0% |       0 |       0 |             0 |       202
+     1610 |     +0.0% |       0 |       0 |             0 |       192
+     1620 |     +0.0% |       0 |       0 |             0 |       182
+     1630 |     +0.0% |       0 |       0 |             0 |       172
+     1640 |     +0.0% |       0 |       0 |             0 |       162
+     1650 |     +0.0% |       0 |       0 |             0 |       152
+     1660 |     +0.0% |       0 |       0 |             0 |       142
+     1670 |     +0.0% |       0 |       0 |             0 |       132
+     1680 |     +0.0% |       0 |       0 |             0 |       122
+     1690 |     +0.0% |       0 |       0 |             0 |       112
+     1700 |     +0.0% |       0 |       0 |             0 |       102
+     1710 |     +0.0% |       0 |       0 |             0 |        92
+     1720 |     +0.0% |       0 |       0 |             0 |        82
+     1730 |     +0.0% |       0 |       0 |             0 |        72
+     1740 |     +0.0% |       0 |       0 |             0 |        62
+     1750 |     +0.0% |       0 |       0 |             0 |        52
+     1760 |     +0.0% |       0 |       0 |             0 |        42
+     1770 |     +0.0% |       0 |       0 |             0 |        32
+     1780 |     +0.0% |       0 |       0 |             0 |        22
+     1790 |     +0.0% |       0 |       0 |             0 |        12
+     1800 |     +0.0% |       0 |       0 |             0 |         2
+    final |     +0.0% |       0 |       0 |             0 |         0
+---------------------------------------------------------------------
+Floating nets: 
+Report metrics stage 3, resizer...
+
+==========================================================================
+resizer report_design_area
+--------------------------------------------------------------------------
+Design area 229 um^2 50% utilization.
+Instance count before 1859, after 1859
+Pin count before 5735, after 5735
+Elapsed time: 0:02.12[h:]min:sec. CPU time: user 2.26 sys 0.46 (128%). Peak memory: 219180KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_4_place_resized                  2            214 c240ff8eba6566860499
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 3_5_place_dp detail_place
+Running detail_place.tcl, stage 3_5_place_dp
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/3_4_place_resized.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Placement Analysis
+---------------------------------
+total displacement        410.4 u
+average displacement        0.2 u
+max displacement            0.9 u
+original HPWL            3222.8 u
+legalized HPWL           3623.0 u
+delta HPWL                   12 %
+
+Detailed placement improvement.
+[INFO DPL-0401] Setting random seed to 1.
+[INFO DPL-0402] Setting maximum displacement 5 1 to 1350 270 units.
+[INFO DPL-0320] Collected 264 fixed cells.
+[INFO DPL-0318] Collected 1701 single height cells.
+[INFO DPL-0321] Collected 0 wide cells.
+[INFO DPL-0322] Image (3024, 3240) - (24624, 24570)
+[INFO DPL-0310] Assigned 1701 cells into segments.  Movement in X-direction is 0.000000, movement in Y-direction is 0.000000.
+[INFO DPL-0313] Found 0 cells in wrong regions.
+[INFO DPL-0315] Found 0 row alignment problems.
+[INFO DPL-0314] Found 0 site alignment problems.
+[INFO DPL-0311] Found 0 overlaps between adjacent cells.
+[INFO DPL-0312] Found 0 edge spacing violations and 0 padding violations.
+[INFO DPL-0303] Running algorithm for independent set matching.
+[INFO DPL-0300] Set matching objective is wirelength.
+[INFO DPL-0301] Pass   1 of matching; objective is 3.603415e+06.
+[INFO DPL-0302] End of matching; objective is 3.600067e+06, improvement is 0.09 percent.
+[INFO DPL-0303] Running algorithm for global swaps.
+[INFO DPL-0306] Pass   1 of global swaps; hpwl is 3.568499e+06.
+[INFO DPL-0307] End of global swaps; objective is 3.568499e+06, improvement is 0.88 percent.
+[INFO DPL-0303] Running algorithm for vertical swaps.
+[INFO DPL-0308] Pass   1 of vertical swaps; hpwl is 3.560533e+06.
+[INFO DPL-0309] End of vertical swaps; objective is 3.560533e+06, improvement is 0.22 percent.
+[INFO DPL-0303] Running algorithm for reordering.
+[INFO DPL-0304] Pass   1 of reordering; objective is 3.555394e+06.
+[INFO DPL-0305] End of reordering; objective is 3.555394e+06, improvement is 0.14 percent.
+[INFO DPL-0303] Running algorithm for random improvement.
+[INFO DPL-0324] Random improver is using random generator.
+[INFO DPL-0325] Random improver is using hpwl objective.
+[INFO DPL-0326] Random improver cost string is (a).
+[INFO DPL-0332] End of pass, Generator random called 34020 times.
+[INFO DPL-0335] Generator random, Cumulative attempts 34020, swaps 4137, moves 10108 since last reset.
+[INFO DPL-0333] End of pass, Objective hpwl, Initial cost 3.511710e+06, Scratch cost 3.485834e+06, Incremental cost 3.485834e+06, Mismatch? N
+[INFO DPL-0338] End of pass, Total cost is 3.485834e+06.
+[INFO DPL-0327] Pass   1 of random improver; improvement in cost is 0.74 percent.
+[INFO DPL-0328] End of random improver; improvement is 0.736849 percent.
+[INFO DPL-0380] Cell flipping.
+[INFO DPL-0382] Changed 0 cell orientations for row compatibility.
+[INFO DPL-0383] Performed 528 cell flips.
+[INFO DPL-0384] End of flipping; objective is 3.431469e+06, improvement is 2.78 percent.
+[INFO DPL-0313] Found 0 cells in wrong regions.
+[INFO DPL-0315] Found 0 row alignment problems.
+[INFO DPL-0314] Found 0 site alignment problems.
+[INFO DPL-0311] Found 0 overlaps between adjacent cells.
+[INFO DPL-0312] Found 0 edge spacing violations and 0 padding violations.
+Detailed Improvement Results
+------------------------------------------
+Original HPWL             3623.0 u (    1842.8,     1780.1)
+Final HPWL                3426.1 u (    1714.1,     1712.0)
+Delta HPWL                  -5.4 % (      -7.0,       -3.8)
+
+[INFO DPL-0020] Mirrored 327 instances
+[INFO DPL-0021] HPWL before            3426.1 u
+[INFO DPL-0022] HPWL after             3413.3 u
+[INFO DPL-0023] HPWL delta               -0.4 %
+[INFO FLW-0012] Placement violations .
+Report metrics stage 3, detailed place...
+
+==========================================================================
+detailed place report_design_area
+--------------------------------------------------------------------------
+Design area 229 um^2 50% utilization.
+Elapsed time: 0:02.13[h:]min:sec. CPU time: user 2.21 sys 1.06 (153%). Peak memory: 206716KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+3_5_place_dp                       2            201 7a05b1dd080351ff317d
+cp ./results/asap7/tritone_soc/baseline/3_5_place_dp.odb ./results/asap7/tritone_soc/baseline/3_place.odb
+cp ./results/asap7/tritone_soc/baseline/2_floorplan.sdc ./results/asap7/tritone_soc/baseline/3_place.sdc
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 4_1_cts cts
+Running cts.tcl, stage 4_1_cts
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/3_place.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+clock_tree_synthesis -sink_clustering_enable -repair_clock_nets -sink_clustering_size 30 -sink_clustering_max_diameter 80
+[INFO CTS-0050] Root buffer is BUFx8_ASAP7_75t_R.
+[INFO CTS-0051] Sink buffer is BUFx16f_ASAP7_75t_R.
+[INFO CTS-0052] The following clock buffers will be used for CTS:
+                    BUFx10_ASAP7_75t_R
+                    BUFx16f_ASAP7_75t_R
+[INFO CTS-0049] Characterization buffer is BUFx16f_ASAP7_75t_R.
+[INFO CTS-0007] Net "clk" found for clock "core_clock".
+[INFO CTS-0010]  Clock net "clk" has 263 sinks.
+[INFO CTS-0008] TritonCTS found 1 clock nets.
+[INFO CTS-0097] Characterization used 2 buffer(s) types.
+[INFO CTS-0201] 0 blockages from hard placement blockages and placed macros will be used.
+[INFO CTS-0027] Generating H-Tree topology for net clk.
+[INFO CTS-0028]  Total number of sinks: 263.
+[INFO CTS-0029]  Register sinks will be clustered in groups of up to 30 and with maximum cluster diameter of 80.0 um.
+[INFO CTS-0030]  Number of static layers: 0.
+[INFO CTS-0020]  Wire segment unit: 1350  dbu (1 um).
+[INFO CTS-0204] A clustering solution was found from clustering size of 30 and clustering diameter of 80.
+[INFO CTS-0205] Better solution may be possible if either -sink_clustering_size, -sink_clustering_max_diameter, or both options are omitted to enable automatic clustering.
+[INFO CTS-0019]  Total number of sinks after clustering: 9.
+[INFO CTS-0024]  Normalized sink region: [(3.86296, 3.91253), (14.995, 15.9108)].
+[INFO CTS-0025]     Width:  11.1320.
+[INFO CTS-0026]     Height: 11.9983.
+ Level 1
+    Direction: Vertical
+    Sinks per sub-region: 5
+    Sub-region size: 11.1320 X 5.9991
+[INFO CTS-0034]     Segment length (rounded): 2.
+[INFO CTS-0032]  Stop criterion found. Max number of sinks is 15.
+[INFO CTS-0035]  Number of sinks covered: 9.
+[INFO CTS-0018]     Created 12 clock buffers.
+[INFO CTS-0012]     Minimum number of buffers in the clock path: 3.
+[INFO CTS-0013]     Maximum number of buffers in the clock path: 3.
+[INFO CTS-0015]     Created 12 clock nets.
+[INFO CTS-0016]     Fanout distribution for the current clock = 4:1, 5:1, 23:1, 30:8..
+[INFO CTS-0017]     Max level of the clock tree: 1.
+[INFO CTS-0098] Clock net "clk"
+[INFO CTS-0099]  Sinks 265
+[INFO CTS-0100]  Leaf buffers 9
+[INFO CTS-0101]  Average sink wire length 38.04 um
+[INFO CTS-0102]  Path depth 2 - 3
+[INFO CTS-0207]  Dummy loads inserted 2
+Placement Analysis
+---------------------------------
+total displacement         11.9 u
+average displacement        0.0 u
+max displacement            0.7 u
+original HPWL            3577.3 u
+legalized HPWL           3721.2 u
+delta HPWL                    4 %
+
+repair_timing -setup_margin 0 -hold_margin 0 -repair_tns 100 -verbose
+[INFO RSZ-0100] Repair move sequence: UnbufferMove SizeUpMove SwapPinsMove BufferMove CloneMove SplitLoadMove 
+[INFO RSZ-0098] No setup violations found
+[INFO RSZ-0033] No hold violations found.
+Placement Analysis
+---------------------------------
+total displacement          0.0 u
+average displacement        0.0 u
+max displacement            0.0 u
+original HPWL            3721.2 u
+legalized HPWL           3721.2 u
+delta HPWL                    0 %
+
+Report metrics stage 4, cts final...
+
+==========================================================================
+cts final report_design_area
+--------------------------------------------------------------------------
+Design area 233 um^2 51% utilization.
+Elapsed time: 0:03.01[h:]min:sec. CPU time: user 3.19 sys 0.39 (119%). Peak memory: 237400KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+4_1_cts                            3            231 edaa8eb93017cd8d4d7e
+cp ./results/asap7/tritone_soc/baseline/4_1_cts.odb ./results/asap7/tritone_soc/baseline/4_cts.odb
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 5_1_grt global_route
+Running global_route.tcl, stage 5_1_grt
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/4_cts.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+pin_access
+[INFO DRT-0149] Reading tech and libs.
+
+Units:                1000
+Number of layers:     21
+Number of macros:     212
+Number of vias:       14
+Number of viarulegen: 11
+
+[INFO DRT-0150] Reading design.
+
+Design:                   tritone_soc
+Die area:                 ( 0 0 ) ( 27677 27677 )
+Number of track patterns: 32
+Number of DEF vias:       0
+Number of components:     1873
+Number of terminals:      108
+Number of snets:          2
+Number of nets:           1814
+
+[INFO DRT-0167] List of default vias:
+  Layer V2
+    default via: VIA23
+  Layer V3
+    default via: VIA34
+  Layer V4
+    default via: VIA45
+  Layer V5
+    default via: VIA56
+  Layer V6
+    default via: VIA67
+  Layer V7
+    default via: VIA78
+  Layer V8
+    default via: VIA89
+  Layer V9
+    default via: VIA9Pad
+[INFO DRT-0162] Library cell analysis.
+[INFO DRT-0163] Instance analysis.
+[INFO DRT-0164] Number of unique instances = 146.
+[INFO DRT-0168] Init region query.
+[INFO DRT-0024]   Complete Active.
+[INFO DRT-0024]   Complete V0.
+[INFO DRT-0024]   Complete M1.
+[INFO DRT-0024]   Complete V1.
+[INFO DRT-0024]   Complete M2.
+[INFO DRT-0024]   Complete V2.
+[INFO DRT-0024]   Complete M3.
+[INFO DRT-0024]   Complete V3.
+[INFO DRT-0024]   Complete M4.
+[INFO DRT-0024]   Complete V4.
+[INFO DRT-0024]   Complete M5.
+[INFO DRT-0024]   Complete V5.
+[INFO DRT-0024]   Complete M6.
+[INFO DRT-0024]   Complete V6.
+[INFO DRT-0024]   Complete M7.
+[INFO DRT-0024]   Complete V7.
+[INFO DRT-0024]   Complete M8.
+[INFO DRT-0024]   Complete V8.
+[INFO DRT-0024]   Complete M9.
+[INFO DRT-0024]   Complete V9.
+[INFO DRT-0024]   Complete Pad.
+[INFO DRT-0033] Active shape region query size = 0.
+[INFO DRT-0033] V0 shape region query size = 0.
+[INFO DRT-0033] M1 shape region query size = 32124.
+[INFO DRT-0033] V1 shape region query size = 53531.
+[INFO DRT-0033] M2 shape region query size = 2588.
+[INFO DRT-0033] V2 shape region query size = 960.
+[INFO DRT-0033] M3 shape region query size = 960.
+[INFO DRT-0033] V3 shape region query size = 640.
+[INFO DRT-0033] M4 shape region query size = 708.
+[INFO DRT-0033] V4 shape region query size = 640.
+[INFO DRT-0033] M5 shape region query size = 398.
+[INFO DRT-0033] V5 shape region query size = 64.
+[INFO DRT-0033] M6 shape region query size = 48.
+[INFO DRT-0033] V6 shape region query size = 0.
+[INFO DRT-0033] M7 shape region query size = 0.
+[INFO DRT-0033] V7 shape region query size = 0.
+[INFO DRT-0033] M8 shape region query size = 0.
+[INFO DRT-0033] V8 shape region query size = 0.
+[INFO DRT-0033] M9 shape region query size = 0.
+[INFO DRT-0033] V9 shape region query size = 0.
+[INFO DRT-0033] Pad shape region query size = 0.
+[INFO DRT-0165] Start pin access.
+[INFO DRT-0078]   Complete 858 pins.
+[INFO DRT-0079]   Complete 100 unique inst patterns.
+[INFO DRT-0081]   Complete 146 unique inst patterns.
+[INFO DRT-0084]   Complete 1173 groups.
+#scanned instances     = 1873
+#unique  instances     = 146
+#stdCellGenAp          = 3847
+#stdCellValidPlanarAp  = 30
+#stdCellValidViaAp     = 3222
+#stdCellPinNoAp        = 0
+#stdCellPinCnt         = 5495
+#instTermValidViaApCnt = 0
+#macroGenAp            = 0
+#macroValidPlanarAp    = 0
+#macroValidViaAp       = 0
+#macroNoAp             = 0
+[INFO DRT-0166] Complete pin access.
+[INFO DRT-0267] cpu time = 00:00:44, elapsed time = 00:00:02, memory = 215.68 (MB), peak = 215.68 (MB)
+global_route -congestion_report_file ./reports/asap7/tritone_soc/baseline/congestion.rpt -congestion_iterations 30 -congestion_report_iter_step 5 -verbose
+[INFO GRT-0020] Min routing layer: M2
+[INFO GRT-0021] Max routing layer: M7
+[INFO GRT-0022] Global adjustment: 0%
+[INFO GRT-0023] Grid origin: (0, 0)
+[INFO GRT-0088] Layer M1      Track-Pitch = 0.0360  line-2-Via Pitch: 0.0360
+[INFO GRT-0088] Layer M2      Track-Pitch = 0.0390  line-2-Via Pitch: 0.0360
+[INFO GRT-0088] Layer M3      Track-Pitch = 0.0360  line-2-Via Pitch: 0.0360
+[INFO GRT-0088] Layer M4      Track-Pitch = 0.0480  line-2-Via Pitch: 0.0480
+[INFO GRT-0088] Layer M5      Track-Pitch = 0.0480  line-2-Via Pitch: 0.0480
+[INFO GRT-0088] Layer M6      Track-Pitch = 0.0640  line-2-Via Pitch: 0.0640
+[INFO GRT-0088] Layer M7      Track-Pitch = 0.0640  line-2-Via Pitch: 0.0640
+[INFO GRT-0003] Macros: 0
+[INFO GRT-0004] Blockages: 1578
+[INFO GRT-0019] Found 13 clock nets.
+[INFO GRT-0001] Minimum degree: 2
+[INFO GRT-0002] Maximum degree: 31
+
+[INFO GRT-0053] Routing resources analysis:
+          Routing      Original      Derated      Resource
+Layer     Direction    Resources     Resources    Reduction (%)
+---------------------------------------------------------------
+M1         Vertical            0             0          0.00%
+M2         Horizontal      27836         20078          27.87%
+M3         Vertical        35231         26142          25.80%
+M4         Horizontal      26783         19921          25.62%
+M5         Vertical        26207         19457          25.76%
+M6         Horizontal      18708         12651          32.38%
+M7         Vertical        20304         13677          32.64%
+---------------------------------------------------------------
+
+[INFO GRT-0197] Via related to pin nodes: 9955
+[INFO GRT-0198] Via related Steiner nodes: 281
+[INFO GRT-0199] Via filling finished.
+[INFO GRT-0111] Final number of vias: 12588
+[INFO GRT-0112] Final usage 3D: 45685
+
+[INFO GRT-0096] Final congestion report:
+Layer         Resource        Demand        Usage (%)    Max H / Max V / Total Overflow
+---------------------------------------------------------------------------------------
+M1                   0             0            0.00%             0 /  0 /  0
+M2               20078          3550           17.68%             0 /  0 /  0
+M3               26142          3510           13.43%             0 /  0 /  0
+M4               19921           701            3.52%             0 /  0 /  0
+M5               19457           160            0.82%             0 /  0 /  0
+M6               12651             0            0.00%             0 /  0 /  0
+M7               13677             0            0.00%             0 /  0 /  0
+---------------------------------------------------------------------------------------
+Total           111926          7921            7.08%             0 /  0 /  0
+
+[INFO GRT-0018] Total wirelength: 7060 um
+[INFO GRT-0014] Routed nets: 1810
+Took 5 seconds: global_route -congestion_report_file ./reports/asap7/tritone_soc/baseline/congestion.rpt -congestion_iterations 30 -congestion_report_iter_step 5 -verbose
+Perform buffer insertion and gate resizing...
+repair_design -verbose
+Iteration |   Area    | Resized | Buffers | Nets repaired | Remaining
+---------------------------------------------------------------------
+        0 |     +0.0% |       0 |       0 |             0 |      1816
+       10 |     +0.0% |       0 |       0 |             0 |      1806
+       20 |     +0.0% |       0 |       0 |             0 |      1796
+       30 |     +0.0% |       0 |       0 |             0 |      1786
+       40 |     +0.0% |       0 |       0 |             0 |      1776
+       50 |     +0.0% |       0 |       0 |             0 |      1766
+       60 |     +0.0% |       0 |       0 |             0 |      1756
+       70 |     +0.0% |       0 |       0 |             0 |      1746
+       80 |     +0.0% |       0 |       0 |             0 |      1736
+       90 |     +0.0% |       0 |       0 |             0 |      1726
+      100 |     +0.0% |       0 |       0 |             0 |      1716
+      110 |     +0.0% |       0 |       0 |             0 |      1706
+      120 |     +0.0% |       0 |       0 |             0 |      1696
+      130 |     +0.0% |       0 |       0 |             0 |      1686
+      140 |     +0.0% |       0 |       0 |             0 |      1676
+      150 |     +0.0% |       0 |       0 |             0 |      1666
+      160 |     +0.0% |       0 |       0 |             0 |      1656
+      170 |     +0.0% |       0 |       0 |             0 |      1646
+      180 |     +0.0% |       0 |       0 |             0 |      1636
+      190 |     +0.0% |       0 |       0 |             0 |      1626
+      200 |     +0.0% |       0 |       0 |             0 |      1616
+      210 |     +0.0% |       0 |       0 |             0 |      1606
+      220 |     +0.0% |       0 |       0 |             0 |      1596
+      230 |     +0.0% |       0 |       0 |             0 |      1586
+      240 |     +0.0% |       0 |       0 |             0 |      1576
+      250 |     +0.0% |       0 |       0 |             0 |      1566
+      260 |     +0.0% |       0 |       0 |             0 |      1556
+      270 |     +0.0% |       0 |       0 |             0 |      1546
+      280 |     +0.0% |       0 |       0 |             0 |      1536
+      290 |     +0.0% |       0 |       0 |             0 |      1526
+      300 |     +0.0% |       0 |       0 |             0 |      1516
+      310 |     +0.0% |       0 |       0 |             0 |      1506
+      320 |     +0.0% |       0 |       0 |             0 |      1496
+      330 |     +0.0% |       0 |       0 |             0 |      1486
+      340 |     +0.0% |       0 |       0 |             0 |      1476
+      350 |     +0.0% |       0 |       0 |             0 |      1466
+      360 |     +0.0% |       0 |       0 |             0 |      1456
+      370 |     +0.0% |       0 |       0 |             0 |      1446
+      380 |     +0.0% |       0 |       0 |             0 |      1436
+      390 |     +0.0% |       0 |       0 |             0 |      1426
+      400 |     +0.0% |       0 |       0 |             0 |      1416
+      410 |     +0.0% |       0 |       0 |             0 |      1406
+      420 |     +0.0% |       0 |       0 |             0 |      1396
+      430 |     +0.0% |       0 |       0 |             0 |      1386
+      440 |     +0.0% |       0 |       0 |             0 |      1376
+      450 |     +0.0% |       0 |       0 |             0 |      1366
+      460 |     +0.0% |       0 |       0 |             0 |      1356
+      470 |     +0.0% |       0 |       0 |             0 |      1346
+      480 |     +0.0% |       0 |       0 |             0 |      1336
+      490 |     +0.0% |       0 |       0 |             0 |      1326
+      500 |     +0.0% |       0 |       0 |             0 |      1316
+      510 |     +0.0% |       0 |       0 |             0 |      1306
+      520 |     +0.0% |       0 |       0 |             0 |      1296
+      530 |     +0.0% |       0 |       0 |             0 |      1286
+      540 |     +0.0% |       0 |       0 |             0 |      1276
+      550 |     +0.0% |       0 |       0 |             0 |      1266
+      560 |     +0.0% |       0 |       0 |             0 |      1256
+      570 |     +0.0% |       0 |       0 |             0 |      1246
+      580 |     +0.0% |       0 |       0 |             0 |      1236
+      590 |     +0.0% |       0 |       0 |             0 |      1226
+      600 |     +0.0% |       0 |       0 |             0 |      1216
+      610 |     +0.0% |       0 |       0 |             0 |      1206
+      620 |     +0.0% |       0 |       0 |             0 |      1196
+      630 |     +0.0% |       0 |       0 |             0 |      1186
+      640 |     +0.0% |       0 |       0 |             0 |      1176
+      650 |     +0.0% |       0 |       0 |             0 |      1166
+      660 |     +0.0% |       0 |       0 |             0 |      1156
+      670 |     +0.0% |       0 |       0 |             0 |      1146
+      680 |     +0.0% |       0 |       0 |             0 |      1136
+      690 |     +0.0% |       0 |       0 |             0 |      1126
+      700 |     +0.0% |       0 |       0 |             0 |      1116
+      710 |     +0.0% |       0 |       0 |             0 |      1106
+      720 |     +0.0% |       0 |       0 |             0 |      1096
+      730 |     +0.0% |       0 |       0 |             0 |      1086
+      740 |     +0.0% |       0 |       0 |             0 |      1076
+      750 |     +0.0% |       0 |       0 |             0 |      1066
+      760 |     +0.0% |       0 |       0 |             0 |      1056
+      770 |     +0.0% |       0 |       0 |             0 |      1046
+      780 |     +0.0% |       0 |       0 |             0 |      1036
+      790 |     +0.0% |       0 |       0 |             0 |      1026
+      800 |     +0.0% |       0 |       0 |             0 |      1016
+      810 |     +0.0% |       0 |       0 |             0 |      1006
+      820 |     +0.0% |       0 |       0 |             0 |       996
+      830 |     +0.0% |       0 |       0 |             0 |       986
+      840 |     +0.0% |       0 |       0 |             0 |       976
+      850 |     +0.0% |       0 |       0 |             0 |       966
+      860 |     +0.0% |       0 |       0 |             0 |       956
+      870 |     +0.0% |       0 |       0 |             0 |       946
+      880 |     +0.0% |       0 |       0 |             0 |       936
+      890 |     +0.0% |       0 |       0 |             0 |       926
+      900 |     +0.0% |       0 |       0 |             0 |       916
+      910 |     +0.0% |       0 |       0 |             0 |       906
+      920 |     +0.0% |       0 |       0 |             0 |       896
+      930 |     +0.0% |       0 |       0 |             0 |       886
+      940 |     +0.0% |       0 |       0 |             0 |       876
+      950 |     +0.0% |       0 |       0 |             0 |       866
+      960 |     +0.0% |       0 |       0 |             0 |       856
+      970 |     +0.0% |       0 |       0 |             0 |       846
+      980 |     +0.0% |       0 |       0 |             0 |       836
+      990 |     +0.0% |       0 |       0 |             0 |       826
+     1000 |     +0.0% |       0 |       0 |             0 |       816
+     1010 |     +0.0% |       0 |       0 |             0 |       806
+     1020 |     +0.0% |       0 |       0 |             0 |       796
+     1030 |     +0.0% |       0 |       0 |             0 |       786
+     1040 |     +0.0% |       0 |       0 |             0 |       776
+     1050 |     +0.0% |       0 |       0 |             0 |       766
+     1060 |     +0.0% |       0 |       0 |             0 |       756
+     1070 |     +0.0% |       0 |       0 |             0 |       746
+     1080 |     +0.0% |       0 |       0 |             0 |       736
+     1090 |     +0.0% |       0 |       0 |             0 |       726
+     1100 |     +0.0% |       0 |       0 |             0 |       716
+     1110 |     +0.0% |       0 |       0 |             0 |       706
+     1120 |     +0.0% |       0 |       0 |             0 |       696
+     1130 |     +0.0% |       0 |       0 |             0 |       686
+     1140 |     +0.0% |       0 |       0 |             0 |       676
+     1150 |     +0.0% |       0 |       0 |             0 |       666
+     1160 |     +0.0% |       0 |       0 |             0 |       656
+     1170 |     +0.0% |       0 |       0 |             0 |       646
+     1180 |     +0.0% |       0 |       0 |             0 |       636
+     1190 |     +0.0% |       0 |       0 |             0 |       626
+     1200 |     +0.0% |       0 |       0 |             0 |       616
+     1210 |     +0.0% |       0 |       0 |             0 |       606
+     1220 |     +0.0% |       0 |       0 |             0 |       596
+     1230 |     +0.0% |       0 |       0 |             0 |       586
+     1240 |     +0.0% |       0 |       0 |             0 |       576
+     1250 |     +0.0% |       0 |       0 |             0 |       566
+     1260 |     +0.0% |       0 |       0 |             0 |       556
+     1270 |     +0.0% |       0 |       0 |             0 |       546
+     1280 |     +0.0% |       0 |       0 |             0 |       536
+     1290 |     +0.0% |       0 |       0 |             0 |       526
+     1300 |     +0.0% |       0 |       0 |             0 |       516
+     1310 |     +0.0% |       0 |       0 |             0 |       506
+     1320 |     +0.0% |       0 |       0 |             0 |       496
+     1330 |     +0.0% |       0 |       0 |             0 |       486
+     1340 |     +0.0% |       0 |       0 |             0 |       476
+     1350 |     +0.0% |       0 |       0 |             0 |       466
+     1360 |     +0.0% |       0 |       0 |             0 |       456
+     1370 |     +0.0% |       0 |       0 |             0 |       446
+     1380 |     +0.0% |       0 |       0 |             0 |       436
+     1390 |     +0.0% |       0 |       0 |             0 |       426
+     1400 |     +0.0% |       0 |       0 |             0 |       416
+     1410 |     +0.0% |       0 |       0 |             0 |       406
+     1420 |     +0.0% |       0 |       0 |             0 |       396
+     1430 |     +0.0% |       0 |       0 |             0 |       386
+     1440 |     +0.0% |       0 |       0 |             0 |       376
+     1450 |     +0.0% |       0 |       0 |             0 |       366
+     1460 |     +0.0% |       0 |       0 |             0 |       356
+     1470 |     +0.0% |       0 |       0 |             0 |       346
+     1480 |     +0.0% |       0 |       0 |             0 |       336
+     1490 |     +0.0% |       0 |       0 |             0 |       326
+     1500 |     +0.0% |       0 |       0 |             0 |       316
+     1510 |     +0.0% |       0 |       0 |             0 |       306
+     1520 |     +0.0% |       0 |       0 |             0 |       296
+     1530 |     +0.0% |       0 |       0 |             0 |       286
+     1540 |     +0.0% |       0 |       0 |             0 |       276
+     1550 |     +0.0% |       0 |       0 |             0 |       266
+     1560 |     +0.0% |       0 |       0 |             0 |       256
+     1570 |     +0.0% |       0 |       0 |             0 |       246
+     1580 |     +0.0% |       0 |       0 |             0 |       236
+     1590 |     +0.0% |       0 |       0 |             0 |       226
+     1600 |     +0.0% |       0 |       0 |             0 |       216
+     1610 |     +0.0% |       0 |       0 |             0 |       206
+     1620 |     +0.0% |       0 |       0 |             0 |       196
+     1630 |     +0.0% |       0 |       0 |             0 |       186
+     1640 |     +0.0% |       0 |       0 |             0 |       176
+     1650 |     +0.0% |       0 |       0 |             0 |       166
+     1660 |     +0.0% |       0 |       0 |             0 |       156
+     1670 |     +0.0% |       0 |       0 |             0 |       146
+     1680 |     +0.0% |       0 |       0 |             0 |       136
+     1690 |     +0.0% |       0 |       0 |             0 |       126
+     1700 |     +0.0% |       0 |       0 |             0 |       116
+     1710 |     +0.0% |       0 |       0 |             0 |       106
+     1720 |     +0.0% |       0 |       0 |             0 |        96
+     1730 |     +0.0% |       0 |       0 |             0 |        86
+     1740 |     +0.0% |       0 |       0 |             0 |        76
+     1750 |     +0.0% |       0 |       0 |             0 |        66
+     1760 |     +0.0% |       0 |       0 |             0 |        56
+     1770 |     +0.0% |       0 |       0 |             0 |        46
+     1780 |     +0.0% |       0 |       0 |             0 |        36
+     1790 |     +0.0% |       0 |       0 |             0 |        26
+     1800 |     +0.0% |       0 |       0 |             0 |        16
+     1810 |     +0.0% |       0 |       0 |             0 |         6
+    final |     +0.0% |       0 |       0 |             0 |         0
+---------------------------------------------------------------------
+global_route -start_incremental
+detailed_placement
+Placement Analysis
+---------------------------------
+total displacement          0.0 u
+average displacement        0.0 u
+max displacement            0.0 u
+original HPWL            3721.2 u
+legalized HPWL           3721.2 u
+delta HPWL                    0 %
+
+global_route -end_incremental -congestion_report_file ./reports/asap7/tritone_soc/baseline/congestion_post_repair_design.rpt
+Repair setup and hold violations...
+repair_timing -setup_margin 0 -hold_margin 0 -repair_tns 100 -verbose
+[INFO RSZ-0100] Repair move sequence: UnbufferMove SizeUpMove SwapPinsMove BufferMove CloneMove SplitLoadMove 
+[INFO RSZ-0098] No setup violations found
+[INFO RSZ-0033] No hold violations found.
+global_route -start_incremental
+detailed_placement
+Placement Analysis
+---------------------------------
+total displacement          0.0 u
+average displacement        0.0 u
+max displacement            0.0 u
+original HPWL            3721.2 u
+legalized HPWL           3721.2 u
+delta HPWL                    0 %
+
+global_route -end_incremental -congestion_report_file ./reports/asap7/tritone_soc/baseline/congestion_post_repair_timing.rpt
+global_route -start_incremental
+global_route -end_incremental -congestion_report_file ./reports/asap7/tritone_soc/baseline/congestion_post_recover_power.rpt
+Repair antennas...
+[WARNING GRT-0246] No diode with LEF class CORE ANTENNACELL found.
+[INFO ANT-0002] Found 0 net violations.
+[INFO ANT-0001] Found 0 pin violations.
+Estimate parasitics...
+Report metrics stage 5, global route...
+
+==========================================================================
+global route report_design_area
+--------------------------------------------------------------------------
+Design area 233 um^2 51% utilization.
+[INFO FLW-0007] clock core_clock period 1000.000000
+[INFO FLW-0008] Clock core_clock period 843.743
+[INFO FLW-0009] Clock core_clock slack 111.849
+[INFO FLW-0011] Path endpoint path count 562
+Elapsed time: 0:12.16[h:]min:sec. CPU time: user 63.53 sys 1.25 (532%). Peak memory: 329668KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+5_1_grt                           12            321 1a7cd9713e2612041603
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 5_2_route detail_route
+Running detail_route.tcl, stage 5_2_route
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone_soc/baseline/5_1_grt.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+detailed_route -output_drc ./reports/asap7/tritone_soc/baseline/5_route_drc.rpt -output_maze ./results/asap7/tritone_soc/baseline/maze.log -droute_end_iter 64 -verbose 1 -drc_report_iter_step 5
+[INFO DRT-0149] Reading tech and libs.
+
+Units:                1000
+Number of layers:     21
+Number of macros:     212
+Number of vias:       14
+Number of viarulegen: 11
+
+[INFO DRT-0150] Reading design.
+
+Design:                   tritone_soc
+Die area:                 ( 0 0 ) ( 27677 27677 )
+Number of track patterns: 32
+Number of DEF vias:       0
+Number of components:     1873
+Number of terminals:      108
+Number of snets:          2
+Number of nets:           1814
+
+[INFO DRT-0167] List of default vias:
+  Layer V2
+    default via: VIA23
+  Layer V3
+    default via: VIA34
+  Layer V4
+    default via: VIA45
+  Layer V5
+    default via: VIA56
+  Layer V6
+    default via: VIA67
+  Layer V7
+    default via: VIA78
+  Layer V8
+    default via: VIA89
+  Layer V9
+    default via: VIA9Pad
+[INFO DRT-0162] Library cell analysis.
+[INFO DRT-0163] Instance analysis.
+[INFO DRT-0164] Number of unique instances = 146.
+[INFO DRT-0168] Init region query.
+[INFO DRT-0024]   Complete Active.
+[INFO DRT-0024]   Complete V0.
+[INFO DRT-0024]   Complete M1.
+[INFO DRT-0024]   Complete V1.
+[INFO DRT-0024]   Complete M2.
+[INFO DRT-0024]   Complete V2.
+[INFO DRT-0024]   Complete M3.
+[INFO DRT-0024]   Complete V3.
+[INFO DRT-0024]   Complete M4.
+[INFO DRT-0024]   Complete V4.
+[INFO DRT-0024]   Complete M5.
+[INFO DRT-0024]   Complete V5.
+[INFO DRT-0024]   Complete M6.
+[INFO DRT-0024]   Complete V6.
+[INFO DRT-0024]   Complete M7.
+[INFO DRT-0024]   Complete V7.
+[INFO DRT-0024]   Complete M8.
+[INFO DRT-0024]   Complete V8.
+[INFO DRT-0024]   Complete M9.
+[INFO DRT-0024]   Complete V9.
+[INFO DRT-0024]   Complete Pad.
+[INFO DRT-0033] Active shape region query size = 0.
+[INFO DRT-0033] V0 shape region query size = 0.
+[INFO DRT-0033] M1 shape region query size = 32124.
+[INFO DRT-0033] V1 shape region query size = 53531.
+[INFO DRT-0033] M2 shape region query size = 2588.
+[INFO DRT-0033] V2 shape region query size = 960.
+[INFO DRT-0033] M3 shape region query size = 960.
+[INFO DRT-0033] V3 shape region query size = 640.
+[INFO DRT-0033] M4 shape region query size = 708.
+[INFO DRT-0033] V4 shape region query size = 640.
+[INFO DRT-0033] M5 shape region query size = 398.
+[INFO DRT-0033] V5 shape region query size = 64.
+[INFO DRT-0033] M6 shape region query size = 48.
+[INFO DRT-0033] V6 shape region query size = 0.
+[INFO DRT-0033] M7 shape region query size = 0.
+[INFO DRT-0033] V7 shape region query size = 0.
+[INFO DRT-0033] M8 shape region query size = 0.
+[INFO DRT-0033] V8 shape region query size = 0.
+[INFO DRT-0033] M9 shape region query size = 0.
+[INFO DRT-0033] V9 shape region query size = 0.
+[INFO DRT-0033] Pad shape region query size = 0.
+[INFO DRT-0165] Start pin access.
+[INFO DRT-0078]   Complete 858 pins.
+[INFO DRT-0079]   Complete 100 unique inst patterns.
+[INFO DRT-0081]   Complete 146 unique inst patterns.
+[INFO DRT-0084]   Complete 1173 groups.
+#scanned instances     = 1873
+#unique  instances     = 146
+#stdCellGenAp          = 3847
+#stdCellValidPlanarAp  = 30
+#stdCellValidViaAp     = 3222
+#stdCellPinNoAp        = 0
+#stdCellPinCnt         = 5495
+#instTermValidViaApCnt = 0
+#macroGenAp            = 0
+#macroValidPlanarAp    = 0
+#macroValidViaAp       = 0
+#macroNoAp             = 0
+[INFO DRT-0166] Complete pin access.
+[INFO DRT-0267] cpu time = 00:00:48, elapsed time = 00:00:02, memory = 285.65 (MB), peak = 285.65 (MB)
+
+[INFO DRT-0157] Number of guides:     13879
+
+[INFO DRT-0169] Post process guides.
+[INFO DRT-0176] GCELLGRID X 0 DO 48 STEP 570 ;
+[INFO DRT-0177] GCELLGRID Y 0 DO 48 STEP 570 ;
+[INFO DRT-0028]   Complete Active.
+[INFO DRT-0028]   Complete V0.
+[INFO DRT-0028]   Complete M1.
+[INFO DRT-0028]   Complete V1.
+[INFO DRT-0028]   Complete M2.
+[INFO DRT-0028]   Complete V2.
+[INFO DRT-0028]   Complete M3.
+[INFO DRT-0028]   Complete V3.
+[INFO DRT-0028]   Complete M4.
+[INFO DRT-0028]   Complete V4.
+[INFO DRT-0028]   Complete M5.
+[INFO DRT-0028]   Complete V5.
+[INFO DRT-0028]   Complete M6.
+[INFO DRT-0028]   Complete V6.
+[INFO DRT-0028]   Complete M7.
+[INFO DRT-0028]   Complete V7.
+[INFO DRT-0028]   Complete M8.
+[INFO DRT-0028]   Complete V8.
+[INFO DRT-0028]   Complete M9.
+[INFO DRT-0028]   Complete V9.
+[INFO DRT-0028]   Complete Pad.

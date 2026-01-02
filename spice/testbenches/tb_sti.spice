@@ -1,0 +1,76 @@
+* STI Testbench - DC and Transient Analysis
+* GT-LOGIC Ternary CMOS - Multi-Vth Implementation
+
+.include '../models/sky130_models.spice'
+.include '../cells/sti.spice'
+
+* Power supplies (2-rail: VDD and VSS only)
+VDD vdd 0 DC 1.8
+VSS vss 0 DC 0
+
+* DC Analysis input
+VIN_DC in_dc 0 DC 0
+
+* Device under test for DC (4-terminal: in out VDD VSS)
+XSTI_DC in_dc out_dc vdd vss STI
+CL_DC out_dc 0 20f
+
+* Transient input - sweep through all levels
+VIN_TR in_tr 0 PWL(0n 0 10n 0 20n 0.9 40n 0.9 50n 1.8 70n 1.8 80n 0.9 100n 0)
+
+* Device under test for transient
+XSTI_TR in_tr out_tr vdd vss STI
+CL_TR out_tr 0 20f
+
+* DC sweep
+.dc VIN_DC 0 1.8 0.01
+
+* Transient analysis
+.tran 0.1n 100n
+
+* Measurements
+.meas DC vout_low FIND V(out_dc) AT=0
+.meas DC vout_mid FIND V(out_dc) AT=0.9
+.meas DC vout_high FIND V(out_dc) AT=1.8
+
+.control
+run
+
+echo ""
+echo "=============================================="
+echo "STI (Standard Ternary Inverter) Test Results"
+echo "=============================================="
+echo ""
+
+set filetype=ascii
+
+* Plot DC transfer curve
+setplot dc1
+plot V(out_dc) vs V(in_dc) title 'STI DC Transfer Curve'
+
+echo ""
+echo "DC Results (check plot):"
+echo "  Vin=0V    -> Vout should be ~1.8V"
+echo "  Vin=0.9V  -> Vout should be ~0.9V"
+echo "  Vin=1.8V  -> Vout should be ~0V"
+echo ""
+
+* Plot transient
+setplot tran1
+plot V(in_tr) V(out_tr) title 'STI Transient Response'
+
+* Save results
+setplot dc1
+wrdata ../results/sti_dc.csv V(out_dc)
+
+setplot tran1  
+wrdata ../results/sti_tran.csv V(in_tr) V(out_tr)
+
+echo "Results saved to ../results/"
+echo ""
+
+quit
+
+.endc
+
+.end

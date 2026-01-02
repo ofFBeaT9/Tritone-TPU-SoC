@@ -1,0 +1,16 @@
+OpenROAD 24Q3-11661-g86b9236cdd 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+read_liberty /OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/sky130hd/lef/sky130_fd_sc_hd.tlef, created 13 layers, 25 vias
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/sky130hd/lef/sky130_fd_sc_hd_merged.lef, created 441 library cells
+link_design ternary_cpu_system
+[WARNING STA-0366] port 'valid_out' not found.
+[WARNING STA-0366] port 'stall_out' not found.
+[WARNING STA-0366] port 'fwd_a_out' not found.
+[WARNING STA-0366] port 'fwd_b_out' not found.
+Elapsed time: 0:00.31[h:]min:sec. CPU time: user 0.28 sys 0.03 (100%). Peak memory: 112840KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+1_synth                            0            110 83e148d2f67cc5abd15f

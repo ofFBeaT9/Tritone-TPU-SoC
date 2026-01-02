@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Coverage
+.coverage
+
+# Simulation outputs (regenerable)
+*.vvp
+
+# Node modules (regenerable with npm install)
+node_modules/
+
+# Temporary Office files
+~$*
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

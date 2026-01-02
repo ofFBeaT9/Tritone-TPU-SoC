@@ -1,0 +1,69 @@
+OpenROAD 24Q3-11673-g154f14ab7e 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+read_db ./results/asap7/tritone/maxperf/6_1_fill.odb
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Deleted 0 routing obstructions
+[INFO RCX-0431] Defined process_corner X with ext_model_index 0
+[INFO RCX-0029] Defined extraction corner X
+[INFO RCX-0435] Reading extraction model file /OpenROAD-flow-scripts/flow/platforms/asap7/rcx_patterns.rules ...
+[INFO RCX-0436] RC segment generation ternary_cpu_system (max_merge_res 50.0) ...
+[INFO RCX-0040] Final 1888 rc segments
+[INFO RCX-0439] Coupling Cap extraction ternary_cpu_system ...
+[INFO RCX-0440] Coupling threshhold is 0.1000 fF, coupling capacitance less than 0.1000 fF will be grounded.
+[INFO RCX-0442] 55% of 1984 wires extracted
+[INFO RCX-0442] 100% of 1984 wires extracted
+[INFO RCX-0045] Extract 568 nets, 2406 rsegs, 2406 caps, 1784 ccs
+[INFO RCX-0443] 568 nets finished
+[INFO PSM-0040] All shapes on net VDD are connected.
+########## IR report #################
+Net              : VDD
+Corner           : default
+Total power      : 7.42e-05 W
+Supply voltage   : 7.70e-01 V
+Worstcase voltage: 7.69e-01 V
+Average voltage  : 7.70e-01 V
+Average IR drop  : 1.83e-04 V
+Worstcase IR drop: 7.71e-04 V
+Percentage drop  : 0.10 %
+######################################
+[INFO PSM-0040] All shapes on net VSS are connected.
+########## IR report #################
+Net              : VSS
+Corner           : default
+Total power      : 7.42e-05 W
+Supply voltage   : 0.00e+00 V
+Worstcase voltage: 1.26e-03 V
+Average voltage  : 1.86e-04 V
+Average IR drop  : 1.86e-04 V
+Worstcase IR drop: 1.26e-03 V
+Percentage drop  : 0.16 %
+######################################
+Cell type report:                       Count       Area
+  Fill cell                               344      15.89
+  Tap cell                                 58       1.69
+  Tie cell                                 94       4.11
+  Clock buffer                              4       0.45
+  Timing Repair Buffer                    151      12.39
+  Inverter                                 63       2.87
+  Sequential cell                          19       7.20
+  Multi-Input combinational cell          152      18.81
+  Total                                   885      63.42
+Report metrics stage 6, finish...
+
+==========================================================================
+finish report_design_area
+--------------------------------------------------------------------------
+Design area 46 um^2 72% utilization.
+[WARNING GUI-0076] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Elapsed time: 0:01.74[h:]min:sec. CPU time: user 1.68 sys 0.17 (106%). Peak memory: 259444KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+6_report                           1            253                  N/A

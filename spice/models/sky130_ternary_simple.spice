@@ -1,0 +1,83 @@
+* ============================================================================
+* SKY130-Calibrated Simple MOSFET Models for Ternary Logic
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* 
+* These Level 1 models are calibrated to match SKY130 threshold voltages
+* for ternary logic characterization. For production-accurate results,
+* use the full SKY130 PDK in a Linux environment.
+*
+* SKY130 Nominal Threshold Voltages (from PDK documentation):
+*   nfet_01v8_lvt: Vth ~ 0.35V (low threshold)
+*   nfet_01v8:     Vth ~ 0.50V (standard)
+*   pfet_01v8:     Vth ~ -0.50V (standard)
+*   pfet_01v8_hvt: Vth ~ -0.75V (high threshold)
+* ============================================================================
+
+* Low-Vth NMOS (Vth ~ 0.35V)
+.model nfet_01v8_lvt nmos 
++ level=1 
++ vto=0.35 
++ kp=120u 
++ lambda=0.04 
++ tox=4.15n
++ nsub=1.7e17
++ uo=500
++ tpg=1
+
+* Standard NMOS (Vth ~ 0.50V)
+.model nfet_01v8 nmos 
++ level=1 
++ vto=0.50 
++ kp=100u 
++ lambda=0.04 
++ tox=4.15n
++ nsub=1.7e17
++ uo=450
++ tpg=1
+
+* Standard PMOS (Vth ~ -0.50V)
+.model pfet_01v8 pmos 
++ level=1 
++ vto=-0.50 
++ kp=50u 
++ lambda=0.05 
++ tox=4.23n
++ nsub=1.7e17
++ uo=200
++ tpg=-1
+
+* High-Vth PMOS (Vth ~ -0.75V)
+.model pfet_01v8_hvt pmos 
++ level=1 
++ vto=-0.75 
++ kp=45u 
++ lambda=0.05 
++ tox=4.23n
++ nsub=1.7e17
++ uo=180
++ tpg=-1
+
+* ============================================================================
+* SUBCIRCUIT WRAPPERS - For SKY130 PDK compatibility
+* ============================================================================
+
+.subckt sky130_fd_pr__nfet_01v8_lvt d g s b w=1u l=150n
+M1 d g s b nfet_01v8_lvt w={w} l={l}
+.ends sky130_fd_pr__nfet_01v8_lvt
+
+.subckt sky130_fd_pr__nfet_01v8 d g s b w=1u l=150n
+M1 d g s b nfet_01v8 w={w} l={l}
+.ends sky130_fd_pr__nfet_01v8
+
+.subckt sky130_fd_pr__pfet_01v8 d g s b w=1u l=150n
+M1 d g s b pfet_01v8 w={w} l={l}
+.ends sky130_fd_pr__pfet_01v8
+
+.subckt sky130_fd_pr__pfet_01v8_hvt d g s b w=1u l=150n
+M1 d g s b pfet_01v8_hvt w={w} l={l}
+.ends sky130_fd_pr__pfet_01v8_hvt
+
+* ============================================================================
+* END OF MODEL FILE
+* ============================================================================

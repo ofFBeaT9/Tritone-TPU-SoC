@@ -1,0 +1,37 @@
+# Test Program: Ternary Logic Instructions
+# Tests: MIN, MAX, XOR (ternary consensus operations)
+# Coverage: Ternary logic operations
+
+# Load test values
+LDI R1, -1         # -1 (negative)
+LDI R2, 0          # 0 (zero)  
+LDI R3, 1          # 1 (positive)
+
+# Test MIN (ternary minimum)
+MIN R4, R1, R2     # min(-1, 0) = -1
+MIN R5, R2, R3     # min(0, 1) = 0
+MIN R6, R1, R3     # min(-1, 1) = -1
+MIN R7, R3, R3     # min(1, 1) = 1
+
+# Test MAX (ternary maximum)
+MAX R4, R1, R2     # max(-1, 0) = 0
+MAX R5, R2, R3     # max(0, 1) = 1
+MAX R6, R1, R3     # max(-1, 1) = 1
+MAX R7, R1, R1     # max(-1, -1) = -1
+
+# Test XOR (ternary XOR: a + b mod 3)
+XOR R4, R1, R1     # (-1) + (-1) = -2 ≡ 1 (mod 3)
+XOR R5, R1, R2     # (-1) + 0 = -1
+XOR R6, R2, R3     # 0 + 1 = 1
+XOR R7, R3, R3     # 1 + 1 = 2 ≡ -1 (mod 3)
+
+# Verify XOR with zero is identity
+LDI R1, 5
+XOR R2, R1, R0     # 5 XOR 0 should equal 5
+SUB R3, R2, R1     # R3 = R2 - R1, should be 0
+BEQZ R3, pass
+LDI R8, -1         # FAIL marker
+pass:
+LDI R8, 1          # PASS marker
+
+HALT

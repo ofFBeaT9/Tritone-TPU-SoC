@@ -1,0 +1,11 @@
+OpenROAD 24Q3-11661-g86b9236cdd 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+read_liberty /OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_db ./results/sky130hd/ternary_cpu_system/base/2_2_floorplan_macro.odb
+[INFO TAP-0005] Inserted 70 tapcells.
+Elapsed time: 0:00.29[h:]min:sec. CPU time: user 0.27 sys 0.02 (101%). Peak memory: 110576KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+2_3_floorplan_tapcell              0            107 34ef20107dbd95c4f7d8

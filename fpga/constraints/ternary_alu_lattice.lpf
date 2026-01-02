@@ -1,0 +1,53 @@
+﻿# Ternary ALU Lattice Diamond Constraints
+# Phase 3: FPGA ALU Prototype - Lattice Diamond Variant
+# Target: Lattice ECP5 / CrossLink / iCE40 (adjust for your specific device)
+
+# Clock constraint - 100 MHz
+FREQUENCY PORT "clk" 100.000000 MHz ;
+
+# Input delays (2ns setup, 0.5ns hold)
+INPUT_SETUP PORT "a_bin[*]" 2.0 ns HOLD 0.5 ns CLKPORT "clk" ;
+INPUT_SETUP PORT "b_bin[*]" 2.0 ns HOLD 0.5 ns CLKPORT "clk" ;
+INPUT_SETUP PORT "op[*]" 2.0 ns HOLD 0.5 ns CLKPORT "clk" ;
+INPUT_SETUP PORT "valid_in" 2.0 ns HOLD 0.5 ns CLKPORT "clk" ;
+
+# Output delays
+CLOCK_TO_OUT PORT "result_bin[*]" 2.0 ns CLKPORT "clk" ;
+CLOCK_TO_OUT PORT "carry_bin[*]" 2.0 ns CLKPORT "clk" ;
+CLOCK_TO_OUT PORT "zero_flag" 2.0 ns CLKPORT "clk" ;
+CLOCK_TO_OUT PORT "neg_flag" 2.0 ns CLKPORT "clk" ;
+CLOCK_TO_OUT PORT "valid_out" 2.0 ns CLKPORT "clk" ;
+
+# Reset path (asynchronous - false path)
+BLOCK ASYNCPATHS ;
+BLOCK RESETPATHS ;
+
+# I/O standards (adjust for your board voltage levels)
+IOBUF PORT "clk" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "rst_n" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "a_bin[*]" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "b_bin[*]" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "op[*]" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "valid_in" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "result_bin[*]" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "carry_bin[*]" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "zero_flag" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "neg_flag" IO_TYPE=LVCMOS18 ;
+IOBUF PORT "valid_out" IO_TYPE=LVCMOS18 ;
+
+# Optional: Pin assignments (example for ECP5 UM5G-85K)
+# Adjust for your specific board
+# LOCATE COMP "clk" SITE "P3" ;
+# LOCATE COMP "rst_n" SITE "T13" ;
+# etc...
+
+# Internal timing constraints (max delay on critical paths)
+# Note: Lattice syntax for internal path constraints
+MAXDELAY FROM CELL "*gen_input_conv*u_bin2tern*" TO CELL "*u_alu*" 2.0 ns ;
+MAXDELAY FROM CELL "*u_alu*" TO CELL "*result_tern*" 6.0 ns ;
+MAXDELAY FROM CELL "*result_tern*" TO CELL "*gen_output_conv*u_tern2bin*" 2.0 ns ;
+MAXDELAY FROM CELL "*u_alu*carry_out*" TO PORT "carry_bin[*]" 8.0 ns ;
+
+# Optimization preferences
+FREQUENCY NET "clk_c" 100.000000 MHz ;
+USE PRIMARY NET "clk_c" ;

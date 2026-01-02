@@ -1,0 +1,118 @@
+* ============================================================================
+* TERNARY SUM GATE (Modulo-3 Addition) - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TSUM - Ternary Modulo-3 Sum
+*
+* Function: Y = (A + B) mod 3
+*
+* Truth Table:
+*     A\B | 0   1   2
+*     ----|----------
+*      0  | 0   1   2
+*      1  | 1   2   0
+*      2  | 2   0   1
+*
+* Balanced Ternary: (A + B) mod 3
+*     A\B | -1   0  +1
+*     ----|----------
+*     -1  |  +1  -1   0
+*      0  |  -1   0  +1
+*     +1  |   0  +1  -1
+*
+* Implementation: Decoder + MUX tree approach
+*   1. Decode A into three signals (A_is_0, A_is_1, A_is_2)
+*   2. Use three TMUX3 to select based on B for each A value
+*   3. Final TMUX3 selects based on A
+*
+* Transistor Count: ~80 (using hierarchical TMUX3)
+* ============================================================================
+
+.subckt TSUM A B Y VDD VSS
+
+* ============================================================================
+* INPUT DECODERS - Generate one-hot signals for A
+* ============================================================================
+* A_is_0: HIGH when A = 0 (using NTI)
+XNTI_A A A_is_0 VDD VSS NTI
+
+* A_is_2: HIGH when A = 2 (using PTI then STI)
+XPTI_A A A_not_2 VDD VSS PTI
+XSTI_A2 A_not_2 A_is_2 VDD VSS STI
+
+* A_is_1: HIGH when A = 1 (neither 0 nor 2)
+* Computed using DeMorgan: NOT(A_is_0 OR A_is_2) = NOR(A_is_0, A_is_2)
+* But simpler: use threshold detection
+XNTI_Amid A Amid_low VDD VSS NTI
+XPTI_Amid A Amid_high VDD VSS PTI
+* A_is_1 = Amid_high AND NOT(A_is_0) = Amid_high AND NOT(Amid_low)
+* Simplified: Use TMAX for OR, then STI for NOR
+XTMAX_A01 A_is_0 A_is_2 A_not_1 VDD VSS TMAX
+XSTI_A1 A_not_1 A_is_1 VDD VSS STI
+
+* ============================================================================
+* SUM LOOKUP TABLE IMPLEMENTATION
+* ============================================================================
+* For each value of A, define what output should be for each B:
+*
+* When A=0: Y = B (identity)
+*   B=0 -> Y=0, B=1 -> Y=1, B=2 -> Y=2
+*
+* When A=1: Y = (B+1) mod 3
+*   B=0 -> Y=1, B=1 -> Y=2, B=2 -> Y=0
+*
+* When A=2: Y = (B+2) mod 3
+*   B=0 -> Y=2, B=1 -> Y=0, B=2 -> Y=1
+
+* Generate constant voltage references for MUX inputs
+* 0 = VSS, 1 = 0.9V, 2 = VDD
+R_V0 V0 VSS 1
+R_V1a VDD V1 10k
+R_V1b V1 VSS 10k
+R_V2 V2 VDD 1
+
+* MUX for A=0 case: output = B (just pass through)
+* Y_A0 = B
+XSTI_passA B n_passA VDD VSS STI
+XSTI_passB n_passA Y_A0 VDD VSS STI
+
+* MUX for A=1 case: output = (B+1) mod 3
+* D0=1(0.9V), D1=2(1.8V), D2=0(0V), select by B
+XTMUX_A1 V1 V2 V0 B Y_A1 VDD VSS TMUX3
+
+* MUX for A=2 case: output = (B+2) mod 3
+* D0=2(1.8V), D1=0(0V), D2=1(0.9V), select by B
+XTMUX_A2 V2 V0 V1 B Y_A2 VDD VSS TMUX3
+
+* ============================================================================
+* FINAL OUTPUT MUX - Select based on A
+* ============================================================================
+XTMUX_OUT Y_A0 Y_A1 Y_A2 A Y VDD VSS TMUX3
+
+.ends TSUM
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. TSUM implements modulo-3 addition, fundamental for balanced ternary
+*
+* 2. The lookup table approach is systematic but not minimal
+*    - Each A value maps to a different permutation of outputs
+*    - A=0: identity (0,1,2)
+*    - A=1: rotate left (1,2,0)
+*    - A=2: rotate left twice (2,0,1)
+*
+* 3. Alternative: Use analog summing + modulo circuit
+*    - Sum voltages directly
+*    - Use comparators to detect overflow/underflow
+*    - More compact but less robust to noise
+*
+* 4. This cell is used in balanced ternary arithmetic:
+*    - Half adder SUM output
+*    - Part of full adder logic
+*
+* 5. Transistor count can be reduced by:
+*    - Sharing decoder logic between MUXes
+*    - Using pass-transistor logic instead of full TMUX3
+*    - Direct CMOS implementation of the 9-entry truth table
+* ============================================================================

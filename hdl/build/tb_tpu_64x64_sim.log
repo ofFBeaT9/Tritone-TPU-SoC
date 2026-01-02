@@ -1,0 +1,122 @@
+Reading pref.tcl
+
+# 2024.1
+
+# vsim -c -do "run -all; quit -f" build/questa.tb_tpu_64x64 
+# Start time: 22:31:31 on Jan 01,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+# Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(247): (vopt-2241) Connection width does not match width of port 'wr_data'. The port definition is at: rtl/tpu/tpu_activation_buffer_banked.sv(35).
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(247): (vopt-2241) Connection width does not match width of port 'rd_addr'. The port definition is at: rtl/tpu/tpu_activation_buffer_banked.sv(51).
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(247): (vopt-2241) Connection width does not match width of port 'rd_data'. The port definition is at: rtl/tpu/tpu_activation_buffer_banked.sv(52).
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(184): (vopt-2241) Connection width does not match width of port 'rd_addr'. The port definition is at: rtl/tpu/tpu_weight_buffer_banked.sv(43).
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(33): (vopt-13314) Defaulting port 'wr_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(34): (vopt-13314) Defaulting port 'wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(39): (vopt-13314) Defaulting port 'unified_wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(43): (vopt-13314) Defaulting port 'rd_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(34): (vopt-13314) Defaulting port 'wr_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(35): (vopt-13314) Defaulting port 'wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(40): (vopt-13314) Defaulting port 'unified_wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(51): (vopt-13314) Defaulting port 'rd_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(98): (vopt-13314) Defaulting port 'array_outputs' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_pe_cluster.sv(259): (vopt-13314) Defaulting port 'weights_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_pe_cluster.sv(262): (vopt-13314) Defaulting port 'act_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_pe_cluster.sv(265): (vopt-13314) Defaulting port 'psum_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_systolic_controller_v2.sv(44): (vopt-13314) Defaulting port 'wgt_rd_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_systolic_controller_v2.sv(49): (vopt-13314) Defaulting port 'act_rd_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_systolic_controller_v2.sv(63): (vopt-13314) Defaulting port 'array_psum_out' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_pe_cluster.sv(39): (vopt-13314) Defaulting port 'weights_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_pe_cluster.sv(42): (vopt-13314) Defaulting port 'act_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_pe_cluster.sv(48): (vopt-13314) Defaulting port 'psum_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=22.
+# //  Questa Sim-64
+# //  Version 2024.1 win64 Feb  1 2024
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.ternary_pkg(fast)
+# Loading work.tb_tpu_64x64(fast)
+# Loading work.ternary_pe_cluster_int(fast)
+# run -all
+# External memory initialized:
+#   Weights: 0x0000 - 0x0FFF (64 rows Ã? 4 words)
+#   Activations: 0x1000 - 0x2FFF (64 K-steps Ã? 32 words)
+# 
+# ================================================================
+#   TPU 64Ã?64 Array Verification Testbench (Phase 4)
+# ================================================================
+# 
+# Configuration:
+#   ARRAY_SIZE = 64 Ã? 64 = 4096 PEs
+#   USE_HIERARCHICAL_ARRAY = 1 (8Ã?8 PE clusters)
+#   NUM_BANKS = 32 (weight) + 64 (activation)
+#   MAX_K = 4096
+# 
+# --- Test 1: Verify Array Info (Version 2.1, 64Ã?64) ---
+#   Array Info: 0x02014020
+#     Version: 0x0201 (expected: 0x0201 for v2.1)
+#     Array Size: 64 (expected: 64)
+#     ACC Bits: 32 (expected: 32)
+#   PASS
+# 
+# --- Test 2: Performance Counter Reset ---
+#   PASS: All counters cleared
+# 
+# --- Test 3: DMA Weight Load (64 rows) ---
+# ERROR: DMA timeout!
+#   DMA Status: 0x04000000
+#     Bytes transferred: 1024
+#     Transfer time: 500000000
+#   PASS
+# 
+# --- Test 4: DMA Activation Load (64 K-steps) ---
+#   Bytes transferred: 8192
+#   Transfer time: 23050000
+#   PASS
+# 
+# --- Test 5: Run 64Ã?64Ã?64 GEMM ---
+#   Starting GEMM: M=64, N=64, K=64
+#   Total MACs: 262144
+# ERROR: TPU timeout!
+#   TPU Status: 0x00000000
+#     Busy: 0, Done: 0, Error: 0
+#     Compute time: 2500040000
+#   PASS
+# 
+# --- Test 6: Performance Counter Analysis ---
+#   PERF_CNT_0 (cycles while busy): 257
+#   PERF_CNT_1 (zero-skip count): 0
+#     Expected ~1/3 of 262144 = 87381 (for random ternary weights)
+#   PERF_CNT_2 (bank conflicts): 0
+#   PERF_CNT_3 (DMA bytes): 9216
+#   Estimated Utilization: 24.9%
+#   PASS
+# 
+# --- Test 7: Final Error Check ---
+#   PASS: No errors detected
+# 
+# ================================================================
+#   Test Summary
+# ================================================================
+#   Total Tests: 7
+#   Errors: 0
+# 
+#   *** ALL TESTS PASSED ***
+#   64Ã?64 Hierarchical Array Verification: SUCCESS
+# ================================================================
+# 
+# ** Note: $finish    : tb/tpu/tb_tpu_64x64.sv(538)
+#    Time: 3024505 ns  Iteration: 1  Instance: /tb_tpu_64x64
+# End time: 22:31:33 on Jan 01,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 22

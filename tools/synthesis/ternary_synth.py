@@ -1,0 +1,308 @@
+#!/usr/bin/env python3
+"""
+Ternary Logic Synthesis Tool
+Implements GT-LOGIC mapping for ternary RTL
+
+Based on IEEE Access 2025 methodology
+Maps behavioral RTL to ternary cell library from Phase 1
+"""
+
+import re
+from dataclasses import dataclass
+from typing import List, Dict, Set, Tuple
+
+@dataclass
+class TernaryCell:
+    name: str
+    inputs: List[str]
+    outputs: List[str]
+    transistor_count: int
+    function: str
+
+# GT-LOGIC Cell Library - matches Phase 1 SPICE cells
+GT_LOGIC_LIBRARY = {
+    'STI': TernaryCell('STI', ['A'], ['Y'], 6, 'Y = -A'),
+    'PTI': TernaryCell('PTI', ['A'], ['Y'], 6, 'Y = (A<2) ? 2 : 0'),
+    'NTI': TernaryCell('NTI', ['A'], ['Y'], 6, 'Y = (A=0) ? 2 : 0'),
+    'TMIN': TernaryCell('TMIN', ['A', 'B'], ['Y'], 10, 'Y = MIN(A,B)'),
+    'TMAX': TernaryCell('TMAX', ['A', 'B'], ['Y'], 10, 'Y = MAX(A,B)'),
+    'TNAND': TernaryCell('TNAND', ['A', 'B'], ['Y'], 16, 'Y = -MIN(A,B)'),
+    'TNOR': TernaryCell('TNOR', ['A', 'B'], ['Y'], 16, 'Y = -MAX(A,B)'),
+    'TMUX3': TernaryCell('TMUX3', ['D0', 'D1', 'D2', 'S'], ['Y'], 24, 'Y = D[S]'),
+    'BTFA': TernaryCell('BTFA', ['A', 'B', 'CIN'], ['SUM', 'COUT'], 42, 'Full Adder'),
+    'BTHA': TernaryCell('BTHA', ['A', 'B'], ['SUM', 'COUT'], 28, 'Half Adder'),
+}
+
+
+class TernarySynthesizer:
+    """Synthesizes ternary logic from RTL to gate-level netlist"""
+
+    def __init__(self):
+        self.cells = GT_LOGIC_LIBRARY
+        self.netlist = []
+        self.wire_counter = 0
+        self.cell_counts = {name: 0 for name in GT_LOGIC_LIBRARY.keys()}
+
+    def new_wire(self) -> str:
+        """Generate unique wire name"""
+        self.wire_counter += 1
+        return f"n{self.wire_counter}"
+
+    def synthesize_neg(self, input_sig: str) -> Tuple[str, str]:
+        """Synthesize ternary negation using STI"""
+        output = self.new_wire()
+        self.netlist.append(f"STI U_{len(self.netlist)} (.A({input_sig}), .Y({output}));")
+        self.cell_counts['STI'] += 1
+        return output, "STI"
+
+    def synthesize_min(self, a: str, b: str) -> Tuple[str, str]:
+        """Synthesize MIN operation"""
+        output = self.new_wire()
+        self.netlist.append(f"TMIN U_{len(self.netlist)} (.A({a}), .B({b}), .Y({output}));")
+        self.cell_counts['TMIN'] += 1
+        return output, "TMIN"
+
+    def synthesize_max(self, a: str, b: str) -> Tuple[str, str]:
+        """Synthesize MAX operation"""
+        output = self.new_wire()
+        self.netlist.append(f"TMAX U_{len(self.netlist)} (.A({a}), .B({b}), .Y({output}));")
+        self.cell_counts['TMAX'] += 1
+        return output, "TMAX"
+
+    def synthesize_half_adder(self, a: str, b: str) -> Tuple[str, str, str]:
+        """Synthesize half adder"""
+        sum_out = self.new_wire()
+        cout = self.new_wire()
+        self.netlist.append(
+            f"BTHA U_{len(self.netlist)} (.A({a}), .B({b}), "
+            f".SUM({sum_out}), .COUT({cout}));"
+        )
+        self.cell_counts['BTHA'] += 1
+        return sum_out, cout, "BTHA"
+
+    def synthesize_adder(self, a: str, b: str, cin: str) -> Tuple[str, str, str]:
+        """Synthesize full adder"""
+        sum_out = self.new_wire()
+        cout = self.new_wire()
+        self.netlist.append(
+            f"BTFA U_{len(self.netlist)} (.A({a}), .B({b}), .CIN({cin}), "
+            f".SUM({sum_out}), .COUT({cout}));"
+        )
+        self.cell_counts['BTFA'] += 1
+        return sum_out, cout, "BTFA"
+
+    def synthesize_mux3(self, d0: str, d1: str, d2: str, sel: str) -> Tuple[str, str]:
+        """Synthesize 3-to-1 ternary multiplexer"""
+        output = self.new_wire()
+        self.netlist.append(
+            f"TMUX3 U_{len(self.netlist)} (.D0({d0}), .D1({d1}), .D2({d2}), "
+            f".S({sel}), .Y({output}));"
+        )
+        self.cell_counts['TMUX3'] += 1
+        return output, "TMUX3"
+
+    def count_transistors(self) -> int:
+        """Count total transistors in netlist"""
+        total = 0
+        for cell_name, count in self.cell_counts.items():
+            total += count * self.cells[cell_name].transistor_count
+        return total
+
+    def get_cell_summary(self) -> str:
+        """Get summary of cells used"""
+        lines = ["Cell Usage Summary:", "-" * 40]
+        for cell_name, count in self.cell_counts.items():
+            if count > 0:
+                transistors = count * self.cells[cell_name].transistor_count
+                lines.append(f"  {cell_name:8s}: {count:4d} cells = {transistors:5d} transistors")
+        lines.append("-" * 40)
+        lines.append(f"  TOTAL: {sum(self.cell_counts.values())} cells = {self.count_transistors()} transistors")
+        return '\n'.join(lines)
+
+    def generate_verilog_netlist(self, module_name: str,
+                                  inputs: List[str],
+                                  outputs: Dict[str, str]) -> str:
+        """Generate Verilog netlist from synthesis result"""
+        lines = [
+            f"// Synthesized ternary netlist",
+            f"// Generated by ternary_synth.py",
+            f"// Total transistors: {self.count_transistors()}",
+            f"//",
+            f"// {self.get_cell_summary().replace(chr(10), chr(10) + '// ')}",
+            f"",
+            f"module {module_name} (",
+        ]
+
+        # Input ports
+        for inp in inputs:
+            lines.append(f"  input  [1:0] {inp},")
+
+        # Output ports
+        output_list = list(outputs.keys())
+        for i, out in enumerate(output_list):
+            comma = "," if i < len(output_list) - 1 else ""
+            lines.append(f"  output [1:0] {out}{comma}")
+
+        lines.append(f");")
+        lines.append(f"")
+        lines.append(f"  // Internal wires")
+
+        # Declare internal wires
+        for i in range(1, self.wire_counter + 1):
+            lines.append(f"  wire [1:0] n{i};")
+
+        lines.append("")
+        lines.append("  // Cell instances")
+
+        for inst in self.netlist:
+            lines.append(f"  {inst}")
+
+        # Output assignments
+        lines.append("")
+        lines.append("  // Output assignments")
+        for out_name, wire in outputs.items():
+            lines.append(f"  assign {out_name} = {wire};")
+
+        lines.append("")
+        lines.append("endmodule")
+
+        return '\n'.join(lines)
+
+
+def synthesize_n_trit_adder(n: int) -> TernarySynthesizer:
+    """Synthesize an N-trit balanced ternary ripple carry adder"""
+    synth = TernarySynthesizer()
+
+    # Inputs
+    a = [f'a{i}' for i in range(n)]
+    b = [f'b{i}' for i in range(n)]
+    cin = 'cin'
+
+    # Build adder chain
+    carries = [cin]
+    sums = []
+
+    for i in range(n):
+        s, c, _ = synth.synthesize_adder(a[i], b[i], carries[-1])
+        sums.append(s)
+        carries.append(c)
+
+    return synth, a, b, cin, sums, carries[-1]
+
+
+def synthesize_n_trit_alu(n: int) -> TernarySynthesizer:
+    """Synthesize an N-trit balanced ternary ALU"""
+    synth = TernarySynthesizer()
+
+    # This is a simplified ALU structure
+    # Full implementation would include operation multiplexers
+
+    a = [f'a{i}' for i in range(n)]
+    b = [f'b{i}' for i in range(n)]
+
+    # Negation of B (for subtraction)
+    b_neg = []
+    for i in range(n):
+        neg_out, _ = synth.synthesize_neg(b[i])
+        b_neg.append(neg_out)
+
+    # Adder for ADD operation
+    carries = ['cin']
+    sums = []
+    for i in range(n):
+        s, c, _ = synth.synthesize_adder(a[i], b[i], carries[-1])
+        sums.append(s)
+        carries.append(c)
+
+    # MIN operation
+    mins = []
+    for i in range(n):
+        m, _ = synth.synthesize_min(a[i], b[i])
+        mins.append(m)
+
+    # MAX operation
+    maxs = []
+    for i in range(n):
+        m, _ = synth.synthesize_max(a[i], b[i])
+        maxs.append(m)
+
+    return synth
+
+
+def main():
+    """Demo: Synthesize various ternary circuits"""
+
+    print("=" * 60)
+    print("Ternary Logic Synthesis Tool")
+    print("=" * 60)
+    print()
+
+    # 4-trit ripple carry adder
+    print("Synthesizing 4-trit Balanced Ternary Adder...")
+    synth, a, b, cin, sums, cout = synthesize_n_trit_adder(4)
+
+    print(synth.get_cell_summary())
+    print()
+
+    # Generate netlist
+    outputs = {f's{i}': sums[i] for i in range(4)}
+    outputs['cout'] = cout
+
+    netlist = synth.generate_verilog_netlist(
+        'ternary_adder_4',
+        a + b + [cin],
+        outputs
+    )
+
+    # Save to file
+    with open('ternary_adder_4_synth.v', 'w') as f:
+        f.write(netlist)
+    print("Netlist saved to ternary_adder_4_synth.v")
+    print()
+
+    # 8-trit adder
+    print("-" * 60)
+    print("Synthesizing 8-trit Balanced Ternary Adder...")
+    synth8, a8, b8, cin8, sums8, cout8 = synthesize_n_trit_adder(8)
+
+    print(synth8.get_cell_summary())
+    print()
+
+    outputs8 = {f's{i}': sums8[i] for i in range(8)}
+    outputs8['cout'] = cout8
+
+    netlist8 = synth8.generate_verilog_netlist(
+        'ternary_adder_8',
+        a8 + b8 + [cin8],
+        outputs8
+    )
+
+    with open('ternary_adder_8_synth.v', 'w') as f:
+        f.write(netlist8)
+    print("Netlist saved to ternary_adder_8_synth.v")
+    print()
+
+    # Compare with binary
+    print("-" * 60)
+    print("Comparison with Binary Equivalents:")
+    print()
+
+    # 4-trit ternary ~ 6.3 binary bits (4 * log2(3) = 6.34 bits)
+    # Binary 8-bit adder uses ~80 transistors (rough estimate)
+    # Ternary 4-trit adder: 4 * 42 = 168 transistors
+    print("4-trit ternary adder:")
+    print(f"  - Represents {4 * 1.585:.1f} bits of information")
+    print(f"  - Uses {4 * 42} transistors (4 BTFA cells)")
+    print()
+
+    print("8-trit ternary adder:")
+    print(f"  - Represents {8 * 1.585:.1f} bits of information")
+    print(f"  - Uses {8 * 42} transistors (8 BTFA cells)")
+    print()
+
+    print("=" * 60)
+    print("Synthesis complete!")
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,78 @@
+# ============================================================================
+# BTISA Negative Test: Invalid/Edge-Case Encodings
+# ============================================================================
+# This test exercises boundary conditions and unusual but valid encodings.
+# Used to verify the CPU handles edge cases correctly.
+#
+# Note: Actually invalid trits cannot be represented in balanced ternary,
+# but we can test:
+#   - Operations with R0 (zero register, should not write)
+#   - Self-referential operations (R1 = R1 + R1)
+#   - Maximum/minimum immediate values
+#   - Back-to-back control flow instructions
+# ============================================================================
+
+# --- Section 1: Zero Register Tests ---
+# R0 should always read as zero and writes should be ignored
+
+    ADDI R0, R0, 4      # Try to write to R0 - should be ignored
+    ADD R1, R0, R0      # R1 = 0 + 0 = 0 (verify R0 still zero)
+    
+# --- Section 2: Self-Referential Operations ---
+    ADDI R2, R0, 1      # R2 = 1
+    ADD R2, R2, R2      # R2 = R2 + R2 = 2 (uses same reg twice)
+    SUB R2, R2, R2      # R2 = R2 - R2 = 0 (self-cancel)
+    
+# --- Section 3: Immediate Boundary Values ---
+# 2-trit immediate range: -4 to +4 in balanced ternary
+    ADDI R3, R0, 4      # Max positive immediate (+4 = ++)
+    ADDI R4, R0, -4     # Max negative immediate (-4 = --)
+    ADD R5, R3, R4      # Should equal 0 (4 + -4)
+    
+# --- Section 4: Back-to-Back NOPs ---
+# Stress test NOP handling in pipeline
+    NOP
+    NOP
+    NOP
+    NOP
+    ADDI R6, R0, 1      # Verify execution continues correctly
+    
+# --- Section 5: Consecutive Branches ---
+# Test branch prediction / pipeline handling
+    BEQ R0, R0, skip1   # Always taken (0 == 0)
+    ADDI R7, R0, 99     # Should NOT execute
+skip1:
+    BNE R0, R0, skip2   # Never taken (0 == 0)
+    ADDI R7, R0, 1      # SHOULD execute (R7 = 1)
+skip2:
+    
+# --- Section 6: Jump Immediately After Load ---
+# Load-use hazard with control flow
+    ADDI R1, R0, 2      # Set up address
+    LD R2, R1, 0        # Load (may have undefined data)
+    JAL R0, skip3       # Jump immediately after load
+    ADDI R7, R0, 99     # Should NOT execute
+skip3:
+    
+# --- Section 7: Overflow Stress ---
+# Push arithmetic toward representational limits
+    LUI R3, 4           # Load upper immediate (large value)
+    ADD R3, R3, R3      # Double it
+    ADD R3, R3, R3      # Double again (may overflow)
+    
+# --- Section 8: Memory Address Edge Cases ---
+    ADDI R1, R0, 0      # Address 0
+    ST R6, R1, 0        # Store to address 0
+    LD R7, R1, 0        # Load from address 0
+    
+# --- Final State Verification ---
+# At this point:
+#   R0 = 0 (always)
+#   R1 = 0 (last used as address 0)
+#   R2 = undefined (loaded from memory)
+#   R5 = 0 (4 + -4)
+#   R6 = 1 (from Section 4)
+#   R7 = 1 (from skip1, or from load if overwritten)
+
+    NOP
+    HALT

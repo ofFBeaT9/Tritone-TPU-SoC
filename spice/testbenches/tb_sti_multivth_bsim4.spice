@@ -1,0 +1,321 @@
+* ============================================================================
+* BSIM4 PVT CHARACTERIZATION TESTBENCH - Multi-Vth STI for SKY130
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* This testbench performs comprehensive characterization of the redesigned
+* multi-Vth STI cell using full BSIM4 foundry models from SKY130 PDK.
+*
+* Run in Docker: ngspice -b tb_sti_multivth_bsim4.spice
+* ============================================================================
+
+* ============================================================================
+* SKY130 BSIM4 MODELS - TT CORNER (Typical-Typical)
+* ============================================================================
+* Path assumes Docker mount: /tritone maps to project root
+* Use .lib syntax for proper corner selection with binned models
+
+* ngspice options for model binning compatibility
+.option scale=1e-6
+.options modelscope=1
+
+.lib "/tritone/pdk/sky130_fd_pr/models/sky130.lib.spice" tt
+
+* ============================================================================
+* CELL UNDER TEST
+* ============================================================================
+.include "/tritone/spice/cells/sti_multivth_sky130.spice"
+
+* ============================================================================
+* GLOBAL PARAMETERS
+* ============================================================================
+.param VDD_NOM = 1.8
+.param VMID_TARGET = 0.9
+.param TEMP_NOM = 27
+
+* ============================================================================
+* POWER SUPPLIES
+* ============================================================================
+VVDD vdd 0 DC {VDD_NOM}
+VVSS vss 0 DC 0
+
+* ============================================================================
+* INPUT STIMULUS
+* ============================================================================
+VIN in 0 DC 0
+
+* ============================================================================
+* DEVICE UNDER TEST - 4T Multi-Vth STI
+* ============================================================================
+XDUT in out vdd vss STI_MULTIVTH_SKY130
+
+* Load capacitance (typical gate load)
+CL out 0 10f
+
+* ============================================================================
+* ANALYSIS AND MEASUREMENTS
+* ============================================================================
+.control
+
+* Set output format
+set filetype = ascii
+set wr_vecnames
+set wr_singlescale
+
+echo "================================================================"
+echo "SKY130 BSIM4 Multi-Vth STI Characterization"
+echo "================================================================"
+echo ""
+
+* ============================================================================
+* TEST 1: DC TRANSFER CHARACTERISTIC
+* ============================================================================
+echo "=== Test 1: DC Transfer Characteristic ==="
+echo ""
+
+dc VIN 0 1.8 0.001
+settype voltage v(out)
+
+* Save DC sweep data
+wrdata /tritone/spice/results/dc_transfer_tt.dat v(out)
+
+* Measure output at key input levels
+meas dc vout_0v0 FIND v(out) AT=0.0
+meas dc vout_0v3 FIND v(out) AT=0.3
+meas dc vout_0v6 FIND v(out) AT=0.6
+meas dc vout_0v9 FIND v(out) AT=0.9
+meas dc vout_1v2 FIND v(out) AT=1.2
+meas dc vout_1v5 FIND v(out) AT=1.5
+meas dc vout_1v8 FIND v(out) AT=1.8
+
+echo "DC Output Levels:"
+echo "  Vin = 0.0V -> Vout = $&vout_0v0 V (target: 1.8V)"
+echo "  Vin = 0.3V -> Vout = $&vout_0v3 V (target: >1.5V)"
+echo "  Vin = 0.6V -> Vout = $&vout_0v6 V (target: ~1.2V)"
+echo "  Vin = 0.9V -> Vout = $&vout_0v9 V (target: 0.9V)"
+echo "  Vin = 1.2V -> Vout = $&vout_1v2 V (target: ~0.6V)"
+echo "  Vin = 1.5V -> Vout = $&vout_1v5 V (target: <0.3V)"
+echo "  Vin = 1.8V -> Vout = $&vout_1v8 V (target: 0.0V)"
+echo ""
+
+* Mid-level error
+let vmid_error = abs(vout_0v9 - 0.9)
+echo "Mid-level (0.9V) error: $&vmid_error V"
+
+* Measure threshold voltages
+meas dc vil_th WHEN v(out)=1.35 CROSS=1
+meas dc vih_th WHEN v(out)=0.45 CROSS=1
+meas dc vmid_th WHEN v(out)=0.9 CROSS=1
+
+echo ""
+echo "Switching Thresholds:"
+echo "  VIL (Vout=1.35V): $&vil_th V"
+echo "  VMID (Vout=0.9V): $&vmid_th V"
+echo "  VIH (Vout=0.45V): $&vih_th V"
+
+* ============================================================================
+* TEST 2: NOISE MARGIN ANALYSIS
+* ============================================================================
+echo ""
+echo "=== Test 2: Noise Margin Analysis ==="
+
+* Ternary noise margins (3-level logic)
+* NML: margin for LOW input (0 to VIL)
+* NMM_L: margin for MID input lower bound (VIL to VMID)
+* NMM_H: margin for MID input upper bound (VMID to VIH)
+* NMH: margin for HIGH input (VIH to VDD)
+
+let NML = vil_th - 0
+let NMM_L = vmid_th - vil_th
+let NMM_H = vih_th - vmid_th
+let NMH = 1.8 - vih_th
+
+echo ""
+echo "Ternary Noise Margins:"
+echo "  NML (LOW region):  $&NML V (target: >0.4V)"
+echo "  NMM_L (MID lower): $&NMM_L V (target: >0.2V)"
+echo "  NMM_H (MID upper): $&NMM_H V (target: >0.2V)"
+echo "  NMH (HIGH region): $&NMH V (target: >0.4V)"
+echo ""
+
+* Pass/fail criteria
+let pass_nml = NML > 0.3
+let pass_nmm = (NMM_L > 0.15) & (NMM_H > 0.15)
+let pass_nmh = NMH > 0.3
+
+if pass_nml
+  echo "  NML:   PASS"
+else
+  echo "  NML:   FAIL"
+end
+
+if pass_nmm
+  echo "  NMM:   PASS"
+else
+  echo "  NMM:   FAIL (mid-level margins too narrow)"
+end
+
+if pass_nmh
+  echo "  NMH:   PASS"
+else
+  echo "  NMH:   FAIL"
+end
+
+* ============================================================================
+* TEST 3: GAIN AT SWITCHING POINTS
+* ============================================================================
+echo ""
+echo "=== Test 3: Small-Signal Gain ==="
+
+* Measure derivative (gain) at key points
+let gain = deriv(v(out))
+
+* Find maximum gain magnitude
+let max_gain = vecmax(abs(gain))
+echo "Maximum |gain|: $&max_gain V/V"
+
+* Gain at mid-level input
+meas dc gain_at_mid FIND deriv(v(out)) AT=0.9
+let abs_gain_mid = abs(gain_at_mid)
+echo "Gain at Vin=0.9V: $&abs_gain_mid V/V"
+
+* For ternary, we want moderate gain (not too sharp transitions)
+* Ideal: gain ~ -1 to -2 at mid-level for gradual transition
+
+* ============================================================================
+* TEST 4: VOLTAGE CORNER ANALYSIS
+* ============================================================================
+echo ""
+echo "=== Test 4: Voltage Corners ==="
+
+* --- VDD - 10% (1.62V) ---
+echo ""
+echo "--- VDD = 1.62V (-10%) ---"
+alter VVDD = 1.62
+dc VIN 0 1.62 0.001
+meas dc vout_mid_lv FIND v(out) AT=0.81
+let vmid_target_lv = 0.81
+let vmid_error_lv = abs(vout_mid_lv - vmid_target_lv)
+echo "  Vout @ Vin=0.81V: $&vout_mid_lv V (target: 0.81V)"
+echo "  Mid-level error: $&vmid_error_lv V"
+
+* --- VDD + 10% (1.98V) ---
+echo ""
+echo "--- VDD = 1.98V (+10%) ---"
+alter VVDD = 1.98
+dc VIN 0 1.98 0.001
+meas dc vout_mid_hv FIND v(out) AT=0.99
+let vmid_target_hv = 0.99
+let vmid_error_hv = abs(vout_mid_hv - vmid_target_hv)
+echo "  Vout @ Vin=0.99V: $&vout_mid_hv V (target: 0.99V)"
+echo "  Mid-level error: $&vmid_error_hv V"
+
+* Reset to nominal
+alter VVDD = 1.8
+
+* ============================================================================
+* TEST 5: TEMPERATURE SWEEP
+* ============================================================================
+echo ""
+echo "=== Test 5: Temperature Corners ==="
+
+* --- Cold (-40C) ---
+echo ""
+echo "--- Temperature = -40C ---"
+set temp = -40
+dc VIN 0 1.8 0.001
+meas dc vout_mid_cold FIND v(out) AT=0.9
+let vmid_error_cold = abs(vout_mid_cold - 0.9)
+echo "  Vout @ Vin=0.9V: $&vout_mid_cold V"
+echo "  Mid-level error: $&vmid_error_cold V"
+
+* --- Hot (85C) ---
+echo ""
+echo "--- Temperature = 85C ---"
+set temp = 85
+dc VIN 0 1.8 0.001
+meas dc vout_mid_hot FIND v(out) AT=0.9
+let vmid_error_hot = abs(vout_mid_hot - 0.9)
+echo "  Vout @ Vin=0.9V: $&vout_mid_hot V"
+echo "  Mid-level error: $&vmid_error_hot V"
+
+* --- Industrial (125C) ---
+echo ""
+echo "--- Temperature = 125C ---"
+set temp = 125
+dc VIN 0 1.8 0.001
+meas dc vout_mid_ind FIND v(out) AT=0.9
+let vmid_error_ind = abs(vout_mid_ind - 0.9)
+echo "  Vout @ Vin=0.9V: $&vout_mid_ind V"
+echo "  Mid-level error: $&vmid_error_ind V"
+
+* Reset to nominal
+set temp = 27
+
+* ============================================================================
+* TEST 6: TRANSIENT RESPONSE
+* ============================================================================
+echo ""
+echo "=== Test 6: Transient Response ==="
+
+* Reset DC conditions
+alter VVDD = 1.8
+alter VIN DC = 0
+
+* Pulse input: 0 -> 0.9V -> 1.8V -> 0.9V -> 0V
+alter VIN PWL = [ 0n 0 1n 0 2n 0.9 4n 0.9 5n 1.8 7n 1.8 8n 0.9 10n 0.9 11n 0 ]
+
+tran 0.01n 12n
+
+* Measure propagation delays (10% to 90%)
+meas tran tphl TRIG v(in) VAL=0.45 RISE=1 TARG v(out) VAL=1.35 FALL=1
+meas tran tplh TRIG v(in) VAL=1.35 FALL=1 TARG v(out) VAL=0.45 RISE=1
+
+echo ""
+echo "Propagation Delays:"
+echo "  tpHL (high-to-low): $&tphl s"
+echo "  tpLH (low-to-high): $&tplh s"
+
+let tp_avg = (tphl + tplh) / 2
+echo "  Average tp: $&tp_avg s"
+
+* Save transient waveforms
+wrdata /tritone/spice/results/transient_tt.dat v(in) v(out)
+
+* ============================================================================
+* SUMMARY
+* ============================================================================
+echo ""
+echo "================================================================"
+echo "CHARACTERIZATION SUMMARY - TT Corner @ 27C"
+echo "================================================================"
+echo ""
+echo "DC Performance:"
+echo "  Mid-level accuracy: $&vmid_error V (target: <50mV)"
+echo "  VIL threshold: $&vil_th V"
+echo "  VIH threshold: $&vih_th V"
+echo ""
+echo "Noise Margins:"
+echo "  NML: $&NML V"
+echo "  NMM_L: $&NMM_L V"
+echo "  NMM_H: $&NMM_H V"
+echo "  NMH: $&NMH V"
+echo ""
+echo "PVT Sensitivity:"
+echo "  VDD-10% error: $&vmid_error_lv V"
+echo "  VDD+10% error: $&vmid_error_hv V"
+echo "  -40C error: $&vmid_error_cold V"
+echo "  85C error: $&vmid_error_hot V"
+echo "  125C error: $&vmid_error_ind V"
+echo ""
+echo "Speed:"
+echo "  tpHL: $&tphl s"
+echo "  tpLH: $&tplh s"
+echo ""
+echo "================================================================"
+
+quit
+
+.endc
+
+.end

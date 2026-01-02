@@ -1,0 +1,107 @@
+Reading pref.tcl
+
+# 2024.1
+
+# vsim -c -do "run -all; quit -f" build/questa.tb_tpu_2ghz 
+# Start time: 00:36:52 on Jan 02,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# Support of the MGLS_LICENSE_FILE and LM_LICENSE_FILE licensing environment variables will be discontinued starting with the 2025.1 release. Please update to using the SALT_LICENSE_SERVER variable.
+# Please contact Siemens EDA Customer Support (https://support.sw.siemens.com/) for assistance.
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(247): (vopt-2241) Connection width does not match width of port 'wr_data'. The port definition is at: rtl/tpu/tpu_activation_buffer_banked.sv(35).
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(247): (vopt-2241) Connection width does not match width of port 'rd_addr'. The port definition is at: rtl/tpu/tpu_activation_buffer_banked.sv(51).
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(247): (vopt-2241) Connection width does not match width of port 'rd_data'. The port definition is at: rtl/tpu/tpu_activation_buffer_banked.sv(52).
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(184): (vopt-2241) Connection width does not match width of port 'rd_addr'. The port definition is at: rtl/tpu/tpu_weight_buffer_banked.sv(43).
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(33): (vopt-13314) Defaulting port 'wr_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(34): (vopt-13314) Defaulting port 'wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(39): (vopt-13314) Defaulting port 'unified_wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_weight_buffer_banked.sv(43): (vopt-13314) Defaulting port 'rd_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(34): (vopt-13314) Defaulting port 'wr_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(35): (vopt-13314) Defaulting port 'wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(40): (vopt-13314) Defaulting port 'unified_wr_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_activation_buffer_banked.sv(51): (vopt-13314) Defaulting port 'rd_addr' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/tpu_memory_controller_banked_v2.sv(98): (vopt-13314) Defaulting port 'array_outputs' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_mac_2ghz.sv(229): (vopt-13314) Defaulting port 'weight_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_mac_2ghz.sv(232): (vopt-13314) Defaulting port 'act_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_mac_2ghz.sv(235): (vopt-13314) Defaulting port 'psum_in' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_systolic_controller_v2.sv(50): (vopt-13314) Defaulting port 'wgt_rd_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_systolic_controller_v2.sv(55): (vopt-13314) Defaulting port 'act_rd_data' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: rtl/tpu/ternary_systolic_controller_v2.sv(69): (vopt-13314) Defaulting port 'array_psum_out' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=19.
+# //  Questa Sim-64
+# //  Version 2024.1 win64 Feb  1 2024
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.ternary_pkg(fast)
+# Loading work.tb_tpu_2ghz(fast)
+# run -all
+# ============================================================
+# Tritone TPU 2 GHz Verification Testbench
+# ============================================================
+# Configuration:
+#   Array Size:       64 x 64
+#   Clock Period:     0.500 ns (2.0 GHz)
+#   2 GHz Pipeline:    ENABLED
+#   Test Matrix:      64 x 64 x 64
+# ============================================================
+# 
+# [Test 1] Read Array Info Register
+#   ARRAY_INFO = 0x02314020
+#     Version:    2.1 (2 GHz)
+#     Array Size: 64
+#     ACC Bits:   32
+#   [PASS] 2 GHz mode flag matches parameter
+# 
+# [Test 2] Configure GEMM 64x64x64
+#   Layer Config: M=64, N=64, K=64
+# [Test 3] Run GEMM and Measure Cycles
+#   PERF_CNT_0 (busy cycles): 321
+# 
+# [Test 4] Performance Results @ 2 GHz
+# ============================================================
+#   Frequency:      2.00 GHz
+#   Total Cycles:   321
+#   Runtime:        160.50 ns
+#   Operations:     262144 MACs
+#   Dense TOPS:     3.267
+# ============================================================
+# 
+# [Test 5] Verify Pipeline Latency
+#   Expected cycles (1 GHz mode): 254
+#   Expected cycles (2 GHz mode): 318
+#   Measured cycles:              321
+#   [PASS] Cycle count within expected range
+# 
+# [Test 6] Verify TOPS Target
+#   Peak TOPS (theoretical):  16.384
+#   Target TOPS (minimum):    8.000
+#   Achieved TOPS:            3.267
+#   [FAIL] TOPS below minimum target
+# 
+# ============================================================
+# TEST SUMMARY
+# ============================================================
+#   Tests Passed: 2
+#   Tests Failed: 1
+# 
+#   *** SOME TESTS FAILED ***
+# ============================================================
+# 
+# ** Warning: (vsim-3533) [FOFIW] - Failed to open file "vectors/phase9_2ghz/tpu_2ghz_verification.txt" for writing.
+# No such file or directory. (errno = ENOENT)    : tb/tpu/tb_tpu_2ghz.sv(413)
+#    Time: 190750 ps  Iteration: 1  Instance: /tb_tpu_2ghz
+# Warning: Could not create report file
+# ** Note: $finish    : tb/tpu/tb_tpu_2ghz.sv(405)
+#    Time: 290750 ps  Iteration: 0  Instance: /tb_tpu_2ghz
+# End time: 00:37:27 on Jan 02,2026, Elapsed time: 0:00:35
+# Errors: 0, Warnings: 20

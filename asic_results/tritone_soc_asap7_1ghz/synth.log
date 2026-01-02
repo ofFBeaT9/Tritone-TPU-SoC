@@ -1,0 +1,869 @@
+mkdir -p results/asap7/tritone_soc/base/
+echo 1000 > results/asap7/tritone_soc/base/clock_period.txt
+/OpenROAD-flow-scripts/flow/scripts/synth.sh /OpenROAD-flow-scripts/flow/scripts/synth_canonicalize.tcl ./logs/asap7/tritone_soc/base/1_1_yosys_canonicalize.log
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/asap7/tritone_soc/base/clock_period.txt
+Setting clock period to 1000
+1. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+2. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+3. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+4. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+5. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+6. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+7. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+8. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+9. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+10. Executing Liberty frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+11. Executing SLANG frontend.
+designs/src/tritone_soc/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.addr'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.val0'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:128:7: warning: asynchronous load value missing for variable '\trit2_to_index.val1'
+      for (i = 0; i < NUM_REGS; i = i + 1) begin
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+designs/src/tritone_soc/ternary_regfile.sv:125:11: note: asynchronous load pattern implied by edge sensitivity on multiple signals
+  always @(posedge clk or negedge rst_n) begin
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11.1. Executing UNDRIVEN pass. (resolve undriven signals)
+11.2. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+11.3. Executing TRIBUF pass.
+11.4. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+11.5. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+11.6. Executing PROC_INIT pass (extract init attributes).
+11.7. Executing PROC_ROM pass (convert switches to ROMs).
+11.8. Executing PROC_MUX pass (convert decision trees to multiplexers).
+11.9. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+11.10. Executing OPT_EXPR pass (perform const folding).
+12. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_clkgate_R.v
+13. Executing HIERARCHY pass (managing design hierarchy).
+13.1. Analyzing design hierarchy..
+13.2. Analyzing design hierarchy..
+14. Executing OPT_CLEAN pass (remove unused cells and wires).
+15. Executing RTLIL backend.
+End of script. Logfile hash: 2a9dbb45d3, CPU: user 1.53s system 0.04s, MEM: 93.10 MB peak
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Time spent: 49% 2x read_slang (0 sec), 32% 12x read_liberty (0 sec), ...
+Top level design units:
+    tritone_soc
+
+
+Build succeeded: 0 errors, 3 warnings
+Elapsed time: 0:01.60[h:]min:sec. CPU time: user 1.58 sys 0.04 (101%). Peak memory: 97420KB.
+/OpenROAD-flow-scripts/flow/scripts/synth.sh /OpenROAD-flow-scripts/flow/scripts/synth.tcl ./logs/asap7/tritone_soc/base/1_2_yosys.log
+/OpenROAD-flow-scripts/flow/scripts/synth.sh /OpenROAD-flow-scripts/flow/scripts/synth.tcl ./logs/asap7/tritone_soc/base/1_2_yosys.log
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/asap7/tritone_soc/base/clock_period.txt
+Setting clock period to 1000
+1. Executing RTLIL frontend.
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/asap7/tritone_soc/base/clock_period.txt
+Setting clock period to 1000
+1. Executing RTLIL frontend.
+2. Executing HIERARCHY pass (managing design hierarchy).
+2.1. Analyzing design hierarchy..
+2.2. Analyzing design hierarchy..
+3. Executing SYNTH pass.
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+3.1.1. Analyzing design hierarchy..
+3.1.2. Analyzing design hierarchy..
+2. Executing HIERARCHY pass (managing design hierarchy).
+2.1. Analyzing design hierarchy..
+2.2. Analyzing design hierarchy..
+3.2. Executing PROC pass (convert processes to netlists).
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+3. Executing SYNTH pass.
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+3.1.1. Analyzing design hierarchy..
+3.1.2. Analyzing design hierarchy..
+3.2. Executing PROC pass (convert processes to netlists).
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+3.3. Executing FLATTEN pass (flatten design).
+3.3. Executing FLATTEN pass (flatten design).
+3.4. Executing OPT_EXPR pass (perform const folding).
+3.4. Executing OPT_EXPR pass (perform const folding).
+3.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.6. Executing CHECK pass (checking for obvious problems).
+3.6. Executing CHECK pass (checking for obvious problems).
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [31] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [30] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [29] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [28] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [27] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [26] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [25] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [24] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [23] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [22] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [21] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [20] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [19] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [18] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [17] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [16] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [15] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [14] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [13] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [12] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_en is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [15] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [14] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [13] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [12] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [31] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [30] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [29] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [28] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [27] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [26] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [25] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [24] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [23] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [22] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [21] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [20] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [19] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [18] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [17] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [16] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [15] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [14] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [13] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [12] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.reg_perf_cnt [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_en is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [15] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [14] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [13] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [12] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_data [0] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [11] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [10] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [9] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [8] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [7] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [6] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [5] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [4] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [3] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [2] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [1] is used but has no driver.
+Warning: Wire tritone_soc.\u_tpu.wgt_wr_addr [0] is used but has no driver.
+3.7. Executing OPT pass (performing simple optimizations).
+3.7.1. Executing OPT_EXPR pass (perform const folding).
+3.7. Executing OPT pass (performing simple optimizations).
+3.7.1. Executing OPT_EXPR pass (perform const folding).
+3.7.2. Executing OPT_MERGE pass (detect identical cells).
+3.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.7.2. Executing OPT_MERGE pass (detect identical cells).
+3.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.7.5. Executing OPT_MERGE pass (detect identical cells).
+3.7.5. Executing OPT_MERGE pass (detect identical cells).
+3.7.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.7.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.7.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.7.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.7.8. Executing OPT_EXPR pass (perform const folding).
+3.7.8. Executing OPT_EXPR pass (perform const folding).
+3.7.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.7.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.7.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.7.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.7.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.7.12. Executing OPT_MERGE pass (detect identical cells).
+3.7.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.7.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.7.12. Executing OPT_MERGE pass (detect identical cells).
+3.7.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.7.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.7.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.7.15. Executing OPT_EXPR pass (perform const folding).
+3.7.15. Executing OPT_EXPR pass (perform const folding).
+3.7.16. Finished fast OPT passes. (There is nothing left to do.)
+3.7.16. Finished fast OPT passes. (There is nothing left to do.)
+3.8. Executing FSM pass (extract and optimize FSM).
+3.8.1. Executing FSM_DETECT pass (finding FSMs in design).
+3.8. Executing FSM pass (extract and optimize FSM).
+3.8.1. Executing FSM_DETECT pass (finding FSMs in design).
+3.8.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+3.8.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+3.8.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+3.8.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.8.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+3.8.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.8.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+3.8.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+3.8.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+3.8.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+3.8.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+3.8.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+3.8.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+3.8.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+3.9. Executing OPT pass (performing simple optimizations).
+3.9.1. Executing OPT_EXPR pass (perform const folding).
+3.9. Executing OPT pass (performing simple optimizations).
+3.9.1. Executing OPT_EXPR pass (perform const folding).
+3.9.2. Executing OPT_MERGE pass (detect identical cells).
+3.9.2. Executing OPT_MERGE pass (detect identical cells).
+3.9.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.5. Executing OPT_MERGE pass (detect identical cells).
+3.9.5. Executing OPT_MERGE pass (detect identical cells).
+3.9.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.8. Executing OPT_EXPR pass (perform const folding).
+3.9.8. Executing OPT_EXPR pass (perform const folding).
+3.9.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.9.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.9.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.12. Executing OPT_MERGE pass (detect identical cells).
+3.9.12. Executing OPT_MERGE pass (detect identical cells).
+3.9.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.15. Executing OPT_EXPR pass (perform const folding).
+3.9.15. Executing OPT_EXPR pass (perform const folding).
+3.9.16. Rerunning OPT passes. (Maybe there is more to do..)
+3.9.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.16. Rerunning OPT passes. (Maybe there is more to do..)
+3.9.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.9.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.9.19. Executing OPT_MERGE pass (detect identical cells).
+3.9.19. Executing OPT_MERGE pass (detect identical cells).
+3.9.20. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.20. Executing OPT_DFF pass (perform DFF optimizations).
+3.9.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.9.22. Executing OPT_EXPR pass (perform const folding).
+3.9.22. Executing OPT_EXPR pass (perform const folding).
+3.9.23. Finished fast OPT passes. (There is nothing left to do.)
+3.9.23. Finished fast OPT passes. (There is nothing left to do.)
+3.10. Executing WREDUCE pass (reducing word size of cells).
+3.10. Executing WREDUCE pass (reducing word size of cells).
+3.11. Executing PEEPOPT pass (run peephole optimizers).
+3.11. Executing PEEPOPT pass (run peephole optimizers).
+3.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.13. Executing ALUMACC pass (create $alu and $macc cells).
+3.13. Executing ALUMACC pass (create $alu and $macc cells).
+3.14. Executing SHARE pass (SAT-based resource sharing).
+3.14. Executing SHARE pass (SAT-based resource sharing).
+3.15. Executing OPT pass (performing simple optimizations).
+3.15.1. Executing OPT_EXPR pass (perform const folding).
+3.15. Executing OPT pass (performing simple optimizations).
+3.15.1. Executing OPT_EXPR pass (perform const folding).
+3.15.2. Executing OPT_MERGE pass (detect identical cells).
+3.15.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.2. Executing OPT_MERGE pass (detect identical cells).
+3.15.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.5. Executing OPT_MERGE pass (detect identical cells).
+3.15.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.5. Executing OPT_MERGE pass (detect identical cells).
+3.15.6. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.8. Executing OPT_EXPR pass (perform const folding).
+3.15.8. Executing OPT_EXPR pass (perform const folding).
+3.15.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.15.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.9. Rerunning OPT passes. (Maybe there is more to do..)
+3.15.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.12. Executing OPT_MERGE pass (detect identical cells).
+3.15.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.12. Executing OPT_MERGE pass (detect identical cells).
+3.15.13. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.15. Executing OPT_EXPR pass (perform const folding).
+3.15.15. Executing OPT_EXPR pass (perform const folding).
+3.15.16. Rerunning OPT passes. (Maybe there is more to do..)
+3.15.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.16. Rerunning OPT passes. (Maybe there is more to do..)
+3.15.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+3.15.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.19. Executing OPT_MERGE pass (detect identical cells).
+3.15.20. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+3.15.19. Executing OPT_MERGE pass (detect identical cells).
+3.15.20. Executing OPT_DFF pass (perform DFF optimizations).
+3.15.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.15.22. Executing OPT_EXPR pass (perform const folding).
+3.15.22. Executing OPT_EXPR pass (perform const folding).
+3.15.23. Finished fast OPT passes. (There is nothing left to do.)
+3.16. Executing MEMORY pass.
+3.16.1. Executing OPT_MEM pass (optimize memories).
+3.16.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+3.15.23. Finished fast OPT passes. (There is nothing left to do.)
+3.16. Executing MEMORY pass.
+3.16.1. Executing OPT_MEM pass (optimize memories).
+3.16.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+3.16.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+3.16.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+3.16.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+3.16.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+3.16.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+3.16.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+3.16.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+3.16.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+3.16.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+3.16.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+3.16.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+3.17. Executing OPT_CLEAN pass (remove unused cells and wires).
+3.16.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+3.17. Executing OPT_CLEAN pass (remove unused cells and wires).
+4. Executing SYNTH pass.
+4.1. Executing OPT pass (performing simple optimizations).
+4.1.1. Executing OPT_EXPR pass (perform const folding).
+4. Executing SYNTH pass.
+4.1. Executing OPT pass (performing simple optimizations).
+4.1.1. Executing OPT_EXPR pass (perform const folding).
+4.1.2. Executing OPT_MERGE pass (detect identical cells).
+4.1.2. Executing OPT_MERGE pass (detect identical cells).
+4.1.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.5. Rerunning OPT passes. (Removed registers in this run.)
+4.1.6. Executing OPT_EXPR pass (perform const folding).
+4.1.5. Rerunning OPT passes. (Removed registers in this run.)
+4.1.6. Executing OPT_EXPR pass (perform const folding).
+4.1.7. Executing OPT_MERGE pass (detect identical cells).
+4.1.7. Executing OPT_MERGE pass (detect identical cells).
+4.1.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.10. Rerunning OPT passes. (Removed registers in this run.)
+4.1.11. Executing OPT_EXPR pass (perform const folding).
+4.1.10. Rerunning OPT passes. (Removed registers in this run.)
+4.1.11. Executing OPT_EXPR pass (perform const folding).
+4.1.12. Executing OPT_MERGE pass (detect identical cells).
+4.1.12. Executing OPT_MERGE pass (detect identical cells).
+4.1.13. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.13. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.15. Rerunning OPT passes. (Removed registers in this run.)
+4.1.16. Executing OPT_EXPR pass (perform const folding).
+4.1.15. Rerunning OPT passes. (Removed registers in this run.)
+4.1.16. Executing OPT_EXPR pass (perform const folding).
+4.1.17. Executing OPT_MERGE pass (detect identical cells).
+4.1.17. Executing OPT_MERGE pass (detect identical cells).
+4.1.18. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.18. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.19. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.19. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.20. Rerunning OPT passes. (Removed registers in this run.)
+4.1.21. Executing OPT_EXPR pass (perform const folding).
+4.1.20. Rerunning OPT passes. (Removed registers in this run.)
+4.1.21. Executing OPT_EXPR pass (perform const folding).
+4.1.22. Executing OPT_MERGE pass (detect identical cells).
+4.1.22. Executing OPT_MERGE pass (detect identical cells).
+4.1.23. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.23. Executing OPT_DFF pass (perform DFF optimizations).
+4.1.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.1.25. Finished fast OPT passes.
+4.1.25. Finished fast OPT passes.
+4.2. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+4.2. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+4.3. Executing OPT pass (performing simple optimizations).
+4.3.1. Executing OPT_EXPR pass (perform const folding).
+4.3. Executing OPT pass (performing simple optimizations).
+4.3.1. Executing OPT_EXPR pass (perform const folding).
+4.3.2. Executing OPT_MERGE pass (detect identical cells).
+4.3.2. Executing OPT_MERGE pass (detect identical cells).
+4.3.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.5. Executing OPT_MERGE pass (detect identical cells).
+4.3.5. Executing OPT_MERGE pass (detect identical cells).
+4.3.6. Executing OPT_SHARE pass.
+4.3.6. Executing OPT_SHARE pass.
+4.3.7. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.7. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.9. Executing OPT_EXPR pass (perform const folding).
+4.3.9. Executing OPT_EXPR pass (perform const folding).
+4.3.10. Rerunning OPT passes. (Maybe there is more to do..)
+4.3.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.10. Rerunning OPT passes. (Maybe there is more to do..)
+4.3.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.13. Executing OPT_MERGE pass (detect identical cells).
+4.3.13. Executing OPT_MERGE pass (detect identical cells).
+4.3.14. Executing OPT_SHARE pass.
+4.3.14. Executing OPT_SHARE pass.
+4.3.15. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.15. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.17. Executing OPT_EXPR pass (perform const folding).
+4.3.17. Executing OPT_EXPR pass (perform const folding).
+4.3.18. Rerunning OPT passes. (Maybe there is more to do..)
+4.3.19. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.18. Rerunning OPT passes. (Maybe there is more to do..)
+4.3.19. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+4.3.20. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.20. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+4.3.21. Executing OPT_MERGE pass (detect identical cells).
+4.3.21. Executing OPT_MERGE pass (detect identical cells).
+4.3.22. Executing OPT_SHARE pass.
+4.3.22. Executing OPT_SHARE pass.
+4.3.23. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.23. Executing OPT_DFF pass (perform DFF optimizations).
+4.3.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.3.25. Executing OPT_EXPR pass (perform const folding).
+4.3.25. Executing OPT_EXPR pass (perform const folding).
+4.3.26. Finished fast OPT passes. (There is nothing left to do.)
+4.3.26. Finished fast OPT passes. (There is nothing left to do.)
+4.4. Executing TECHMAP pass (map to technology primitives).
+4.4. Executing TECHMAP pass (map to technology primitives).
+4.4.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/tools/install/yosys/bin/../share/yosys/techmap.v
+4.4.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/tools/install/yosys/bin/../share/yosys/techmap.v
+4.4.2. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/common/lcu_kogge_stone.v
+4.4.2. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/common/lcu_kogge_stone.v
+4.4.3. Continuing TECHMAP pass.
+4.4.3. Continuing TECHMAP pass.
+4.5. Executing OPT pass (performing simple optimizations).
+4.5.1. Executing OPT_EXPR pass (perform const folding).
+4.5. Executing OPT pass (performing simple optimizations).
+4.5.1. Executing OPT_EXPR pass (perform const folding).
+4.5.2. Executing OPT_MERGE pass (detect identical cells).
+4.5.2. Executing OPT_MERGE pass (detect identical cells).
+4.5.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.5.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.5.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.5.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.5.5. Rerunning OPT passes. (Removed registers in this run.)
+4.5.6. Executing OPT_EXPR pass (perform const folding).
+4.5.5. Rerunning OPT passes. (Removed registers in this run.)
+4.5.6. Executing OPT_EXPR pass (perform const folding).
+4.5.7. Executing OPT_MERGE pass (detect identical cells).
+4.5.7. Executing OPT_MERGE pass (detect identical cells).
+4.5.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.5.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.5.10. Finished fast OPT passes.
+4.5.10. Finished fast OPT passes.
+4.6. Executing ABC pass (technology mapping using ABC).
+4.6. Executing ABC pass (technology mapping using ABC).
+4.6.1. Extracting gate netlist of module `\tritone_soc' to `<abc-temp-dir>/input.blif'..
+4.6.1. Extracting gate netlist of module `\tritone_soc' to `<abc-temp-dir>/input.blif'..
+4.7. Executing OPT pass (performing simple optimizations).
+4.7.1. Executing OPT_EXPR pass (perform const folding).
+4.7. Executing OPT pass (performing simple optimizations).
+4.7.1. Executing OPT_EXPR pass (perform const folding).
+4.7.2. Executing OPT_MERGE pass (detect identical cells).
+4.7.2. Executing OPT_MERGE pass (detect identical cells).
+4.7.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.7.3. Executing OPT_DFF pass (perform DFF optimizations).
+4.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.7.5. Rerunning OPT passes. (Removed registers in this run.)
+4.7.6. Executing OPT_EXPR pass (perform const folding).
+4.7.5. Rerunning OPT passes. (Removed registers in this run.)
+4.7.6. Executing OPT_EXPR pass (perform const folding).
+4.7.7. Executing OPT_MERGE pass (detect identical cells).
+4.7.7. Executing OPT_MERGE pass (detect identical cells).
+4.7.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.7.8. Executing OPT_DFF pass (perform DFF optimizations).
+4.7.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.7.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+4.7.10. Finished fast OPT passes.
+4.7.10. Finished fast OPT passes.
+4.8. Executing HIERARCHY pass (managing design hierarchy).
+4.8.1. Analyzing design hierarchy..
+4.8.2. Analyzing design hierarchy..
+4.8. Executing HIERARCHY pass (managing design hierarchy).
+4.8.1. Analyzing design hierarchy..
+4.8.2. Analyzing design hierarchy..
+4.9. Printing statistics.
+4.9. Printing statistics.
+4.10. Executing CHECK pass (checking for obvious problems).
+4.10. Executing CHECK pass (checking for obvious problems).
+5. Executing OPT pass (performing simple optimizations).
+5.1. Executing OPT_EXPR pass (perform const folding).
+5. Executing OPT pass (performing simple optimizations).
+5.1. Executing OPT_EXPR pass (perform const folding).
+5.2. Executing OPT_MERGE pass (detect identical cells).
+5.2. Executing OPT_MERGE pass (detect identical cells).
+5.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+5.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+5.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+5.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+5.5. Executing OPT_MERGE pass (detect identical cells).
+5.5. Executing OPT_MERGE pass (detect identical cells).
+5.6. Executing OPT_DFF pass (perform DFF optimizations).
+5.6. Executing OPT_DFF pass (perform DFF optimizations).
+5.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+5.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+5.8. Executing OPT_EXPR pass (perform const folding).
+5.8. Executing OPT_EXPR pass (perform const folding).
+5.9. Rerunning OPT passes. (Maybe there is more to do..)
+5.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+5.9. Rerunning OPT passes. (Maybe there is more to do..)
+5.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+5.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+5.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+5.12. Executing OPT_MERGE pass (detect identical cells).
+5.12. Executing OPT_MERGE pass (detect identical cells).
+5.13. Executing OPT_DFF pass (perform DFF optimizations).
+5.13. Executing OPT_DFF pass (perform DFF optimizations).
+5.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+5.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+5.15. Executing OPT_EXPR pass (perform const folding).
+5.15. Executing OPT_EXPR pass (perform const folding).
+5.16. Finished fast OPT passes. (There is nothing left to do.)
+5.16. Finished fast OPT passes. (There is nothing left to do.)
+6. Executing EXTRACT_FA pass (find and extract full/half adders).
+6. Executing EXTRACT_FA pass (find and extract full/half adders).
+7. Executing TECHMAP pass (map to technology primitives).
+7. Executing TECHMAP pass (map to technology primitives).
+7.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_adders_R.v
+7.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_adders_R.v
+7.2. Continuing TECHMAP pass.
+7.2. Continuing TECHMAP pass.
+8. Executing TECHMAP pass (map to technology primitives).
+8. Executing TECHMAP pass (map to technology primitives).
+8.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/tools/install/yosys/bin/../share/yosys/techmap.v
+8.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/tools/install/yosys/bin/../share/yosys/techmap.v
+8.2. Continuing TECHMAP pass.
+8.2. Continuing TECHMAP pass.
+9. Executing OPT pass (performing simple optimizations).
+9.1. Executing OPT_EXPR pass (perform const folding).
+9. Executing OPT pass (performing simple optimizations).
+9.1. Executing OPT_EXPR pass (perform const folding).
+9.2. Executing OPT_MERGE pass (detect identical cells).
+9.2. Executing OPT_MERGE pass (detect identical cells).
+9.3. Executing OPT_DFF pass (perform DFF optimizations).
+9.3. Executing OPT_DFF pass (perform DFF optimizations).
+9.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+9.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+9.5. Finished fast OPT passes.
+9.5. Finished fast OPT passes.
+10. Executing TECHMAP pass (map to technology primitives).
+10. Executing TECHMAP pass (map to technology primitives).
+10.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_latch_R.v
+10.1. Executing Verilog-2005 frontend: /OpenROAD-flow-scripts/flow/platforms/asap7/yoSys/cells_latch_R.v
+10.2. Continuing TECHMAP pass.
+10.2. Continuing TECHMAP pass.
+11. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+11. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+11.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+11.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+12. Executing OPT pass (performing simple optimizations).
+12.1. Executing OPT_EXPR pass (perform const folding).
+12. Executing OPT pass (performing simple optimizations).
+12.1. Executing OPT_EXPR pass (perform const folding).
+12.2. Executing OPT_MERGE pass (detect identical cells).
+12.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+12.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+12.5. Executing OPT_MERGE pass (detect identical cells).
+12.2. Executing OPT_MERGE pass (detect identical cells).
+12.6. Executing OPT_DFF pass (perform DFF optimizations).
+12.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+12.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+12.5. Executing OPT_MERGE pass (detect identical cells).
+12.6. Executing OPT_DFF pass (perform DFF optimizations).
+12.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+12.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+12.8. Executing OPT_EXPR pass (perform const folding).
+12.8. Executing OPT_EXPR pass (perform const folding).
+12.9. Rerunning OPT passes. (Maybe there is more to do..)
+12.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+12.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+12.12. Executing OPT_MERGE pass (detect identical cells).
+12.13. Executing OPT_DFF pass (perform DFF optimizations).
+12.9. Rerunning OPT passes. (Maybe there is more to do..)
+12.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+12.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+12.12. Executing OPT_MERGE pass (detect identical cells).
+12.13. Executing OPT_DFF pass (perform DFF optimizations).
+12.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+12.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+12.15. Executing OPT_EXPR pass (perform const folding).
+12.15. Executing OPT_EXPR pass (perform const folding).
+12.16. Finished fast OPT passes. (There is nothing left to do.)
+13. Executing SETUNDEF pass (replace undef values with defined constants).
+abc -script /OpenROAD-flow-scripts/flow/scripts/abc_speed.script -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib -dont_use *x1p*_ASAP7* -dont_use *xp*_ASAP7* -dont_use SDF* -dont_use ICG* -constr ./objects/asap7/tritone_soc/base/abc.constr -D 1000
+14. Executing ABC pass (technology mapping using ABC).
+12.16. Finished fast OPT passes. (There is nothing left to do.)
+14.1. Extracting gate netlist of module `\tritone_soc' to `<abc-temp-dir>/input.blif'..
+13. Executing SETUNDEF pass (replace undef values with defined constants).
+abc -script /OpenROAD-flow-scripts/flow/scripts/abc_speed.script -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz -liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib -dont_use *x1p*_ASAP7* -dont_use *xp*_ASAP7* -dont_use SDF* -dont_use ICG* -constr ./objects/asap7/tritone_soc/base/abc.constr -D 1000
+14. Executing ABC pass (technology mapping using ABC).
+14.1. Extracting gate netlist of module `\tritone_soc' to `<abc-temp-dir>/input.blif'..
+14.1.1. Executed ABC.
+14.1.2. Re-integrating ABC results.
+14.1.1. Executed ABC.
+14.1.2. Re-integrating ABC results.
+15. Executing SPLITNETS pass (splitting up multi-bit signals).
+16. Executing OPT_CLEAN pass (remove unused cells and wires).
+15. Executing SPLITNETS pass (splitting up multi-bit signals).
+16. Executing OPT_CLEAN pass (remove unused cells and wires).
+17. Executing HILOMAP pass (mapping to constant drivers).
+18. Executing INSBUF pass (insert buffer cells for connected wires).
+19. Executing CHECK pass (checking for obvious problems).
+17. Executing HILOMAP pass (mapping to constant drivers).
+18. Executing INSBUF pass (insert buffer cells for connected wires).
+19. Executing CHECK pass (checking for obvious problems).
+20. Printing statistics.
+21. Executing CHECK pass (checking for obvious problems).
+20. Printing statistics.
+22. Executing Verilog backend.
+22.1. Executing BMUXMAP pass.
+22.2. Executing DEMUXMAP pass.
+21. Executing CHECK pass (checking for obvious problems).
+22. Executing Verilog backend.
+22.1. Executing BMUXMAP pass.
+22.2. Executing DEMUXMAP pass.
+exec cp /OpenROAD-flow-scripts/flow/designs/asap7/tritone_soc/constraint_1ghz.sdc ./results/asap7/tritone_soc/base/1_synth.sdc
+exec cp /OpenROAD-flow-scripts/flow/designs/asap7/tritone_soc/constraint_1ghz.sdc ./results/asap7/tritone_soc/base/1_synth.sdc
+Warnings: 61 unique messages, 61 total
+End of script. Logfile hash: 1166bffc13, CPU: user 21.21s system 0.12s, MEM: 163.01 MB peak
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Time spent: 70% 1x share (15 sec), 6% 38x opt_clean (1 sec), ...
+Warnings: 61 unique messages, 61 total
+End of script. Logfile hash: 416e47ccd8, CPU: user 21.26s system 0.08s, MEM: 162.23 MB peak
+Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)
+Time spent: 70% 1x share (16 sec), 6% 38x opt_clean (1 sec), ...
+Elapsed time: 0:22.92[h:]min:sec. CPU time: user 22.71 sys 0.19 (99%). Peak memory: 168460KB.
+cp /OpenROAD-flow-scripts/flow/designs/asap7/tritone_soc/constraint_1ghz.sdc ./results/asap7/tritone_soc/base/1_2_yosys.sdc
+Elapsed time: 0:22.91[h:]min:sec. CPU time: user 22.77 sys 0.13 (99%). Peak memory: 168432KB.
+cp /OpenROAD-flow-scripts/flow/designs/asap7/tritone_soc/constraint_1ghz.sdc ./results/asap7/tritone_soc/base/1_2_yosys.sdc
+OpenROAD 24Q3-11673-g154f14ab7e 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 32 thread(s).
+mkdir -p ./objects/asap7/tritone_soc/base
+/OpenROAD-flow-scripts/flow/scripts/flow.sh 1_synth synth_odb
+Running synth_odb.tcl, stage 1_synth
+source /OpenROAD-flow-scripts/flow/platforms/asap7/liberty_suppressions.tcl
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz
+read_liberty /OpenROAD-flow-scripts/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/asap7/lef/asap7_tech_1x_201209.lef, created 30 layers, 9 vias
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/asap7/lef/asap7sc7p5t_28_R_1x_220121a.lef, created 212 library cells
+link_design tritone_soc
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_ready'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[31]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[30]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[29]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[28]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[27]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[26]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[25]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[24]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[23]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[22]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[21]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[20]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[19]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[18]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[17]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[16]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[15]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[14]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[13]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[12]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[11]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[10]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[9]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[8]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[7]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[6]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[5]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[4]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[3]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[2]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[1]'.
+[WARNING STA-0440] set_input_delay not allowed on output port 'ext_rdata[0]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_ren'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_sel'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wen'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[31]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[30]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[29]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[28]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[27]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[26]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[25]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[24]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[23]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[22]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[21]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[20]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[19]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[18]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[17]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[16]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[15]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[14]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[13]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[12]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[11]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[10]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[9]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[8]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[7]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[6]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[5]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[4]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[3]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[2]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[1]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_addr[0]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[31]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[30]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[29]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[28]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[27]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[26]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[25]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[24]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[23]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[22]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[21]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[20]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[19]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[18]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[17]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[16]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[15]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[14]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[13]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[12]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[11]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[10]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[9]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[8]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[7]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[6]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[5]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[4]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[3]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[2]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[1]'.
+[WARNING STA-0440] set_output_delay not allowed on input port 'ext_wdata[0]'.
+source /OpenROAD-flow-scripts/flow/platforms/asap7/setRC.tcl
+Elapsed time: 0:00.98[h:]min:sec. CPU time: user 0.85 sys 0.10 (97%). Peak memory: 196180KB.
+Log                        Elapsed/s Peak Memory/MB  sha1sum .odb [0:20)
+1_synth                            0            191 7ff092df52a3e176d931

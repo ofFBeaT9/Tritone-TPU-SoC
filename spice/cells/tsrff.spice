@@ -1,0 +1,130 @@
+* ============================================================================
+* TERNARY SR FLIP-FLOP (TSRFF) - NOR-based Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TSRFF - Ternary Set-Reset Flip-Flop
+*
+* Function: Asynchronous SR flip-flop for balanced ternary values
+*   S=+1, R=-1: Q=-1 (Reset dominant)
+*   S=-1, R=+1: Q=+1 (Set)
+*   S=0, R=0: Q=hold (No change)
+*   S=+1, R=+1: Q=0 (Defined state, not invalid)
+*   Other combinations follow ternary logic rules
+*
+* Note: Unlike binary SR-FF where S=R=1 is invalid, ternary SRFF
+*       has defined behavior for all 9 input combinations.
+*
+* Implementation: Cross-coupled TNOR gates
+*   Q = TNOR(R, QB)
+*   QB = TNOR(S, Q)
+*
+* Transistor Count: 24 (2 x 12 TNOR)
+* ============================================================================
+
+.include "tnor.spice"
+
+.subckt TSRFF S R Q QB VDD VSS
+
+* Parameters
+.param Wn=500n Wp=1u Ln=150n Lp=150n
+
+* ============================================================================
+* CROSS-COUPLED TNOR GATES
+* ============================================================================
+* Classic SR latch topology using ternary NOR
+*
+* TNOR truth table reminder:
+* A    B    | TNOR(A,B)
+* -1   -1   | +1
+* -1    0   | +1
+* -1   +1   |  0
+*  0   -1   | +1
+*  0    0   |  0
+*  0   +1   | -1
+* +1   -1   |  0
+* +1    0   | -1
+* +1   +1   | -1
+
+* Q = TNOR(R, QB)
+XTNOR_Q R QB Q VDD VSS TNOR
+
+* QB = TNOR(S, Q)
+XTNOR_QB S Q QB VDD VSS TNOR
+
+.ends TSRFF
+
+* ============================================================================
+* Alternative: Direct transistor implementation for tighter integration
+* ============================================================================
+.subckt TSRFF_DIRECT S R Q QB VDD VSS
+
+.param Wn=500n Wp=1u Ln=150n Lp=150n
+
+* ============================================================================
+* FIRST TNOR: Q = TNOR(R, QB)
+* ============================================================================
+* TNOR = NOT(MAX(A, B))
+
+* MAX stage for R and QB
+XQ_MAX_MP1 q_max_out R VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQ_MAX_MP2 q_max_out QB VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQ_MAX_MN1 q_max_out R q_max_mid VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+XQ_MAX_MN2 q_max_mid QB VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+* STI to invert (NOR = NOT(MAX))
+XQ_STI_MP1 Q q_max_out VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XQ_STI_MP2 Q q_max_out VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQ_STI_MN1 Q q_max_out VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XQ_STI_MN2 Q q_max_out VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+* ============================================================================
+* SECOND TNOR: QB = TNOR(S, Q)
+* ============================================================================
+
+* MAX stage for S and Q
+XQB_MAX_MP1 qb_max_out S VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQB_MAX_MP2 qb_max_out Q VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQB_MAX_MN1 qb_max_out S qb_max_mid VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+XQB_MAX_MN2 qb_max_mid Q VSS VSS sky130_fd_pr__nfet_01v8 W=Wn L=Ln
+
+* STI to invert (NOR = NOT(MAX))
+XQB_STI_MP1 QB qb_max_out VDD VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=Lp
+XQB_STI_MP2 QB qb_max_out VDD VDD sky130_fd_pr__pfet_01v8 W=Wp L=Lp
+XQB_STI_MN1 QB qb_max_out VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=Ln
+XQB_STI_MN2 QB qb_max_out VSS VSS sky130_fd_pr__nfet_01v8 W='Wn/2' L=Ln
+
+.ends TSRFF_DIRECT
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. Ternary SR behavior (S, R -> Q):
+*    S=-1, R=-1 -> Q=+1 (both inactive, latch to high if was high)
+*    S=-1, R=0  -> Q=hold or trend toward +1
+*    S=-1, R=+1 -> Q=-1 (Reset active)
+*    S=0,  R=-1 -> Q=hold or trend toward +1
+*    S=0,  R=0  -> Q=hold (both at midpoint)
+*    S=0,  R=+1 -> Q=-1 (Reset active)
+*    S=+1, R=-1 -> Q=+1 (Set active)
+*    S=+1, R=0  -> Q=0 or trend toward +1 (Set active)
+*    S=+1, R=+1 -> Q=0 (Both active, defined as midpoint)
+*
+* 2. Unlike binary SR-FF:
+*    - No "invalid" state - all 9 combinations produce defined output
+*    - Simultaneous S=+1, R=+1 results in Q=0 (middle state)
+*    - This is a feature of balanced ternary logic
+*
+* 3. The cross-coupled TNOR creates three stable states:
+*    - Q=+1, QB=-1
+*    - Q=0, QB=0
+*    - Q=-1, QB=+1
+*
+* 4. Metastability considerations:
+*    - Binary FF has one metastable point (VDD/2)
+*    - Ternary FF has metastable zones between stable states
+*    - VDD/4 and 3VDD/4 are metastable, VDD/2 is stable
+*
+* 5. For synchronous operation, add enable/clock gating to S and R inputs.
+*
+* 6. Reset dominance can be adjusted by gate sizing or topology changes.
+* ============================================================================

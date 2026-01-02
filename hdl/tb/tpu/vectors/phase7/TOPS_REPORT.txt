@@ -1,0 +1,64 @@
+======================================================================
+TRITONE TPU Phase 7 - Benchmark TOPS Report
+======================================================================
+
+Target Frequency: 1000 MHz
+Array Size: 64x64 (4096 PEs)
+Accumulator Bits: 32
+Activation Bits: 16
+
+----------------------------------------------------------------------
+Benchmark                   Dense TOPS    Eff. TOPS     Util %  Zero Skip
+----------------------------------------------------------------------
+GEMM_64x64_Dense                 6.689        0.666      81.7%      90.0%
+FEP_Energy_Update                0.032        0.010      86.4%      68.5%
+Molecular_Forces                 0.001        0.001     100.0%       0.0%
+----------------------------------------------------------------------
+
+
+======================================================================
+Benchmark: GEMM_64x64_Dense
+======================================================================
+  Total Operations:     268,435,456
+  Total Cycles:         40,128
+  Active Cycles:        32,768
+  Stall Cycles:         7,360
+  Zero Skip Count:      120,855,552
+  Utilization:          81.66%
+  Dense TOPS:           6.6895
+  Effective TOPS:       0.6660
+  Frequency:            1000 MHz
+
+======================================================================
+Benchmark: FEP_Energy_Update
+======================================================================
+  Total Operations:     4,259,840
+  Total Cycles:         134,296
+  Active Cycles:        116,096
+  Stall Cycles:         18,200
+  Zero Skip Count:      1,458,944
+  Utilization:          86.45%
+  Dense TOPS:           0.0317
+  Effective TOPS:       0.0097
+  Frequency:            1000 MHz
+
+======================================================================
+Benchmark: Molecular_Forces
+======================================================================
+  Total Operations:     409,600
+  Total Cycles:         614,400
+  Active Cycles:        614,400
+  Stall Cycles:         0
+  Zero Skip Count:      0
+  Utilization:          100.00%
+  Dense TOPS:           0.0007
+  Effective TOPS:       0.0007
+  Frequency:            1000 MHz
+
+======================================================================
+Notes:
+  - Dense TOPS: 2 * MAC_count / runtime (no sparsity)
+  - Effective TOPS: Accounts for zero-weight skipping
+  - Utilization: Active compute cycles / total cycles
+  - Stall cycles include DMA latency and bank conflicts
+======================================================================

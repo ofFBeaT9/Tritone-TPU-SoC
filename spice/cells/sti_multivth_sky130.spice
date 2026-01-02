@@ -1,0 +1,189 @@
+* ============================================================================
+* REDESIGNED MULTI-VTH STANDARD TERNARY INVERTER (STI) FOR SKY130
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* Function: Full ternary inversion (0->2, 1->1, 2->0)
+* Topology: Multi-threshold CMOS optimized for SKY130 foundry devices
+* PDK: SkyWater SKY130 (130nm)
+*
+* ============================================================================
+* KEY INSIGHT FROM BSIM4 MODEL ANALYSIS:
+* ============================================================================
+* SKY130 device threshold voltages (TT corner):
+*   - nfet_01v8:     Vth ~ +0.50V (standard)
+*   - nfet_01v8_lvt: Vth ~ +0.40V (low-Vth)
+*   - pfet_01v8:     Vth ~ -1.00V (standard - VERY HIGH!)
+*   - pfet_01v8_hvt: Vth ~ -1.10V (high-Vth)
+*   - pfet_01v8_lvt: Vth ~ -0.45V (low-Vth)
+*
+* The standard PMOS has |Vth| = 1.0V, meaning it turns OFF when:
+*   Vgs > Vth -> Vin > VDD - |Vth| = 1.8 - 1.0 = 0.8V
+*
+* This is problematic for ternary: at Vin = 0.9V (mid), standard PMOS is OFF
+* and standard NMOS is ON, giving Vout = 0V instead of 0.9V!
+*
+* SOLUTION: Use pfet_01v8_lvt with |Vth| = 0.45V
+*   - PMOS turns OFF at Vin > 1.8 - 0.45 = 1.35V
+*   - Combined with nfet_01v8_lvt (ON at Vin > 0.40V)
+*   - At Vin = 0.9V: both devices partially ON -> voltage divider
+*
+* ============================================================================
+* DEVICE OPERATING REGIONS AT VDD = 1.8V:
+* ============================================================================
+*
+* Vin = 0V (LOW input -> HIGH output):
+*   pfet_01v8_lvt: Vgs = 0 - 1.8 = -1.8V < -0.45V -> STRONG ON
+*   nfet_01v8_lvt: Vgs = 0V < 0.40V -> OFF
+*   Result: Vout = VDD = 1.8V ✓
+*
+* Vin = 0.9V (MID input -> MID output):
+*   pfet_01v8_lvt: Vgs = 0.9 - 1.8 = -0.9V < -0.45V -> PARTIAL ON
+*   nfet_01v8_lvt: Vgs = 0.9V > 0.40V -> PARTIAL ON
+*   Result: Voltage divider, Vout ≈ 0.9V (depends on sizing) ✓
+*
+* Vin = 1.8V (HIGH input -> LOW output):
+*   pfet_01v8_lvt: Vgs = 1.8 - 1.8 = 0V > -0.45V -> OFF
+*   nfet_01v8_lvt: Vgs = 1.8V > 0.40V -> STRONG ON
+*   Result: Vout = VSS = 0V ✓
+*
+* ============================================================================
+* TOPOLOGY: 4T Multi-Vth STI (LVT PMOS + LVT NMOS with SVT assist)
+* ============================================================================
+*
+*                   VDD (1.8V)
+*                     |
+*           +---------+----------+
+*           |                    |
+*        [MP1]                [MP2]
+*     pfet_01v8_lvt        pfet_01v8
+*        W=2u L=150n        W=420n L=150n
+*           |                    |
+*           +--------+-----------+
+*                    |
+*                   out
+*                    |
+*           +--------+-----------+
+*           |                    |
+*        [MN1]                [MN2]
+*     nfet_01v8_lvt        nfet_01v8
+*        W=1u L=150n        W=420n L=150n
+*           |                    |
+*           +---------+----------+
+*                     |
+*                    VSS (0V)
+*
+* ============================================================================
+.subckt STI_MULTIVTH_SKY130 in out VDD VSS
+
+* ============================================================================
+* PULL-UP NETWORK (PMOS) - Connected to VDD
+* ============================================================================
+* Note: SKY130 LVT devices have Wmin=7um, so we use larger geometry
+* For minimum-area designs, use standard devices with sizing optimization
+*
+* Primary: LVT PMOS provides mid-level drive (Wmin=7um for LVT)
+* - pfet_01v8_lvt: Vth ~ -0.45V, turns off at Vin > 1.35V
+* - Balanced with NMOS using same L for symmetry
+* - PMOS sized 2x wider than NMOS to compensate for mobility
+* - Dimensions assume .option scale=1e-6 in testbench
+* Sized for Vout ~ 0.9V at Vin = 0.9V
+* PMOS/NMOS ratio ~2.5:1 (interpolated between 2:1->0.53V and 3:1->1.32V)
+XMP1 out in VDD VDD sky130_fd_pr__pfet_01v8_lvt w=17 l=0.42
+
+* Assist: Standard PMOS adds pull-up for Vin < 0.8V region
+* - pfet_01v8: Vth ~ -1.0V, strongly ON only at very low input
+XMP2 out in VDD VDD sky130_fd_pr__pfet_01v8 w=3 l=0.15
+
+* ============================================================================
+* PULL-DOWN NETWORK (NMOS) - Connected to VSS
+* ============================================================================
+* Primary: LVT NMOS provides mid-level drive
+* - nfet_01v8_lvt: Vth ~ 0.40V, turns on at Vin > 0.40V
+XMN1 out in VSS VSS sky130_fd_pr__nfet_01v8_lvt w=7 l=0.42
+
+* Assist: Standard NMOS adds pull-down for Vin > 1.2V region
+* - nfet_01v8: Vth ~ 0.50V, adds extra pull-down at high input
+XMN2 out in VSS VSS sky130_fd_pr__nfet_01v8 w=0.84 l=0.15
+
+.ends STI_MULTIVTH_SKY130
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. Sizing Rationale:
+*    - MP1 (LVT PMOS, W=2u): Primary pull-up, sized 2x MN1 for mobility
+*    - MP2 (SVT PMOS, W=420n): Weak assist for Vin < 0.6V region
+*    - MN1 (LVT NMOS, W=1u): Primary pull-down, reference device
+*    - MN2 (SVT NMOS, W=420n): Weak assist for Vin > 1.2V region
+*
+* 2. Expected DC Transfer Characteristic:
+*    - Vin < 0.4V: Vout > 1.5V (HIGH region)
+*    - Vin = 0.6V: Vout ~ 1.2V (transition)
+*    - Vin = 0.9V: Vout ~ 0.9V (MID region target)
+*    - Vin = 1.2V: Vout ~ 0.6V (transition)
+*    - Vin > 1.4V: Vout < 0.3V (LOW region)
+*
+* 3. Noise Margin Targets:
+*    - NML (low input margin): > 0.3V
+*    - NMH (high input margin): > 0.3V
+*    - NMM (mid-level margin): > 0.1V on each side
+*
+* 4. PVT Considerations:
+*    - SS corner: Thresholds increase, mid-level may shift high
+*    - FF corner: Thresholds decrease, mid-level may shift low
+*    - Temperature: Vth decreases ~2mV/°C, affects mid-level tracking
+*
+* 5. Alternative Sizing (if mid-level too low):
+*    - Increase MP1 width to 2.5u or 3u
+*    - Decrease MN1 width to 800n
+*    - Add body biasing to adjust effective Vth
+*
+* 6. Alternative Sizing (if mid-level too high):
+*    - Decrease MP1 width to 1.5u
+*    - Increase MN1 width to 1.2u
+* ============================================================================
+
+* ============================================================================
+* VARIANT: 6T ENHANCED MID-LEVEL STABILITY
+* ============================================================================
+* Adds cross-coupled devices for improved mid-level regeneration
+* Use when 4T variant shows insufficient NMM
+
+.subckt STI_MULTIVTH_SKY130_6T in out VDD VSS
+
+* Primary devices (same as 4T)
+XMP1 out in VDD VDD sky130_fd_pr__pfet_01v8_lvt w=2u l=150n
+XMN1 out in VSS VSS sky130_fd_pr__nfet_01v8_lvt w=1u l=150n
+
+* Assist devices with output feedback (cross-coupled)
+* These provide regenerative gain near the switching points
+XMP2 out out VDD VDD sky130_fd_pr__pfet_01v8 w=280n l=150n
+XMN2 out out VSS VSS sky130_fd_pr__nfet_01v8 w=140n l=150n
+
+* Threshold adjustment devices
+XMP3 out in VDD VDD sky130_fd_pr__pfet_01v8 w=280n l=150n
+XMN3 out in VSS VSS sky130_fd_pr__nfet_01v8 w=280n l=150n
+
+.ends STI_MULTIVTH_SKY130_6T
+
+* ============================================================================
+* VARIANT: STACKED DEVICES FOR FINE THRESHOLD CONTROL
+* ============================================================================
+* Uses series transistors to effectively raise threshold voltages
+* Provides better mid-level control at the cost of speed
+
+.subckt STI_MULTIVTH_SKY130_STACKED in out VDD VSS
+
+* Internal nodes
+.nodes mid_p mid_n
+
+* Stacked PMOS (effectively higher Vth)
+XMP1 out in mid_p VDD sky130_fd_pr__pfet_01v8_lvt w=3u l=150n
+XMP2 mid_p in VDD VDD sky130_fd_pr__pfet_01v8_lvt w=3u l=150n
+
+* Stacked NMOS (effectively higher Vth)
+XMN1 out in mid_n VSS sky130_fd_pr__nfet_01v8_lvt w=1.5u l=150n
+XMN2 mid_n in VSS VSS sky130_fd_pr__nfet_01v8_lvt w=1.5u l=150n
+
+.ends STI_MULTIVTH_SKY130_STACKED

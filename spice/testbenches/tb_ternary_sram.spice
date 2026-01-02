@@ -1,0 +1,286 @@
+* ============================================================================
+* TERNARY SRAM BITCELL CHARACTERIZATION TESTBENCH
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+*
+* Purpose: Characterize ternary SRAM read/write margins and stability
+*
+* Tests:
+*   1. Write all three levels (-1, 0, +1) and verify storage
+*   2. Read margin analysis at each stored level
+*   3. Read disturb (hold) margin analysis
+*   4. Write margin (ability to flip between states)
+*   5. Access time measurement
+*
+* Target Cells:
+*   - TSRAM6T: Basic 6T ternary cell
+*   - TSRAM8T: 8T cell with decoupled read
+*   - TSRAM8T_VMID: 8T with explicit VMID connection
+* ============================================================================
+
+.title Ternary SRAM Characterization
+
+.include "../models/sky130_models.spice"
+.include "../cells/ternary_sram_8t.spice"
+
+* ============================================================================
+* TESTBENCH PARAMETERS
+* ============================================================================
+.param VDD = 1.8
+.param VMID = 0.9
+.param Trise = 0.1n
+.param Tfall = 0.1n
+
+* Timing parameters
+.param Tsetup = 0.5n
+.param Tpulse = 2n
+.param Tperiod = 10n
+
+* ============================================================================
+* POWER SUPPLIES
+* ============================================================================
+VVDD vdd 0 DC VDD
+VVSS vss 0 DC 0
+VVMID vmid 0 DC VMID
+
+* ============================================================================
+* DUT: TERNARY 8T SRAM CELL
+* ============================================================================
+* Using 8T variant for better testability
+
+XDUT bl blb wl_w wl_r rbl vdd vmid vss TSRAM8T
+
+* ============================================================================
+* BITLINE LOAD CAPACITANCE
+* ============================================================================
+* Typical column with 64-128 cells
+.param Cbl = 50f
+CBL bl 0 Cbl
+CBLB blb 0 Cbl
+CRBL rbl 0 Cbl
+
+* ============================================================================
+* BITLINE PRECHARGE
+* ============================================================================
+* Precharge to VDD (or VMID for differential)
+VPC_BL pc_bl 0 PULSE(0 VDD 0 Trise Tfall Tpulse Tperiod)
+
+MPP_BL bl_pre pc_bl vdd vdd sky130_fd_pr__pfet_01v8 w=0.84u l=0.15u
+MPP_BLB blb_pre pc_bl vdd vdd sky130_fd_pr__pfet_01v8 w=0.84u l=0.15u
+MPP_RBL rbl_pre pc_bl vdd vdd sky130_fd_pr__pfet_01v8 w=0.84u l=0.15u
+
+* Connect precharge signals
+VBL_PRE bl_pre 0 PULSE(VDD 0 1n Trise Tfall 3n Tperiod)
+VBLB_PRE blb_pre 0 PULSE(VDD 0 1n Trise Tfall 3n Tperiod)
+VRBL_PRE rbl_pre 0 PULSE(VDD 0 1n Trise Tfall 3n Tperiod)
+
+* ============================================================================
+* WORDLINE CONTROL
+* ============================================================================
+VWL_W wl_w 0 PWL(
++  0n 0
++  5n 0
++  5.1n VDD
++  8n VDD
++  8.1n 0
++ 15n 0
++ 15.1n VDD
++ 18n VDD
++ 18.1n 0
++ 25n 0
++ 25.1n VDD
++ 28n VDD
++ 28.1n 0
++ 50n 0
+)
+
+VWL_R wl_r 0 PWL(
++  0n 0
++ 10n 0
++ 10.1n VDD
++ 12n VDD
++ 12.1n 0
++ 20n 0
++ 20.1n VDD
++ 22n VDD
++ 22.1n 0
++ 30n 0
++ 30.1n VDD
++ 32n VDD
++ 32.1n 0
++ 50n 0
+)
+
+* ============================================================================
+* BITLINE DRIVERS (WRITE DATA)
+* ============================================================================
+* Sequence: Write -1, Read, Write 0, Read, Write +1, Read
+
+* BL drive for -1 (0V), 0 (0.9V), +1 (1.8V)
+VBL bl 0 PWL(
++  0n VMID
++  4.9n VMID
++  5n 0
++  8n 0
++  8.1n VMID
++ 14.9n VMID
++ 15n VMID
++ 18n VMID
++ 18.1n VMID
++ 24.9n VMID
++ 25n VDD
++ 28n VDD
++ 28.1n VMID
++ 50n VMID
+)
+
+* BLB drive (complementary)
+VBLB blb 0 PWL(
++  0n VMID
++  4.9n VMID
++  5n VDD
++  8n VDD
++  8.1n VMID
++ 14.9n VMID
++ 15n VMID
++ 18n VMID
++ 18.1n VMID
++ 24.9n VMID
++ 25n 0
++ 28n 0
++ 28.1n VMID
++ 50n VMID
+)
+
+* ============================================================================
+* ANALYSIS COMMANDS
+* ============================================================================
+.control
+
+echo "=============================================="
+echo "Ternary SRAM Characterization"
+echo "=============================================="
+
+* Transient simulation of read/write sequence
+tran 0.01n 50n
+
+* ---- WRITE -1 VERIFICATION ----
+meas tran V_Q_neg1 FIND v(XDUT.Q) AT=9n
+meas tran V_QB_neg1 FIND v(XDUT.QB) AT=9n
+meas tran V_RBL_neg1 FIND v(rbl) AT=12n
+
+echo ""
+echo "--- Write -1 Results ---"
+echo "Q (expected ~0V):    " $&V_Q_neg1
+echo "QB (expected ~1.8V): " $&V_QB_neg1
+echo "RBL after read:      " $&V_RBL_neg1
+
+* ---- WRITE 0 VERIFICATION ----
+meas tran V_Q_zero FIND v(XDUT.Q) AT=19n
+meas tran V_QB_zero FIND v(XDUT.QB) AT=19n
+meas tran V_RBL_zero FIND v(rbl) AT=22n
+
+echo ""
+echo "--- Write 0 Results ---"
+echo "Q (expected ~0.9V):  " $&V_Q_zero
+echo "QB (expected ~0.9V): " $&V_QB_zero
+echo "RBL after read:      " $&V_RBL_zero
+
+* ---- WRITE +1 VERIFICATION ----
+meas tran V_Q_pos1 FIND v(XDUT.Q) AT=29n
+meas tran V_QB_pos1 FIND v(XDUT.QB) AT=29n
+meas tran V_RBL_pos1 FIND v(rbl) AT=32n
+
+echo ""
+echo "--- Write +1 Results ---"
+echo "Q (expected ~1.8V):  " $&V_Q_pos1
+echo "QB (expected ~0V):   " $&V_QB_pos1
+echo "RBL after read:      " $&V_RBL_pos1
+
+* ---- STABILITY ANALYSIS ----
+echo ""
+echo "--- Stability Check ---"
+
+* Check if mid-level is maintained
+let mid_target = 0.9
+let mid_tolerance = 0.2
+let q_zero_ok = abs(V_Q_zero - mid_target) < mid_tolerance
+let qb_zero_ok = abs(V_QB_zero - mid_target) < mid_tolerance
+
+if q_zero_ok = 1
+  echo "Mid-level Q stable: PASS"
+else
+  echo "Mid-level Q stable: FAIL (outside tolerance)"
+end
+
+* ---- ACCESS TIME ----
+echo ""
+echo "--- Access Time ---"
+
+* Measure read access time (RBL discharge for +1)
+meas tran T_access TRIG v(wl_r) VAL=0.9 RISE=3 TARG v(rbl) VAL=0.9 FALL=1
+echo "Read access time: " $&T_access " ns"
+
+* ---- WRITE TIME ----
+* Measure write time (Q transition)
+meas tran T_write TRIG v(wl_w) VAL=0.9 RISE=1 TARG v(XDUT.Q) VAL=0.09 FALL=1
+echo "Write time (-1): " $&T_write " ns"
+
+echo ""
+echo "=============================================="
+echo "Characterization Complete"
+echo "=============================================="
+
+* Save waveforms
+wrdata tsram_waveforms.dat v(XDUT.Q) v(XDUT.QB) v(rbl) v(wl_w) v(wl_r)
+
+quit
+
+.endc
+
+* ============================================================================
+* STATIC NOISE MARGIN ANALYSIS
+* ============================================================================
+* To run: Change analysis to .dc sweep
+
+*.dc VBLB 0 VDD 0.01 VBL 0 VDD 0.01
+
+* ============================================================================
+* MONTE CARLO VARIATION ANALYSIS
+* ============================================================================
+* Requires foundry statistical models
+
+*.param mc_seed = 12345
+*.tran 0.01n 50n SWEEP MONTE=100
+
+.end
+
+* ============================================================================
+* EXPECTED RESULTS
+* ============================================================================
+*
+* For proper ternary operation:
+*
+* State -1:
+*   - Q ≈ 0V (VSS)
+*   - QB ≈ 1.8V (VDD)
+*   - RBL stays high (Q too low to discharge)
+*
+* State 0:
+*   - Q ≈ 0.9V (VMID)
+*   - QB ≈ 0.9V (VMID)
+*   - RBL partially discharges (intermediate)
+*   - THIS IS THE CHALLENGING STATE
+*
+* State +1:
+*   - Q ≈ 1.8V (VDD)
+*   - QB ≈ 0V (VSS)
+*   - RBL fully discharges (Q > Vth)
+*
+* Typical targets:
+*   - Read access time: <1ns
+*   - Write time: <0.5ns
+*   - SNM (Static Noise Margin): >100mV at all levels
+*   - Read disturb margin: >50mV (critical for mid-level)
+*
+* ============================================================================

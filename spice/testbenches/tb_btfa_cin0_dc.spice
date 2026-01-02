@@ -1,0 +1,35 @@
+* BTFA truth-table sweep with CIN=0V (-1)
+
+.include '../models/sky130_models.spice'
+.include '../cells/sti.spice'
+.include '../cells/pti.spice'
+.include '../cells/nti.spice'
+.include '../cells/tmin.spice'
+.include '../cells/tmax.spice'
+.include '../cells/tmux3.spice'
+.include '../cells/tsum.spice'
+.include '../cells/btha.spice'
+.include '../cells/btfa.spice'
+
+.param VDD_NOM=1.8
+.param VMID_NOM=0.9
+
+VDD vdd 0 DC VDD_NOM
+VSS vss 0 DC 0
+
+VA a 0 DC 0
+VB b 0 DC 0
+VCIN cin 0 DC 0
+
+XBTFA a b cin sum cout vdd vss BTFA
+
+.dc VA 0 1.8 0.9 VB 0 1.8 0.9
+
+.control
+  run
+  set filetype=ascii
+  wrdata ../results/btfa_cin0_dc.csv V(a) V(b) V(cin) V(sum) V(cout)
+  quit
+.endc
+
+.end

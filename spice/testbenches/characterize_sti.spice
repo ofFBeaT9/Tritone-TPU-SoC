@@ -1,0 +1,201 @@
+* ============================================================================
+* CELL CHARACTERIZATION TESTBENCH
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Universal characterization template for all ternary cells
+*
+* Measures for each cell:
+*   1. Propagation delay for all 6 ternary transitions
+*   2. Power consumption (static and dynamic)
+*   3. Input capacitance
+*   4. Output drive strength
+*   5. Noise margins
+* ============================================================================
+
+.include '../models/sky130_models.spice'
+.include '../cells/sti.spice'
+
+* ============================================================================
+* TEST PARAMETERS
+* ============================================================================
+.param VDD_NOM = 1.8
+.param VMID = 0.9
+.param TSLEW = 100p        $ Input slew rate
+.param CLOAD = 20f         $ Output load capacitance
+.param TPERIOD = 2n        $ Period for each transition test
+
+* ============================================================================
+* POWER SUPPLIES (2-rail)
+* ============================================================================
+VDD vdd 0 DC VDD_NOM
+VSS vss 0 DC 0
+
+* ============================================================================
+* TRANSITION 0→1: Input rises from 0V to 0.9V
+* ============================================================================
+VIN_01 in_01 0 PWL(
++   0    0
++   100p 0
++   'TSLEW+100p' {VMID}
++   {TPERIOD} {VMID})
+
+XDUT_01 in_01 out_01 vdd vss STI
+CL_01 out_01 0 {CLOAD}
+
+* ============================================================================
+* TRANSITION 1→0: Input falls from 0.9V to 0V
+* ============================================================================
+VIN_10 in_10 0 PWL(
++   0    VMID
++   100p VMID
++   'TSLEW+100p' 0
++   {TPERIOD} 0)
+
+XDUT_10 in_10 out_10 vdd vss STI
+CL_10 out_10 0 {CLOAD}
+
+* ============================================================================
+* TRANSITION 1→2: Input rises from 0.9V to 1.8V
+* ============================================================================
+VIN_12 in_12 0 PWL(
++   0    VMID
++   100p VMID
++   'TSLEW+100p' {VDD_NOM}
++   {TPERIOD} {VDD_NOM})
+
+XDUT_12 in_12 out_12 vdd vss STI
+CL_12 out_12 0 {CLOAD}
+
+* ============================================================================
+* TRANSITION 2→1: Input falls from 1.8V to 0.9V
+* ============================================================================
+VIN_21 in_21 0 PWL(
++   0    VDD_NOM
++   100p VDD_NOM
++   'TSLEW+100p' {VMID}
++   {TPERIOD} {VMID})
+
+XDUT_21 in_21 out_21 vdd vss STI
+CL_21 out_21 0 {CLOAD}
+
+* ============================================================================
+* TRANSITION 0→2: Input rises from 0V to 1.8V (full swing)
+* ============================================================================
+VIN_02 in_02 0 PWL(
++   0    0
++   100p 0
++   'TSLEW+100p' {VDD_NOM}
++   {TPERIOD} {VDD_NOM})
+
+XDUT_02 in_02 out_02 vdd vss STI
+CL_02 out_02 0 {CLOAD}
+
+* ============================================================================
+* TRANSITION 2→0: Input falls from 1.8V to 0V (full swing)
+* ============================================================================
+VIN_20 in_20 0 PWL(
++   0    VDD_NOM
++   100p VDD_NOM
++   'TSLEW+100p' 0
++   {TPERIOD} 0)
+
+XDUT_20 in_20 out_20 vdd vss STI
+CL_20 out_20 0 {CLOAD}
+
+* ============================================================================
+* ANALYSIS COMMANDS
+* ============================================================================
+.tran 1p 'TPERIOD'
+
+* ============================================================================
+* DELAY MEASUREMENTS
+* Using 50% threshold crossings for ternary levels:
+*   Low-Mid boundary: 0.45V (25% of VDD)
+*   Mid point: 0.9V (50% of VDD)
+*   Mid-High boundary: 1.35V (75% of VDD)
+* ============================================================================
+
+* 0→1 transition: output goes from 2 to 1 (1.8V to 0.9V)
+.meas TRAN tpd_01 TRIG V(in_01) VAL=0.45 RISE=1 
++                 TARG V(out_01) VAL=1.35 FALL=1
+
+* 1→0 transition: output goes from 1 to 2 (0.9V to 1.8V)
+.meas TRAN tpd_10 TRIG V(in_10) VAL=0.45 FALL=1 
++                 TARG V(out_10) VAL=1.35 RISE=1
+
+* 1→2 transition: output goes from 1 to 0 (0.9V to 0V)
+.meas TRAN tpd_12 TRIG V(in_12) VAL=1.35 RISE=1 
++                 TARG V(out_12) VAL=0.45 FALL=1
+
+* 2→1 transition: output goes from 0 to 1 (0V to 0.9V)
+.meas TRAN tpd_21 TRIG V(in_21) VAL=1.35 FALL=1 
++                 TARG V(out_21) VAL=0.45 RISE=1
+
+* 0→2 transition: output goes from 2 to 0 (1.8V to 0V)
+.meas TRAN tpd_02 TRIG V(in_02) VAL=0.9 RISE=1 
++                 TARG V(out_02) VAL=0.9 FALL=1
+
+* 2→0 transition: output goes from 0 to 2 (0V to 1.8V)
+.meas TRAN tpd_20 TRIG V(in_20) VAL=0.9 FALL=1 
++                 TARG V(out_20) VAL=0.9 RISE=1
+
+* ============================================================================
+* POWER MEASUREMENTS
+* ============================================================================
+.meas TRAN avg_current AVG I(VDD) FROM=200p TO='TPERIOD'
+.meas TRAN peak_current MAX I(VDD) FROM=100p TO='TPERIOD'
+
+* ============================================================================
+* SIMULATION CONTROL
+* ============================================================================
+.control
+    run
+    
+    set filetype=ascii
+    
+    echo ""
+    echo "============================================================"
+    echo "STI CELL CHARACTERIZATION RESULTS"
+    echo "============================================================"
+    echo ""
+    echo "Test Conditions:"
+    echo "  VDD = 1.8V"
+    echo "  Temperature = 27C"
+    echo "  Input slew = 100ps"
+    echo "  Load capacitance = 20fF"
+    echo ""
+    echo "============================================================"
+    echo "PROPAGATION DELAYS (6 Ternary Transitions)"
+    echo "============================================================"
+    echo ""
+    echo "See .meas results in this log output."
+    echo ""
+    echo "============================================================"
+    echo "POWER CONSUMPTION"
+    echo "============================================================"
+    echo ""
+    echo "See .meas results in this log output."
+    echo ""
+    
+    * Plot all transitions
+    plot V(in_01) V(out_01) 
++        V(in_10)+2 V(out_10)+2
++        V(in_12)+4 V(out_12)+4
++        title 'STI Transition Waveforms (Part 1)'
+    
+    plot V(in_21) V(out_21)
++        V(in_02)+2 V(out_02)+2
++        V(in_20)+4 V(out_20)+4
++        title 'STI Transition Waveforms (Part 2)'
+    
+    * Save waveform data for offline post-processing
+    setplot tran1
+    wrdata ../results/sti_char_tran.csv time V(in_01) V(out_01) V(in_10) V(out_10) V(in_12) V(out_12) V(in_21) V(out_21) V(in_02) V(out_02) V(in_20) V(out_20)
+    
+    echo ""
+    echo "Results saved to ../results/sti_char_tran.csv"
+    echo ""
+    quit
+.endc
+
+.end

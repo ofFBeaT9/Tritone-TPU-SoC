@@ -1,0 +1,195 @@
+Warning: include: has no value, DC 0 assumed
+ Reference value :  0.00000e+00Error: &vout_1v8: no such variable.
+
+No compatibility mode selected!
+
+
+Circuit: * ============================================================================
+
+================================================================
+SKY130 BSIM4 Multi-Vth STI Characterization
+================================================================
+
+=== Test 1: DC Transfer Characteristic ===
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1801
+vout_0v0            =  1.800000e+00
+vout_0v3            =  1.799991e+00
+vout_0v6            =  1.788279e+00
+vout_0v9            =  9.738794e-01
+vout_1v2            =  2.912588e-02
+vout_1v5            =  6.951985e-04
+
+Error: measure  vout_1v8  (AT) : out of interval
+ meas dc vout_1v8 find v(out) at=1.8 failed!
+
+DC Output Levels:
+  Vin = 0.0V -> Vout = 1.8 V (target: 1.8V)
+  Vin = 0.3V -> Vout = 1.79999 V (target: >1.5V)
+  Vin = 0.6V -> Vout = 1.78828 V (target: ~1.2V)
+  Vin = 0.9V -> Vout = 0.973879 V (target: 0.9V)
+  Vin = 1.2V -> Vout = 0.0291259 V (target: ~0.6V)
+  Vin = 1.5V -> Vout = 0.000695199 V (target: <0.3V)
+  Vin = 1.8V -> Vout =  V (target: 0.0V)
+
+Mid-level (0.9V) error: 0.0738794 V
+vil_th              =  8.747291e-01
+vih_th              =  9.307772e-01
+Error: ambiguous output redirect.
+Error(parse.c--checkvalid): pass_nmm: zero length vector.
+Error: no such vector as deriv(v(out)).
+Error(parse.c--checkvalid): gain_at_mid: zero length vector.
+Error: RHS "abs(gain_at_mid)" invalid
+Error: &abs_gain_mid: no such variable.
+Warning: include: has no value, DC 0 assumed
+Warning: include: has no value, DC 0 assumed
+Warning: include: has no value, DC 0 assumed
+Warning: include: has no value, DC 0 assumed
+Warning: include: has no value, DC 0 assumed
+Warning: include: has no value, DC 0 assumed
+vmid_th             =  9.039882e-01
+
+Switching Thresholds:
+  VIL (Vout=1.35V): 0.874729 V
+  VMID (Vout=0.9V): 0.903988 V
+  VIH (Vout=0.45V): 0.930777 V
+
+=== Test 2: Noise Margin Analysis ===
+
+Ternary Noise Margins:
+  NML (LOW region):  0.874729 V (target: >0.4V)
+  NMM_L (MID lower): 0.0292591 V (target: >0.2V)
+  NMM_H (MID upper): 0.026789 V (target: >0.2V)
+  NMH (HIGH region): 0.869223 V (target: >0.4V)
+
+  NML:   PASS
+  NMM:   FAIL (mid-level margins too narrow)
+  NMH:   PASS
+
+=== Test 3: Small-Signal Gain ===
+Maximum |gain|: 18.5732 V/V
+ meas dc gain_at_mid find deriv(v(out)) at=0.9 failed!
+
+Gain at Vin=0.9V:  V/V
+
+=== Test 4: Voltage Corners ===
+
+--- VDD = 1.62V (-10%) ---
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1621
+vout_mid_lv         =  1.013116e+00
+  Vout @ Vin=0.81V: 1.01312 V (target: 0.81V)
+  Mid-level error: 0.203116 V
+
+--- VDD = 1.98V (+10%) ---
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1981
+vout_mid_hv         =  1.017252e+00
+  Vout @ Vin=0.99V: 1.01725 V (target: 0.99V)
+  Mid-level error: 0.027252 V
+
+=== Test 5: Temperature Corners ===
+
+--- Temperature = -40C ---
+Doing analysis at TEMP = -40.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1801
+vout_mid_cold       =  3.658958e-01
+  Vout @ Vin=0.9V: 0.365896 V
+  Mid-level error: 0.534104 V
+
+--- Temperature = 85C ---
+Doing analysis at TEMP = 85.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1801
+vout_mid_hot        =  1.345189e+00
+  Vout @ Vin=0.9V: 1.34519 V
+  Mid-level error: 0.445189 V
+
+--- Temperature = 125C ---
+Doing analysis at TEMP = 125.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1801
+vout_mid_ind        =  1.432249e+00
+  Vout @ Vin=0.9V: 1.43225 V
+  Mid-level error: 0.532249 V
+
+=== Test 6: Transient Response ===
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+sky130_fd_pr__esd_nfet_05v0_nvt.pm3               0
+                                             0
+vdd                                        1.8
+vss                                          0
+in                                           0
+out                                        1.8
+vin#branch                                   0
+vvss#branch                        1.09777e-11
+vvdd#branch                       -1.09777e-11
+
+
+No. of Data Rows : 1232
+tphl                =  5.178902e-10 targ=  2.017890e-09 trig=  1.500000e-09
+Error: &vmid_error: no such variable.
+Error: &vil_th: no such variable.
+Error: &vih_th: no such variable.
+Error: &NML: no such variable.
+Error: &NMM_L: no such variable.
+Error: &NMM_H: no such variable.
+Error: &NMH: no such variable.
+Error: &vmid_error_lv: no such variable.
+Error: &vmid_error_hv: no such variable.
+Error: &vmid_error_cold: no such variable.
+Error: &vmid_error_hot: no such variable.
+Error: &vmid_error_ind: no such variable.
+tplh                =  5.100910e-10 targ=  8.010091e-09 trig=  7.500000e-09
+
+Propagation Delays:
+  tpHL (high-to-low): 5.1789E-10 s
+  tpLH (low-to-high): 5.10091E-10 s
+  Average tp: 5.13991E-10 s
+
+================================================================
+CHARACTERIZATION SUMMARY - TT Corner @ 27C
+================================================================
+
+DC Performance:
+  Mid-level accuracy:  V (target: <50mV)
+  VIL threshold:  V
+  VIH threshold:  V
+
+Noise Margins:
+  NML:  V
+  NMM_L:  V
+  NMM_H:  V
+  NMH:  V
+
+PVT Sensitivity:
+  VDD-10% error:  V
+  VDD+10% error:  V
+  -40C error:  V
+  85C error:  V
+  125C error:  V
+
+Speed:
+  tpHL: 5.1789E-10 s
+  tpLH: 5.10091E-10 s
+
+================================================================
+ngspice-36 done

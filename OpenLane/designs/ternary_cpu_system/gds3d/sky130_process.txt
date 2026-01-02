@@ -1,0 +1,182 @@
+# SKY130 GDS3D Technology File - Realistic Scale
+# Tritone v4 Balanced Ternary CPU
+#
+# Layer format reference:
+# LayerStart: <layer_number>
+# Datatype: <datatype> (-1 for any)
+# Height: <bottom_height_um>
+# Thickness: <thickness_um>
+# Red/Green/Blue: 0-255 color values
+# Show: 1 (visible) or 0 (hidden)
+
+# Process parameters (approximate SKY130 heights in um)
+# Based on SKY130 PDK cross-section
+
+# ==== Substrate ====
+LayerStart: 64
+Datatype: 44
+Height: -0.5
+Thickness: 0.5
+Red: 200
+Green: 200
+Blue: 100
+Filter: 0
+Metal: 0
+Show: 1
+LayerEnd
+
+# ==== Local Interconnect (li1) ====
+LayerStart: 67
+Datatype: 20
+Height: 0.0
+Thickness: 0.1
+Red: 128
+Green: 128
+Blue: 200
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 1 ====
+LayerStart: 68
+Datatype: 20
+Height: 0.37
+Thickness: 0.36
+Red: 50
+Green: 100
+Blue: 200
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via1 ====
+LayerStart: 68
+Datatype: 44
+Height: 0.73
+Thickness: 0.27
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 2 ====
+LayerStart: 69
+Datatype: 20
+Height: 1.0
+Thickness: 0.36
+Red: 100
+Green: 200
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via2 ====
+LayerStart: 69
+Datatype: 44
+Height: 1.36
+Thickness: 0.42
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 3 ====
+LayerStart: 70
+Datatype: 20
+Height: 1.78
+Thickness: 0.845
+Red: 200
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via3 ====
+LayerStart: 70
+Datatype: 44
+Height: 2.625
+Thickness: 0.39
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 4 ====
+LayerStart: 71
+Datatype: 20
+Height: 3.015
+Thickness: 0.845
+Red: 200
+Green: 200
+Blue: 50
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Via4 ====
+LayerStart: 71
+Datatype: 44
+Height: 3.86
+Thickness: 0.505
+Red: 100
+Green: 100
+Blue: 100
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Metal 5 ====
+LayerStart: 72
+Datatype: 20
+Height: 4.365
+Thickness: 1.26
+Red: 200
+Green: 100
+Blue: 200
+Filter: 0
+Metal: 1
+Show: 1
+LayerEnd
+
+# ==== Pin Labels ====
+LayerStart: 68
+Datatype: 16
+Height: 0.37
+Thickness: 0.36
+Red: 255
+Green: 255
+Blue: 0
+Filter: 0
+Metal: 0
+Show: 1
+LayerEnd
+
+# ==== Boundary ====
+LayerStart: 235
+Datatype: 4
+Height: -0.1
+Thickness: 0.05
+Red: 150
+Green: 150
+Blue: 150
+Filter: 0
+Metal: 0
+Show: 1
+LayerEnd

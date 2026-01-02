@@ -1,0 +1,81 @@
+* ============================================================================
+* TERNARY MAX GATE (T-OR Equivalent) - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TMAX - Ternary Maximum Gate
+*
+* Function: Y = MAX(A, B)
+*   Returns the maximum of two ternary inputs
+*   Equivalent to OR operation in ternary domain
+*
+* Truth Table:
+*     A\B | 0   1   2
+*     ----|----------
+*      0  | 0   1   2
+*      1  | 1   1   2
+*      2  | 2   2   2
+*
+* Balanced Ternary: MAX(-1,0,+1)
+*     A\B | -1   0  +1
+*     ----|----------
+*     -1  | -1   0  +1
+*      0  |  0   0  +1
+*     +1  | +1  +1  +1
+*
+* Implementation: Parallel NMOS + Series PMOS with STI restoration
+* Transistor Count: ~12 (including buffers)
+* ============================================================================
+
+.subckt TMAX A B Y VDD VSS
+.param Wn=500n Wp=1u L=150n
+
+* ============================================================================
+* MAX LOGIC CORE
+* ============================================================================
+* The MAX function naturally maps to (dual of MIN):
+*   - Parallel NMOS: Either input high pulls down
+*   - Series PMOS: Both inputs must be low to pull up
+*
+* This creates a "wired-OR" behavior where the higher voltage dominates
+
+* Series PMOS pull-up (both must conduct)
+* Output only goes HIGH when BOTH inputs are LOW
+XMP1 VDD A n2 VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=L
+XMP2 n2 B n1 VDD sky130_fd_pr__pfet_01v8_hvt W=Wp L=L
+
+* Additional pull-up paths for intermediate states
+XMP3 VDD A n1 VDD sky130_fd_pr__pfet_01v8 W='Wp/2' L=L
+XMP4 VDD B n1 VDD sky130_fd_pr__pfet_01v8 W='Wp/2' L=L
+
+* Parallel NMOS pull-down (either can conduct)
+* Output goes LOW when EITHER input is HIGH
+XMN1 n1 A VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=L
+XMN2 n1 B VSS VSS sky130_fd_pr__nfet_01v8_lvt W=Wn L=L
+
+* ============================================================================
+* OUTPUT BUFFER (Double STI for level restoration)
+* ============================================================================
+* First STI inverts and cleans up levels
+XSTI1 n1 n3 VDD VSS STI
+
+* Second STI restores original polarity with clean ternary levels
+XSTI2 n3 Y VDD VSS STI
+
+.ends TMAX
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. MAX gate is fundamental for ternary logic - equivalent to OR
+*
+* 2. Key insight: In voltage representation, MAX(A,B) is the higher voltage
+*    - If A=1.8V or B=1.8V, output should be 1.8V
+*    - If both at 0V, output is 0V
+*    - Intermediate cases handled by resistive division
+*
+* 3. Dual of TMIN gate - uses parallel NMOS, series PMOS (opposite topology)
+*
+* 4. Double STI buffer ensures clean ternary levels at output
+*
+* 5. DeMorgan relationship: MAX(A,B) = STI(MIN(STI(A), STI(B)))
+* ============================================================================

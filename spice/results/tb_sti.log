@@ -1,0 +1,70 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * sti testbench - dc and transient analysis
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 181
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vmid                                       0.9
+vss                                          0
+in_dc                                        0
+xsti_dc.nlow                               1.8
+xsti_dc.nhigh                                0
+xsti_dc.nmid                                 0
+out_dc                                     1.8
+in_tr                                        0
+xsti_tr.nlow                               1.8
+xsti_tr.nhigh                                0
+xsti_tr.nmid                                 0
+out_tr                                     1.8
+b.xsti_tr.bmid#branch                        0
+b.xsti_tr.bhigh#branch                       0
+b.xsti_tr.blow#branch                        0
+b.xsti_dc.bmid#branch                        0
+b.xsti_dc.bhigh#branch                       0
+b.xsti_dc.blow#branch                        0
+vin_tr#branch                                0
+vin_dc#branch                                0
+vss#branch                             3.6e-09
+vmid#branch                            1.8e-09
+vdd#branch                            -5.4e-09
+
+
+No. of Data Rows : 1030
+
+  Measurements for DC Analysis
+
+
+
+Warning: command 'plot' is not available during batch simulation, ignored!
+    You may use Gnuplot instead.
+
+
+Warning: command 'plot' is not available during batch simulation, ignored!
+    You may use Gnuplot instead.
+
+
+==============================================
+STI (Standard Ternary Inverter) Test Results
+==============================================
+
+
+DC Results (check plot):
+  Vin=0V    -> Vout should be ~1.8V
+  Vin=0.9V  -> Vout should be ~0.9V
+  Vin=1.8V  -> Vout should be ~0V
+
+Results saved to ../results/
+
+ngspice-45.2 done

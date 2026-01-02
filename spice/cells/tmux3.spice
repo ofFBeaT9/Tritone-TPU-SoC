@@ -1,0 +1,88 @@
+* ============================================================================
+* 3-TO-1 TERNARY MULTIPLEXER - Transistor Implementation
+* ============================================================================
+* GT-LOGIC Ternary CMOS Cell Library
+* Cell: TMUX3 - 3-to-1 Ternary Multiplexer
+*
+* Function: Selects one of three ternary inputs based on ternary select
+*   Y = D0 if S=0
+*   Y = D1 if S=1  
+*   Y = D2 if S=2
+*
+* This is a fundamental building block for ternary logic synthesis
+* Any ternary function can be implemented using TMUX3 trees
+*
+* Implementation: Decoder + Transmission Gates + Level Restoration
+* Transistor Count: ~24
+* ============================================================================
+
+.subckt TMUX3 D0 D1 D2 S Y VDD VSS
+.param W=500n L=150n
+
+* ============================================================================
+* SELECT DECODER - Generate one-hot control signals
+* ============================================================================
+* S_is_0: HIGH when S = 0
+XNTI_S S S_is_0 VDD VSS NTI
+
+* S_is_2: HIGH when S = 2
+XPTI_S S S_not_2 VDD VSS PTI
+XSTI_S2 S_not_2 S_is_2 VDD VSS STI
+
+* S_is_1: HIGH when S = 1 (computed as NOT(S_is_0 OR S_is_2))
+XTMAX_sel S_is_0 S_is_2 S_not_1 VDD VSS TMAX
+XSTI_S1 S_not_1 S_is_1 VDD VSS STI
+
+* Generate complementary signals for transmission gates
+XSTI_S0bar S_is_0 S_is_0_bar VDD VSS STI
+XSTI_S1bar S_is_1 S_is_1_bar VDD VSS STI
+XSTI_S2bar S_is_2 S_is_2_bar VDD VSS STI
+
+* ============================================================================
+* TRANSMISSION GATES - Pass selected input to output
+* ============================================================================
+* Each transmission gate uses complementary NMOS/PMOS for full voltage swing
+
+* Pass D0 when S=0 (S_is_0 = HIGH, S_is_0_bar = LOW)
+MTG0_N D0 S_is_0 mux_out VSS nfet_01v8 W=W L=L
+MTG0_P D0 S_is_0_bar mux_out VDD pfet_01v8 W='W*2' L=L
+
+* Pass D1 when S=1 (S_is_1 = HIGH, S_is_1_bar = LOW)
+MTG1_N D1 S_is_1 mux_out VSS nfet_01v8 W=W L=L
+MTG1_P D1 S_is_1_bar mux_out VDD pfet_01v8 W='W*2' L=L
+
+* Pass D2 when S=2 (S_is_2 = HIGH, S_is_2_bar = LOW)
+MTG2_N D2 S_is_2 mux_out VSS nfet_01v8 W=W L=L
+MTG2_P D2 S_is_2_bar mux_out VDD pfet_01v8 W='W*2' L=L
+
+* ============================================================================
+* OUTPUT BUFFER - Double STI for level restoration and drive
+* ============================================================================
+XSTI_out1 mux_out Y_buf VDD VSS STI
+XSTI_out2 Y_buf Y VDD VSS STI
+
+.ends TMUX3
+
+* ============================================================================
+* DESIGN NOTES:
+* ============================================================================
+* 1. TMUX3 is the universal building block for ternary logic
+*    - Any 1-input ternary function: 1 TMUX3
+*    - Any 2-input ternary function: 3 TMUX3 in tree
+*
+* 2. Select decoder creates "one-hot" ternary signals:
+*    - S_is_0 = HIGH only when S = 0
+*    - S_is_1 = HIGH only when S = 1
+*    - S_is_2 = HIGH only when S = 2
+*
+* 3. Transmission gates must handle all three voltage levels
+*    - Complementary NMOS/PMOS ensures full voltage swing
+*    - PMOS sized 2x wider for equal rise/fall times
+*
+* 4. Double STI buffer at output ensures clean ternary levels
+*    and provides drive strength for fanout
+*
+* 5. Alternative implementation: Use pass transistors with
+*    keeper circuits for lower transistor count but more
+*    complex timing analysis
+* ============================================================================

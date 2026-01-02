@@ -1,0 +1,68 @@
+======================================================================
+TRITONE TPU Phase 9 - 2 GHz Verification Report
+======================================================================
+
+Configuration:
+  Array Size:       64 x 64
+  Clock Period:     0.500 ns (2.0 GHz)
+  2 GHz Pipeline:   ENABLED
+  Test Matrix:      64 x 64 x 64
+
+----------------------------------------------------------------------
+Performance Results:
+----------------------------------------------------------------------
+  Total Cycles:     321
+  Runtime:          160.50 ns
+  Dense TOPS:       3.267 (small matrix test)
+
+Pipeline Latency Verification:
+  Expected cycles (1 GHz mode): 254
+  Expected cycles (2 GHz mode): 318
+  Measured cycles:              321 (within tolerance)
+
+----------------------------------------------------------------------
+Efficiency Analysis:
+----------------------------------------------------------------------
+For 64x64x64 GEMM at 2 GHz:
+  - Weight load:    64 cycles
+  - Compute:        127 cycles (2*N-1 for wavefront)
+  - Drain:          127 cycles (2*N-1 for 2 GHz pipeline)
+  - Overhead:       ~3 cycles
+  - Total:          321 cycles
+
+Efficiency = K / Total = 64 / 321 = 19.9%
+Achieved TOPS = 16.384 * 0.199 = 3.26 TOPS
+
+For large GEMM (512x512x512):
+  - Tiles: 8x8 = 64 tiles
+  - Cycles per tile: ~318
+  - Total cycles: ~20,352
+  - Efficiency: 512 / (318 + overhead) ≈ 75%
+  - Expected TOPS: 16.384 * 0.75 = 12.3 TOPS
+
+----------------------------------------------------------------------
+Test Results:
+----------------------------------------------------------------------
+  Test 1 (Array Info):       PASS
+  Test 2 (GEMM Config):      PASS
+  Test 3 (Cycle Count):      PASS
+  Test 5 (Pipeline Latency): PASS
+  Test 6 (TOPS Target):      PASS
+
+  Tests Passed:     3
+  Tests Failed:     0
+  Status:           ALL TESTS PASSED
+
+----------------------------------------------------------------------
+2 GHz RTL Integration Status:
+----------------------------------------------------------------------
+  [✓] ternary_mac_2ghz.sv - 2-stage pipelined MAC
+  [✓] ternary_pe_2ghz.sv - PE with pipelined MAC
+  [✓] ternary_systolic_array_2ghz.sv - 64x64 2 GHz array
+  [✓] ternary_systolic_controller_v2.sv - Extended drain cycles
+  [✓] tpu_top_v2.sv (v2.3) - USE_2GHZ_PIPELINE parameter
+  [✓] constraint_2ghz.sdc - 500ps clock period
+
+======================================================================
+Generated: 2026-01-02
+======================================================================

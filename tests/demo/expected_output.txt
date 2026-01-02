@@ -1,0 +1,26 @@
+# Expected Output for counter.btasm
+#
+# After execution completes (HALT):
+
+## Registers
+R0 = 0          # Hardwired zero
+R1 = 5          # Final counter value
+R2 = 5          # Loop limit
+R3 = 5          # Final memory address
+
+## Memory (first 5 words)
+Mem[0] = 1
+Mem[1] = 2
+Mem[2] = 3
+Mem[3] = 4
+Mem[4] = 5
+
+## Status
+halted = 1      # CPU halted
+pc_out = 6      # PC at HALT instruction
+
+## Verification Criteria
+1. R1 == 5 (counter reached limit)
+2. R2 == 5 (limit unchanged)
+3. Mem[4] == 5 (last value stored)
+4. halted == 1 (CPU stopped)

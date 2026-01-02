@@ -1,0 +1,46 @@
+{
+    "DESIGN_NAME": "ternary_cpu_system",
+    "VERILOG_FILES": "dir::src/*.sv",
+    "CLOCK_PERIOD": 3.33,
+    "CLOCK_PORT": "clk",
+    "CLOCK_NET": "ref::$CLOCK_PORT",
+    "PNR_SDC_FILE": "dir::src/ternary_cpu_system.sdc",
+    "SIGNOFF_SDC_FILE": "dir::src/ternary_cpu_system.sdc",
+
+    "DESIGN_IS_CORE": false,
+    "FP_PDN_CORE_RING": false,
+    "RT_MAX_LAYER": "met4",
+
+    "VDD_NETS": "vccd1",
+    "GND_NETS": "vssd1",
+    "VDD_PIN": "vccd1",
+    "GND_PIN": "vssd1",
+
+    "FP_SIZING": "absolute",
+    "DIE_AREA": "0 0 400 400",
+    "FP_CORE_UTIL": 50,
+    "FP_ASPECT_RATIO": 1,
+
+    "FP_PIN_ORDER_CFG": "dir::pin_order.cfg",
+    "FP_PDN_VOFFSET": 4,
+    "FP_PDN_HOFFSET": 4,
+    "FP_PDN_SKIPTRIM": true,
+
+    "PL_TARGET_DENSITY": 0.55,
+    "SYNTH_STRATEGY": "DELAY 0",
+    "ROUTING_CORES": 4,
+    "MAX_FANOUT_CONSTRAINT": 12,
+    "PL_RESIZER_TIMING_OPTIMIZATIONS": true,
+    "GLB_RESIZER_TIMING_OPTIMIZATIONS": true,
+
+    "pdk::sky130*": {
+        "FP_CORE_UTIL": 50,
+        "MAX_FANOUT_CONSTRAINT": 12,
+        "scl::sky130_fd_sc_hd": {
+            "CLOCK_PERIOD": 3.33
+        },
+        "scl::sky130_fd_sc_hs": {
+            "CLOCK_PERIOD": 3.33
+        }
+    }
+}

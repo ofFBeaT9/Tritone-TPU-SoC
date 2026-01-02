@@ -1,0 +1,96 @@
+# Test Program: LUI (Load Upper Immediate) Instruction - UPDATED v0.2
+# Tests: LUI instruction with register-based upper load semantics
+# Coverage: Upper-9-trit loading from register, combined with ADDI for full constants
+#
+# NEW SEMANTICS (v0.2):
+#   LUI Rd, Rs1 -> Rd[26:18] = Rs1[8:0], Rd[17:0] = 0
+#   Takes lower 9 trits of Rs1 and places them in upper 9 trits of Rd
+#   Lower 18 trits of Rd are cleared to zero
+#
+# This allows building full 27-trit constants by:
+#   1. Load upper value into Rs1 via ADDI
+#   2. LUI Rd, Rs1 to place in upper position
+#   3. ADDI Rd, Rd, lower_value to fill lower trits
+
+# ============================================================
+# Test 1: Basic LUI - Load small value to upper trits
+# ============================================================
+# Set up source register with value 1
+    ADDI R1, R0, 1      # R1 = 1
+
+# LUI places R1[8:0] into R2[26:18], R2[17:0] = 0
+    LUI  R2, R1         # R2[26:18] = 1, R2[17:0] = 0
+                        # R2 = 1 * 3^18 = 387420489 (in decimal)
+
+# ============================================================
+# Test 2: LUI with value -1
+# ============================================================
+    ADDI R1, R0, -1     # R1 = -1
+
+    LUI  R3, R1         # R3[26:18] = -1 (sign extended from lower trits)
+                        # R3 = -1 * 3^18 = -387420489
+
+# ============================================================
+# Test 3: LUI from R0 (zero register)
+# ============================================================
+    LUI  R4, R0         # R4 = 0 (all zeros since R0 = 0)
+
+# ============================================================
+# Test 4: Build a larger constant using LUI + ADDI pattern
+# ============================================================
+# Goal: Load a value into upper trits, then add lower trits
+#
+# Step 1: Set upper value in temp register
+    ADDI R1, R0, 2      # R1 = 2 (will go to upper trits)
+
+# Step 2: LUI to position in upper trits
+    LUI  R5, R1         # R5[26:18] = 2, R5[17:0] = 0
+
+# Step 3: Add lower constant
+    ADDI R5, R5, 3      # R5 = (2 << 18) + 3
+
+# ============================================================
+# Test 5: LUI with maximum 2-trit immediate value
+# ============================================================
+    ADDI R1, R0, 4      # R1 = 4 (max positive 2-trit: ++)
+
+    LUI  R6, R1         # R6[26:18] = 4, R6[17:0] = 0
+
+# ============================================================
+# Test 6: LUI with minimum 2-trit immediate value
+# ============================================================
+    ADDI R1, R0, -4     # R1 = -4 (min negative 2-trit: --)
+
+    LUI  R7, R1         # R7[26:18] = -4, R7[17:0] = 0
+
+# ============================================================
+# Test 7: Chain of operations with LUI
+# ============================================================
+# Build constant in multiple steps
+    ADDI R1, R0, 1      # R1 = 1
+    LUI  R8, R1         # R8 = 1 * 3^18
+    ADDI R8, R8, 2      # R8 = (1 * 3^18) + 2
+    ADD  R8, R8, R1     # R8 = (1 * 3^18) + 2 + 1 = (1 * 3^18) + 3
+
+# ============================================================
+# Validation - Verify R4 is zero (LUI from R0)
+# ============================================================
+    BEQ  R4, R0, verify_pass
+    ADDI R1, R0, -1     # Error indicator
+    HALT
+
+verify_pass:
+    ADDI R1, R0, 1      # Success indicator
+
+    HALT
+
+# ============================================================
+# Expected Register Values After Tests:
+# ============================================================
+# R2 = 1 * 3^18 (upper trits = 1)
+# R3 = -1 * 3^18 (upper trits = -1)
+# R4 = 0 (LUI from R0)
+# R5 = (2 * 3^18) + 3
+# R6 = 4 * 3^18 (upper trits = 4)
+# R7 = -4 * 3^18 (upper trits = -4)
+# R8 = (1 * 3^18) + 3

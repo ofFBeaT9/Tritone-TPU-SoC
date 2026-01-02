@@ -1,0 +1,321 @@
+name: CI
+
+on:
+  # Runs on all pushes to branches
+  push:
+  # Runs on all PRs
+  pull_request:
+  # Runs every day at midnight UTC
+  schedule:
+    - cron: "0 0 * * *"
+  # Manual Dispatch
+  workflow_dispatch:
+
+jobs:
+  pdk_build:
+    name: Fetch or Build PDK
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        pdk: [sky130A]
+    outputs:
+      opdks_rev: ${{ steps.set-rev.outputs.opdks_rev }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment variables
+        uses: ./.github/actions/set_env_variables
+
+      - name: Get Open PDKs Revision
+        id: set-rev
+        run: |
+          echo "opdks_rev=$(python3 ./dependencies/tool.py open_pdks -f commit)" >> $GITHUB_OUTPUT
+
+      - name: Cache sky130 PDK
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PDK_ROOT }}
+          key: cache-${{ matrix.pdk }}-pdk-${{ steps.set-rev.outputs.opdks_rev }}
+          enableCrossOsArchive: true
+
+      - name: Build (or Get) PDK
+        run: |
+          export PATH=$PATH:$(go env GOPATH)/bin
+          PDK=${{ matrix.pdk }}
+
+          python3 -m pip install --upgrade --no-cache-dir 'ciel>=2.0.1,<3'
+          ciel enable\
+            --pdk-family $PDK\
+            --github-token ${{ secrets.GITHUB_TOKEN }}\
+            ${{ steps.set-rev.outputs.opdks_rev }}
+  prepare_test_matrices:
+    name: Prepare Test Matrices
+    runs-on: ubuntu-22.04
+    outputs:
+      design_matrix: ${{ steps.set-matrix.outputs.design_matrix }}
+      issue_regression_matrix: ${{ steps.set-matrix.outputs.issue_regression_matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python Dependencies
+        run: |
+          python3 -m pip install click pyyaml
+      - name: Determine If Running Extended Test Set
+        run: |
+          export EVENT_NAME=${{ github.event_name }};
+          python3 ./.github/scripts/determine_test_set.py
+      - name: Set Matrix
+        id: set-matrix
+        run: |
+          if [[ "$USE_ETS" = "1" ]]; then
+            echo "design_matrix=$(python3 ./.github/test_sets/get_test_matrix.py --scl sky130A/sky130_fd_sc_hd --scl gf180mcuD/gf180mcu_fd_sc_mcu7t5v0 fastest_test_set extended_test_set)" >> $GITHUB_OUTPUT
+          else
+            echo "design_matrix=$(python3 ./.github/test_sets/get_test_matrix.py --scl sky130A/sky130_fd_sc_hd --scl gf180mcuD/gf180mcu_fd_sc_mcu7t5v0 fastest_test_set)" >> $GITHUB_OUTPUT
+          fi
+          echo "issue_regression_matrix=$(python3 -m tests get_matrix)" >> $GITHUB_OUTPUT
+
+  docker_build_amd64:
+    name: Docker Build (amd64)
+    runs-on: ubuntu-22.04
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        uses: ./.github/actions/docker_build
+        with:
+          arch: amd64
+          tool_repository: ${{ vars.TOOL_DOCKER_IMAGE }}
+          container_registry: ${{ vars.CONTAINER_REGISTRY || 'ghcr.io' }}
+          container_registry_user: ${{ vars.CR_USERNAME }}
+          container_registry_password: ${{ secrets.CR_PASSWORD }}
+  docker_build_arm64v8:
+    name: Docker Build (arm64v8)
+    runs-on: ubuntu-22.04-arm
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        uses: ./.github/actions/docker_build
+        with:
+          arch: arm64v8
+          tool_repository: ${{ vars.TOOL_DOCKER_IMAGE }}
+          container_registry: ${{ vars.CONTAINER_REGISTRY || 'ghcr.io' }}
+          container_registry_user: ${{ vars.CR_USERNAME }}
+          container_registry_password: ${{ secrets.CR_PASSWORD }}
+  issue_regression_test:
+    name: Regression Test (Test ${{ matrix.test }})
+    needs: [docker_build_amd64, pdk_build, prepare_test_matrices]
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare_test_matrices.outputs.issue_regression_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment variables
+        uses: ./.github/actions/set_env_variables
+
+      - name: Download Docker Image
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image-amd64
+          path: /tmp
+
+      - name: Import Docker Image
+        run: docker load --input /tmp/image-amd64.tar
+
+      - name: Cache PDK
+        id: cache-pdk
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PDK_ROOT }}
+          key: cache-${{ matrix.design.pdk }}-pdk-${{ needs.pdk_build.outputs.opdks_rev }}
+          enableCrossOsArchive: true
+
+      - name: Enable PDKs
+        if: steps.cache-pdk.outputs.cache-hit != 'true'
+        run: |
+          make pdk
+
+      - name: Get Pyyaml
+        run: python3 -m pip install pyyaml
+
+      - name: Run Issue Regression Test
+        run: cd ${GITHUB_WORKSPACE}/ &&  make run_issue_regression ISSUE_REGRESSION_DESIGN=${{ matrix.test }}
+
+      - name: Upload Logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_${{ matrix.test }}_logs
+          path: ./test_logs
+  # Each test has two components: a fast test set and an extended test set.
+  # The fast test set is run on all PRs, etc. The extended test set runs on schedule.
+  test:
+    name: Test Design ${{ matrix.design.name }} (${{ matrix.design.pdk }}/${{matrix.design.scl}})
+    needs: [docker_build_amd64, pdk_build, prepare_test_matrices]
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare_test_matrices.outputs.design_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up environment variables
+        uses: ./.github/actions/set_env_variables
+
+      - name: Download Docker Image (amd64)
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image-amd64
+          path: /tmp
+
+      - name: Import Docker Image
+        run: docker load --input /tmp/image-amd64.tar
+
+      - name: Cache PDK
+        id: cache-pdk
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PDK_ROOT }}
+          key: cache-${{ matrix.design.pdk }}-pdk-${{ needs.pdk_build.outputs.opdks_rev }}
+          enableCrossOsArchive: true
+
+      - name: Enable PDKs
+        if: steps.cache-pdk.outputs.cache-hit != 'true'
+        run: |
+          PDK=${{ matrix.design.pdk }} make pdk
+
+      - name: Set PDK Variant
+        run: |
+          echo "PDK=${{ matrix.design.pdk }}" >> $GITHUB_ENV
+
+      - name: Set SCL
+        run: |
+          echo "STD_CELL_LIBRARY=${{ matrix.design.scl }}" >> $GITHUB_ENV
+
+      - name: Get Pyyaml
+        run: python3 -m pip install pyyaml
+
+      - name: Run Test
+        run: |
+          OPENLANE_IMAGE_NAME=$OPENLANE_IMAGE_NAME-amd64\
+            python3 ${GITHUB_WORKSPACE}/.github/scripts/run_tests.py ${{ matrix.design.name }}
+
+      - name: Escape Design Name
+        run: |
+          design_name=${{ matrix.design.name }}
+          escaped_design_name=${design_name//\//_}
+          echo "ESCAPED_DESIGN_NAME=$escaped_design_name" >> $GITHUB_ENV
+
+      - name: Upload Run Tarball
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ESCAPED_DESIGN_NAME }}-${{ matrix.design.pdk }}
+          path: ./reproducible.tar.gz
+
+  cleanup_and_deploy:
+    name: Cleanup (and Possibly Deployment)
+    needs:
+      [docker_build_amd64, docker_build_arm64v8, test, issue_regression_test]
+    if: always()
+    runs-on: ubuntu-22.04
+    permissions:
+      packages: write
+    steps:
+      - name: Check If Going To Push An Image To Docker
+        # # Uncomment the next line if you want to only build & push a container if entire test set succeeds
+        # if: needs.test.result == 'success'
+        # Ruby snippet to print 0 if this is a PR or if there is no DOCKERHUB_USER secret set, otherwise, 1
+        run: |
+          export PUSHING=$(ruby -e 'if ("${{ github.event_name }}" != "pull_request" && "${{ vars.CR_USERNAME }}" != ""); print(1) else print(0) end')
+          echo "PUSHING=$PUSHING" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up environment variables
+        uses: ./.github/actions/set_env_variables
+
+      - name: Download Docker Image (amd64)
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image-amd64
+          path: /tmp
+
+      - name: Download Docker Image (arm64v8)
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image-arm64v8
+          path: /tmp
+
+      - name: Write Hash
+        run: |
+          echo "GIT_COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Import Docker Images
+        if: ${{ env.PUSHING == '1' }}
+        run: |
+          for arch in amd64 arm64v8; do
+            docker load --input /tmp/image-$arch.tar
+          done
+
+      - name: Create Tag
+        if: ${{ env.PUSHING == '1' && (env.BRANCH_NAME == vars.MAIN_BRANCH || env.BRANCH_NAME == 'superstable') }}
+        run: cd ${GITHUB_WORKSPACE}/ && python3 ${GITHUB_WORKSPACE}/.github/scripts/generate_tag.py
+
+      - name: Tag Commit
+        if: ${{ env.PUSHING == '1' && env.NEW_TAG != '' }}
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          tag: "${{ env.NEW_TAG }}"
+          repo-token: "${{ secrets.BOT_TOKEN }}"
+
+      - name: Login to Container Registry
+        if: ${{ env.PUSHING == '1' }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.CONTAINER_REGISTRY }}
+          username: ${{ vars.CR_USERNAME }}
+          password: ${{ secrets.CR_PASSWORD }}
+
+      - name: Start Tag List
+        if: ${{ env.PUSHING == '1' }}
+        run: |
+          echo "TAG_LIST=" >> $GITHUB_ENV
+
+      - name: Docker Tag (Branches)
+        if: ${{ env.PUSHING == '1' && github.event_name == 'push' }}
+        run: |
+          echo "TAG_LIST=$TAG_LIST ${{ env.BRANCH_NAME }}" >> $GITHUB_ENV
+
+      - name: Docker Tag (Main Branch Hashes)
+        if: ${{ env.PUSHING == '1' && github.event_name == 'push' && env.BRANCH_NAME == vars.MAIN_BRANCH }}
+        run: |
+          echo "TAG_LIST=$TAG_LIST ${{ env.GIT_COMMIT_HASH }}" >> $GITHUB_ENV
+
+      - name: Docker Push (Main Branch Tags/Latest)
+        if: ${{ env.PUSHING == '1' && github.event_name == 'push' && env.BRANCH_NAME == vars.MAIN_BRANCH && env.NEW_TAG != '' }}
+        run: |
+          echo "TAG_LIST=$TAG_LIST ${{ env.NEW_TAG }} latest" >> $GITHUB_ENV
+
+      - name: Docker Pushes
+        if: ${{ env.PUSHING == '1' }}
+        run: |
+          for tag in $TAG_LIST; do
+            for arch in amd64 arm64v8; do
+              docker image tag ${{ env.OPENLANE_IMAGE_NAME }}-$arch ${{ vars.DOCKER_IMAGE }}:$tag-$arch
+              docker push ${{ vars.DOCKER_IMAGE }}:$tag-$arch
+            done
+            docker manifest create ${{ vars.DOCKER_IMAGE }}:$tag\
+              --amend ${{ vars.DOCKER_IMAGE }}:$tag-amd64\
+              --amend ${{ vars.DOCKER_IMAGE }}:$tag-arm64v8
+            docker manifest push ${{ vars.DOCKER_IMAGE }}:$tag
+          done

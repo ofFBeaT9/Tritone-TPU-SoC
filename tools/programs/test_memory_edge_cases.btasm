@@ -1,0 +1,92 @@
+# Test Program: Memory Edge Cases
+# Tests: Store-load ordering, same-address access, aliasing
+# Coverage: Memory system corner cases, RAW through memory
+
+# ============================================================
+# Test 1: Store Then Immediate Load (Same Address)
+# ============================================================
+# Store value, then immediately load it back
+#
+    LDI R1, 7           # R1 = 7 (value to store)
+    LDI R2, 0           # R2 = 0 (address offset)
+    STT R1, R2, 0       # Store R1 to dmem[0]
+    LDT R3, R2, 0       # Load from dmem[0] to R3
+    # R3 should equal 7
+
+# ============================================================
+# Test 2: Back-to-Back Stores to Same Address
+# ============================================================
+# Multiple stores to same location, final value should persist
+#
+    LDI R4, 1           # R4 = 1
+    LDI R5, 2           # R5 = 2  
+    LDI R6, 3           # R6 = 3
+    STT R4, R2, 1       # Store 1 to dmem[1]
+    STT R5, R2, 1       # Store 2 to dmem[1] (overwrite)
+    STT R6, R2, 1       # Store 3 to dmem[1] (overwrite again)
+    LDT R7, R2, 1       # Load from dmem[1]
+    # R7 should equal 3 (last store wins)
+
+# ============================================================
+# Test 3: Store-Load to Different Addresses (No Aliasing)
+# ============================================================
+# Verify separate addresses maintain separate values
+#
+    LDI R1, 10          # R1 = 10
+    LDI R4, 20          # R4 = 20
+    STT R1, R2, 2       # Store 10 to dmem[2]
+    STT R4, R2, 3       # Store 20 to dmem[3]
+    LDT R5, R2, 2       # Load from dmem[2] -> should be 10
+    LDT R6, R2, 3       # Load from dmem[3] -> should be 20
+    # R5 = 10, R6 = 20
+
+# ============================================================
+# Test 4: Load-Use Hazard Through Memory
+# ============================================================
+# Load followed immediately by use of loaded value
+#
+    LDI R1, 5           # R1 = 5
+    STT R1, R2, 4       # Store 5 to dmem[4]
+    LDT R3, R2, 4       # Load from dmem[4] to R3
+    ADD R4, R3, R3      # Use R3 immediately: R4 = 5 + 5 = 10
+    # R4 should equal 10 (hazard unit should stall or forward)
+
+# ============================================================
+# Test 5: Interleaved Loads and Stores
+# ============================================================
+#
+    LDI R1, 1           # R1 = 1
+    LDI R5, 5           # R5 = 5
+    LDI R6, 6           # R6 = 6
+    STT R1, R2, 5       # dmem[5] = 1
+    LDT R7, R2, 5       # R7 = 1
+    ADD R7, R7, R5      # R7 = 1 + 5 = 6
+    STT R7, R2, 6       # dmem[6] = 6
+    LDT R8, R2, 6       # R8 = 6
+    SUB R8, R8, R1      # R8 = 6 - 1 = 5
+    # R8 should equal 5
+
+# ============================================================
+# Test 6: Zero Address Access
+# ============================================================
+# Ensure address 0 works correctly
+#
+    LDI R1, 42          # R1 = 42 (but balanced ternary, so use small value)
+    LDI R1, 8           # R1 = 8
+    LDI R3, 0           # R3 = 0 (explicit zero address)
+    STT R1, R3, 0       # Store 8 to dmem[0]
+    LDT R4, R3, 0       # Load from dmem[0]
+    # R4 should equal 8
+
+# ============================================================
+# Validation Summary
+# ============================================================
+# Final expected values (key registers):
+# R3 = 7 (from test 1) - note: may be overwritten, check R4
+# R4 = 8 (from test 6)
+# R5 = 10 (from test 3)
+# R6 = 20 (from test 3) - may be 6 from test 5
+# R7 = 3 (from test 2) - may be 6 from test 5
+# R8 = 5 (from test 5)
+
+    HALT

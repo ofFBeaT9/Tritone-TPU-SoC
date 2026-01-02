@@ -45,20 +45,20 @@ Tritone is a complete **balanced ternary system-on-chip** integrating a **27-tri
 ---
 
 ## 📚 Table of Contents
-- [Why Balanced Ternary?](#-why-balanced-ternary)
-- [System Architecture](#-system-architecture)
-- [Tritone CPU Specifications](#-tritone-cpu-specifications)
-- [Tritone TPU Specifications](#-tritone-tpu-specifications)
-- [Implementation Results](#-implementation-results)
-- [Repository Structure](#-repository-structure)
-- [Quick Start](#-quick-start)
-- [GT-LOGIC Cell Library](#-gt-logic-cell-library)
-- [BTISA Instruction Set](#-btisa-instruction-set)
-- [Performance Benchmarks](#-performance-benchmarks)
-- [Physical Design Flows](#-physical-design-flows)
-- [Publications](#-publications)
-- [Roadmap](#-roadmap)
-- [License](#-license)
+- [Why Balanced Ternary?](#why-balanced-ternary)
+- [System Architecture](#system-architecture)
+- [Tritone CPU Specifications](#tritone-cpu-specifications)
+- [Tritone TPU Specifications](#tritone-tpu-specifications)
+- [Implementation Results](#implementation-results)
+- [Repository Structure](#repository-structure)
+- [Quick Start](#quick-start)
+- [GT-LOGIC Cell Library](#gt-logic-cell-library)
+- [BTISA Instruction Set](#btisa-instruction-set)
+- [Performance Benchmarks](#performance-benchmarks)
+- [Physical Design Flows](#physical-design-flows)
+- [Publications](#publications)
+- [Roadmap](#roadmap)
+- [License](#license)
 
 ---
 
@@ -354,8 +354,8 @@ tritone/
 
 ```bash
 # Clone repository
-git clone https://github.com/mahdad-shakiba/tritone-cpu
-cd tritone-cpu
+git clone https://github.com/ofFBeaT9/Tritone-TPU-SoC.git
+cd Tritone-TPU-SoC
 
 # Run basic arithmetic test
 cd hdl/sim
@@ -549,7 +549,7 @@ The assembler expands these into real BTISA instructions:
 - `LDI Rd, Imm` → `ADDI Rd, R0, Imm` (load immediate)
 - `MOV Rd, Rs` → `ADD Rd, Rs, R0` (register copy)
 - `JMP Rs` → `JR Rs` (unconditional jump)
-- `RET` → `JR R9` (return from function, assuming link in R9)
+- `RET` → `JR R8` (return from function, assuming link in R8)
 - `BEQZ Rs, Imm` → `BEQ Rs, R0, Imm` (branch if zero)
 - `BNEZ Rs, Imm` → `BNE Rs, R0, Imm` (branch if non-zero)
 
@@ -865,7 +865,7 @@ MIT License — see `LICENSE` file.
 
 **Author**: Mahdad Shakiba  
 **Email**: mahdadsh@outlook.com  
-**Repository**: https://github.com/mahdad-shakiba/tritone-cpu
+**Repository**: [https://github.com/ofFBeaT9/Tritone-TPU-SoC](https://github.com/ofFBeaT9/Tritone-TPU-SoC)
 
 For academic inquiries, collaboration proposals, or silicon tape-out discussions, please reach out via email.
 
@@ -878,6 +878,3 @@ For academic inquiries, collaboration proposals, or silicon tape-out discussions
 ![Tritone](https://img.shields.io/badge/Tritone-Post--Moore%20Computing-blueviolet?style=for-the-badge)
 
 </div>
-#   T r i t o n e - T P U - S o C 
- 
- 

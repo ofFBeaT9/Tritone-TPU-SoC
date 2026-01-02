@@ -739,7 +739,7 @@ Tritone uses a dual-rail encoding during synthesis that maps to single-wire tern
 
 ### Published Papers
 1. **Tritone: A Balanced Ternary CMOS Processor Architecture for the Post-Moore Era**  
-   M. Shakiba, *IEEE Transactions*, 2026 (camera-ready submitted)  
+   M. Shakiba, *IEEE Transactions*, 2026 
    *Covers: Dual-issue CPU, CLA, branch prediction, ASAP7/SKY130 implementation*
 
 2. **Tritone SoC: A Balanced Ternary System-on-Chip with 6.69 TOPS Neural Processing Unit**  
@@ -753,7 +753,7 @@ Tritone uses a dual-rail encoding during synthesis that maps to single-wire tern
   author  = {Shakiba, Mahdad},
   journal = {IEEE Transactions on [TBD]},
   year    = {2026},
-  note    = {Camera-ready submitted}
+  note    = {}
 }
 
 @inproceedings{shakiba2026tritone_soc,
@@ -788,7 +788,6 @@ Tritone uses a dual-rail encoding during synthesis that maps to single-wire tern
 - [x] RTL-to-GDS flow (SKY130: 349 MHz, ASAP7: 2.6 GHz)
 - [x] 100% ISA test coverage (19 verification programs)
 - [x] Benchmark suite (GEMM, FEP, molecular dynamics)
-- [x] IEEE publication (2 papers accepted)
 - [x] Zero DRC violations (both PDKs, tapeout-ready)
 
 ### 🚧 In Progress

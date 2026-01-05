@@ -846,9 +846,6 @@ For academic inquiries, collaboration proposals, or silicon tape-out discussions
 
 ---
 
-<div align="center">
-
-**Built with ternary logic, validated with silicon tools, powered by open-source EDA.**
 
 ![Tritone](https://img.shields.io/badge/Tritone-Post--Moore%20Computing-blueviolet?style=for-the-badge)
 

@@ -738,7 +738,7 @@ Tritone uses a dual-rail encoding during synthesis that maps to single-wire tern
 ## 📖 Publications
 
 in progress
-```
+
 
 ### Related Work
 - **REBEL Series**: University of South-Eastern Norway (Bos, Kiland, Lien) — balanced ternary processors

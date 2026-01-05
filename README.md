@@ -847,6 +847,4 @@ For academic inquiries, collaboration proposals, or silicon tape-out discussions
 ---
 
 
-![Tritone](https://img.shields.io/badge/Tritone-Post--Moore%20Computing-blueviolet?style=for-the-badge)
 
-</div>

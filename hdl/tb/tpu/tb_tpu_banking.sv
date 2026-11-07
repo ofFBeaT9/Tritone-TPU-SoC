@@ -318,10 +318,10 @@ module tb_tpu_banking;
     $display("--- Test 1: Verify Array Info (Version 2) ---");
     cpu_read(REG_ARRAY_INFO, rdata);
     $display("Array Info: 0x%08h", rdata);
-    $display("  Version: %0d (expected: 2)", rdata[31:16]);
+    $display("  Version: 0x%04h (expected: 0x0240, v2.4)", rdata[31:16]);
     $display("  Array Size: %0d", rdata[15:8]);
     $display("  ACC Bits: %0d", rdata[7:0]);
-    if (rdata[31:16] != 16'h0002) begin
+    if (rdata[31:16] != 16'h0240) begin  // v2.4 (TTPU-Gen2); was 0x0002, already stale at v2.3
       $display("ERROR: Version should be 2 for v2 TPU");
       errors++;
     end

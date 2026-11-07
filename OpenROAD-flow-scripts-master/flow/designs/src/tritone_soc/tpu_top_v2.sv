@@ -12,6 +12,10 @@
 //   - RSQRT unit for molecular dynamics (Phase 6)
 //   - Optional 2 GHz pipelined MAC (Phase 9)
 //
+// Version 2.4 Changes (TTPU-Gen2 security):
+//   - SEC register (0x70): zero-skip counts (the weight sparsity) hidden unless opted in; set-only LOCK
+//   - ARRAY_INFO minor version 0x40
+//
 // Version 2.3 Changes (Phase 9 - 2 GHz Enhancement):
 //   - Added USE_2GHZ_PIPELINE parameter for 2-stage pipelined MACs
 //   - Conditionally instantiates ternary_systolic_array_2ghz
@@ -58,6 +62,9 @@
 //   0x060: NL_CTRL      - Nonlinear control [2:0]=func, [3]=bypass, [4]=enable (Phase 6)
 //   0x064: NL_STATUS    - Nonlinear status [0]=busy, [1]=done, [31:16]=ops_count
 //   0x068: LUT_PROG     - LUT programming: [7:0]=addr, [23:8]=data, [25:24]=lut_sel, [31]=wr_en
+//   0x070: SEC          - TTPU-Gen2: [0]=SPARSITY_PERF opt-in (zero-skip counts readable), [31]=LOCK (set-only,
+//                         cleared by reset; setting it clears the opt-in). Without the opt-in, STATUS[31:16] and
+//                         PERF_CNT_1 read 0 and do not count: the zero-skip count is the weight sparsity.
 //   0x06C: NL_PERF_CNT  - Nonlinear operations count
 //
 // Author: Tritone Project (v2.3 - Phase 9 2 GHz Enhancement)
@@ -183,6 +190,7 @@ module tpu_top_v2
   localparam logic [7:0] REG_NL_STATUS   = 8'h64;  // [0]=busy, [1]=done, [31:16]=ops_count
   localparam logic [7:0] REG_LUT_PROG    = 8'h68;  // LUT programming
   localparam logic [7:0] REG_NL_PERF_CNT = 8'h6C;  // Nonlinear ops performance counter
+  localparam logic [7:0] REG_SEC         = 8'h70;  // TTPU-Gen2: [0]=sparsity counters opt-in, [31]=LOCK (set-only)
 
   // ============================================================
   // Control/Status Registers
@@ -217,6 +225,9 @@ module tpu_top_v2
   logic [31:0] reg_nl_ctrl;
   logic [31:0] reg_nl_status;
   logic [31:0] reg_lut_prog;
+  logic [31:0] reg_sec;                 // TTPU-Gen2 security register
+  logic        sparsity_en;             // zero-skip counts visible: opt-in set and not locked
+  assign sparsity_en = reg_sec[0] & ~reg_sec[31];
   logic [31:0] reg_nl_perf_cnt;
 
   // Command Queue Signals
@@ -264,7 +275,7 @@ module tpu_top_v2
   // Bit [31:24] = Major.Minor version (0x02 = v2)
   // Bit [23:16] = Patch + features (0x30 = .3, 0x31 = .3 + 2 GHz mode)
   assign reg_array_info = {8'h02,                  // Major version 2
-                           USE_2GHZ_PIPELINE ? 8'h31 : 8'h30, // v2.3 or v2.3+2GHz
+                           USE_2GHZ_PIPELINE ? 8'h41 : 8'h40, // v2.4 (TTPU-Gen2) or v2.4+2GHz
                            8'(ARRAY_SIZE),
                            8'(ACC_BITS)};
 
@@ -314,6 +325,7 @@ module tpu_top_v2
       reg_cmdq_data3 <= '0;
       reg_nl_ctrl <= '0;
       reg_lut_prog <= '0;
+      reg_sec <= '0;
       cpu_ready <= 1'b0;
       dma_start_d <= 1'b0;
       cmdq_push <= 1'b0;
@@ -367,6 +379,8 @@ module tpu_top_v2
           // Nonlinear Unit Registers (Phase 6)
           REG_NL_CTRL:     reg_nl_ctrl <= cpu_wdata;
           REG_LUT_PROG:    reg_lut_prog <= cpu_wdata;
+          // TTPU-Gen2: LOCK is set-only; under LOCK the register ignores writes; setting LOCK clears the opt-in
+          REG_SEC:         if (!reg_sec[31]) reg_sec <= cpu_wdata[31] ? 32'h8000_0000 : {31'b0, cpu_wdata[0]};
           default: ;
         endcase
         cpu_ready <= 1'b1;
@@ -393,7 +407,7 @@ module tpu_top_v2
         REG_LAYER_CFG:   cpu_rdata = reg_layer_cfg;
         REG_ARRAY_INFO:  cpu_rdata = reg_array_info;
         REG_PERF_CNT:    cpu_rdata = reg_perf_cnt;
-        REG_PERF_CNT_1:  cpu_rdata = reg_perf_cnt_1;
+        REG_PERF_CNT_1:  cpu_rdata = sparsity_en ? reg_perf_cnt_1 : 32'b0;
         REG_PERF_CNT_2:  cpu_rdata = reg_perf_cnt_2;
         REG_PERF_CNT_3:  cpu_rdata = reg_perf_cnt_3;
         REG_PERF_CTRL:   cpu_rdata = reg_perf_ctrl;
@@ -414,13 +428,14 @@ module tpu_top_v2
         REG_NL_STATUS:   cpu_rdata = reg_nl_status;
         REG_LUT_PROG:    cpu_rdata = reg_lut_prog;
         REG_NL_PERF_CNT: cpu_rdata = reg_nl_perf_cnt;
+        REG_SEC:         cpu_rdata = reg_sec;
         default:         cpu_rdata = '0;
       endcase
     end
   end
 
   // Status register
-  assign reg_status = {status_zero_skips,
+  assign reg_status = {sparsity_en ? status_zero_skips : 16'b0,
                        6'b0,
                        status_error,
                        status_done,
@@ -1020,7 +1035,7 @@ module tpu_top_v2
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       status_zero_skips <= '0;
-    end else if (ctrl_clear) begin
+    end else if (ctrl_clear || !sparsity_en) begin
       status_zero_skips <= '0;
     end else if (array_enable) begin
       status_zero_skips <= status_zero_skips + zero_skip_count_comb;
@@ -1053,7 +1068,9 @@ module tpu_top_v2
       end
 
       // PERF_CNT_1: Zero-skip count
-      if (array_enable) begin
+      if (!sparsity_en) begin
+        reg_perf_cnt_1 <= '0;
+      end else if (array_enable) begin
         reg_perf_cnt_1 <= reg_perf_cnt_1 + {16'b0, zero_skip_count_comb};
       end
 

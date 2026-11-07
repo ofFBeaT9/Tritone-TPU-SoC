@@ -194,7 +194,7 @@ module tb_tritone_soc_v2;
     read_reg(REG_INFO, read_data);
     // Expected: Version=2, ArraySize=8, AccBits=32
     // [31:16]=0x0002, [15:8]=0x08, [7:0]=0x20
-    check_value("ARRAY_INFO version", 16'h0002, read_data[31:16]);
+    check_value("ARRAY_INFO version", 16'h0240, read_data[31:16]);  // v2.4 (TTPU-Gen2)
     check_value("ARRAY_INFO array_size", 8'h08, read_data[15:8]);
     check_value("ARRAY_INFO acc_bits", 8'h20, read_data[7:0]);
 

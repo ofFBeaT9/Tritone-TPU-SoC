@@ -352,11 +352,11 @@ module tb_tpu_64x64;
     $display("--- Test %0d: Verify Array Info (Version 2.1, 64×64) ---", test_num);
     cpu_read(REG_ARRAY_INFO, rdata);
     $display("  Array Info: 0x%08h", rdata);
-    $display("    Version: 0x%04h (expected: 0x0201 for v2.1)", rdata[31:16]);
+    $display("    Version: 0x%04h (expected: 0x0240 for v2.4)", rdata[31:16]);
     $display("    Array Size: %0d (expected: 64)", rdata[15:8]);
     $display("    ACC Bits: %0d (expected: 32)", rdata[7:0]);
 
-    if (rdata[31:16] != 16'h0201) begin
+    if (rdata[31:16] != 16'h0240) begin  // v2.4 (TTPU-Gen2); was 0x0201, already stale at v2.3
       $display("  ERROR: Version mismatch!");
       errors++;
     end
